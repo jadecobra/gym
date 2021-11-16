@@ -1,0 +1,392 @@
+# Learn git
+
+# Keywords
+git help
+git help -a
+q
+git help -g
+git help attributes
+q
+git help everyday
+q
+git help glossary
+q
+git help ignore
+q
+git help modules
+q
+git help revisions
+q
+git help tutorial
+q
+git help workflows
+q
+git help init
+q
+git init --help
+q
+git help add
+q
+git add --help
+q
+git help commit
+q
+git commit --help
+q
+git help status
+q
+git status --help
+clear
+
+PROJECTNAME=Name of Project
+# Creating A New Repository
+# go to https://github.com > Start A Project > $PROJECTNAME
+# Click Create repository
+
+mkdir $PROJECTNAME && cd $PROJECTNAME
+echo "# $PROJECTNAME" >> README.md
+
+git init                # mkdir .git and add important files
+git status
+git diff
+git diff --cached
+git diff HEAD
+git commit -m "I cannot commit since have not told git to track anything yet"
+git log
+git log --oneline
+git log --merges
+git log --graph
+
+git add README.md
+git commit -m "I made the first commit"
+ls
+cd .git
+tree
+cat description
+nano description
+$PROJECTNAME; a Git Repository
+Ctrl+X
+Y
+cat description
+cd ..
+clear
+
+# <text> = Replace with your own text
+# x|y = you can use x or y
+# <x|y> = x or y are options but you can replace with your own text
+
+git remote add <github|bitbucket|origin> git@<github.com|bitbucket.org>:<username>/$PROJECTNAME
+
+git remote -v
+git push -u github master
+clear
+
+# Keeping Files And Directories Private
+cat .gitignore
+ls -a
+mkdir DirectoryNotToBeShared
+echo "DirectoryNotToBeShared/" >> .gitignore
+cat .gitignore
+ls -a
+touch FileNotToBeShared.extension
+echo "FileNotToBeShared.extension" >> .gitignore
+cat .gitignore
+ls
+ls -a
+git status
+git add .gitignore
+git diff
+git diff --cached
+git diff HEAD
+git commit -am "I Created list of Files and Directories for git to not track"
+git log
+git log --oneline
+git log --merges
+git log --graph
+git status
+git add DirectoryNotToBeShared/
+git add FileNotToBeShared.extension
+git status
+git push -u github master
+git status
+git log
+git log --oneline
+git log --merges
+git log --graph
+clear
+
+# Managing Files and Directories
+touch File{1,2,3,N}InThisDirectory.extension
+ls
+tree
+mkdir Directory{1,2,3,N}
+ls
+tree
+touch Directory{1,2,3,N}/File{1,2,3,N}InThisDirectory.extension
+ls
+tree
+touch Directory2/python_file.py
+touch Directory2/java_file.java
+touch Directory2/java_file.war
+touch Directory3/html_file.html
+touch Directory3/javscript_file.js
+touch DirectoryN/compressed_file.zip
+touch DirectoryN/compressed_file.bz2
+touch DirectoryN/compressed_file.xz
+touch DirectoryN/tape_archive_file.tar
+tree
+cd Directory3
+pwd
+mkdir ChildOfDirectory3
+cd ChildOfDirectory3
+mkdir ChildOfChildOfDirectory3
+cd ChildOfChildOfDirectory3
+pwd
+touch textfile{1,2,3,N}.txt
+ls
+tree
+cd ../..
+pwd
+ls
+tree
+cd ..
+ls
+tree
+clear
+
+# Adding Files and Directories for Tracking
+
+tree
+git status
+nano File1InThisDirectory.extension
+I am modifying File1InThisDirectory.extension in $PROJECTNAME
+ctrl+x
+y
+git add File1InThisDirectory.extension
+git status
+git commit -m "I modified File1InThisDirectory.extension in $PROJECTNAME"
+git push -u github master
+git status
+
+nano Directory1/FileInThisDirectory.extension
+I am modifying File1InThisDirectory.extension in Directory1
+ctrl+x
+y
+git add Directory1/File1InThisDirectory.extension
+git addDirectory1/FileNInThisDirectory.extension
+git commit -m "I modified File1InThisDirectory.extension in Directory1"
+git status
+git push -u github master
+git status
+
+git add Directory2/File2InThisDirectory.extension
+nano Directory2/File2InThisDirectory.extension
+What happens if I modify a file after adding it to tracking?
+ctrl+x
+y
+git commit -m "I modified File2InThisDirectory.extension in Directory2"
+git status
+git add Directory2/File2InThisDirectory.extension
+git status
+git commit -m "I Modified File2InThisDirectory.extension in Directory2"
+git status
+git push -u github master
+git status
+
+nano Directory3/File3InThisDirectory.extension
+I Always add after modifying a file and commit
+ctrl+x
+y
+git add Directory3/File3InThisDirectory.extension
+git commit -m "I modified File3InThisDirectory.extension in Directory3"
+git push -u github master
+git status
+git add Directory3/
+
+git status
+nano DirectoryN/FileNInThisDirectory.extension
+I will ALWAYS BE COMMITTING
+ctrl+x
+y
+git add DirectoryN/FileNInThisDirectory.extension
+git commit -m "I modified FileNInThisDirectory.extension in DirectoryN"
+git push -u github master
+
+git status
+git add .
+git status
+tree
+git diff
+git diff --cached
+q
+git diff HEAD
+q
+git commit -m "I added new Ffives to be tracked by git"
+git log
+q
+git log --oneline
+git log --graph
+q
+git commit --amend -m "I Added new Files and Directories in $PROJECTNAME for git to track"
+git log
+q
+git log --oneline
+git log --merges
+git log --graph
+q
+git push -u github master
+git log --oneline
+git log --merges
+git log --graph
+git diff
+git status
+clear
+
+# Branching
+git status
+git branch
+git branch -a
+git branch -v
+git branch -vv
+git branch a_new_branch
+git branch
+git branch -d a_new_branch
+git branch
+git branch an_old_branch_name
+git branch -a
+git branch -m an_old_branch_name a_new_branch_name
+git branch -a
+git branch -v
+git branch -vv
+
+git branch a_branch
+git branch -a
+git checkout a_branch
+git branch -a
+git status
+git checkout master
+git status
+git branch -a
+git checkout a_new_branch_name
+git branch -a
+git status
+git checkout -b a_new_branch
+git branch -a
+git status
+git checkout master
+git checkout -b a_dead_branch
+git branch -a
+git status
+git checkout master
+git branch -D a_dead_branch
+git branch -a
+git status
+ls
+tree
+
+git branch -a
+git branch branch1
+git branch branch2
+git branch branch3
+git branch branchN
+git branch -a
+
+git push github a_branch
+git branch -a
+git push github a_new_branch
+git branch -a
+git push github branch1
+git branch -a
+git push github branch2
+git branch -a
+git push github branch3
+git branch -a
+git push github branchN
+git branch -a
+
+# Merging Changes
+git checkout a_branch
+touch file_from_a_branch.extension
+mkdir new_directory_from_a_branch
+touch new_directory_from_a_branch/File{1,2,3,N}InThisDirectory.extension
+git status
+git add .
+git commit -a "I added a new File and Directory in a_branch"
+git diff github/a_branch
+git push github a_branch
+git diff
+git diff master
+git checkout master
+git diff github/master
+git diff a_branch
+git merge a_branch
+git diff
+git diff a_branch
+git diff github/master
+git status
+git push github master
+git status
+
+git checkout -b new_feature
+git branch -a
+git diff master
+git merge master
+nano FileInThisDirectory.extension
+I had a Genius Idea and tested it in new_feature
+ctrl+X
+y
+git status
+git add .
+git commit -am "I had a Genius Idea and tested it in new_feature"
+git diff master
+git diff remotes/github/new_feature
+git push github new_feature
+git checkout master
+git merge --no-ff new_feature
+I Had a Genius idea, tested it in new_feature and merged it into master
+# save and exit
+git diff
+git diff new_feature
+git diff remotes/github/master
+git status
+git push github master
+git log
+git log --oneline
+git log --merges
+git log graph
+git branch -D new_feature
+clear
+
+#Tagging
+git tag
+git tag -a v0.1 "Beta Test version 1"
+git tag
+git tag -a v0.1 -m "Beta Test version 1"
+git tag
+git tag -a v1.1 -m "Version 1.0 revision 1"
+git tag
+git tag v2.0 -m "Version 2.0"
+git tag
+git tag vN.M -m "Version N revision M
+git tag
+git tag any_tag -m "Description/Comment for the Tag"
+git status
+clear
+
+git show
+git show v0.1
+git show v1.1
+git show v2.0
+git show vN.M
+git show any_tag
+git show non_existent_tag
+clear
+
+git push github v0.1
+git push github vN.M
+git push github --tags
+
+git log
+git log --oneline
+git log --merges
+git log --graph
