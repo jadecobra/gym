@@ -1,0 +1,19 @@
+emailAddress=$1
+ssh-keygen -t rsa -C "$emailAddress"
+cat ~/.ssh/id_rsa.pub
+pbcopy < ~/.ssh/id_rsa.pub
+
+# add SSH Key to Version Control Profile
+python3 -m webbrowser https://github.com/
+# Go to GitHub/Bitbucket
+# Create/Login to Account
+# Profile > Settings >
+# GitHub - SSH and GPG Keys
+# Bitbucket - SSH
+# New SSH Keys
+# Paste Key # ctrl+V
+# Add SSH Key
+
+# Verify SSH Key
+ssh -T git@github.com
+# ssh -T git@bitbucket.com@
