@@ -1,0 +1,19 @@
+projectName=$1
+mkdir -p $projectName/tests
+cd $projectName
+
+touch tests/__init__.py
+cat << EOF > tests/test_$projectName.py
+from unittest import TestCase
+
+class Test$projectName(TestCase):
+
+    def test_failure(self):
+        self.assertTrue(False)
+EOF
+
+python3 -m venv .$projectName
+source .$projectName/bin/activate
+pip install -U pip
+pip install sniffer macFSevents
+sniffer
