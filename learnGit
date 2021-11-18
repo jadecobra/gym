@@ -367,7 +367,7 @@ git tag -a v1.1 -m "Version 1.0 revision 1"
 git tag
 git tag v2.0 -m "Version 2.0"
 git tag
-git tag vN.M -m "Version N revision M
+git tag vN.M -m "Version N revision M"
 git tag
 git tag any_tag -m "Description/Comment for the Tag"
 git status
