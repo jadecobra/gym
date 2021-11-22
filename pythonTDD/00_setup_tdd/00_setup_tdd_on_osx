@@ -12,8 +12,8 @@ class Test$projectName(TestCase):
         self.assertTrue(False)
 EOF
 
-python3 -m venv .$projectName
-source .$projectName/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -U pip
 pip install sniffer macFSevents
 sniffer
