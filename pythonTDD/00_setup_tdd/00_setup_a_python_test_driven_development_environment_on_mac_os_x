@@ -1,0 +1,60 @@
+function1() {
+    local variable='func1 local'
+    function2
+}
+
+function2() {
+    echo "In func2, var = $var"
+}
+
+var=global
+function1
+
+# displayDirectory () {
+#     echo $PWD
+#     ls -a
+#     reply "Press [Enter] key to continue..."
+# }
+
+# setupVirtualEnvironment () {
+#     python3 -m venv .venv
+#     displayDirectory
+#     source .venv/bin/activate
+#     pip install -U pip
+#     pip install sniffer macFSevents
+# }
+
+# getProjectName () {
+#     echo "Enter the name of your project:"
+#     read projectName
+#     echo "You entered: $projectName"
+#     read -p "Press [Enter] key to continue..."
+#     return $projectName
+# }
+
+# getProjectName
+
+# projectName=$1
+# mkdir -p $projectName/tests
+# cd $projectName
+
+# touch $projectName.py
+# touch tests/__init__.py
+# cat << DELIMITER > tests/test_$projectName.py
+# from unittest import TestCase
+
+# class Test$projectName(TestCase):
+
+#     def test_failure(self):
+#         self.assertTrue(False)
+# DELIMITER
+
+# setupVirtualEnvironment
+
+# sniffer
+
+# Note - sniffer fails because of an issue with nose
+# replace the body of the run function .venv/lib/pythonX.X/site-packages/sniffer/runner.py with
+# import subprocess
+# if subproces.run('python -m unittest -f', shell=True).returncode != 0:
+#     return False
