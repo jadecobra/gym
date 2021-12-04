@@ -55,8 +55,9 @@ from subprocess import run
 
 @runnable
 def execute_nose(*args):
-    if run('python -m unittest -f', shell=True).returncode != 0:
-        return False
+    if run('python -m unittest -f', shell=True).returncode == 0:
+        return True
+
 DELIMITER
     cat scent.py
     display_directory
