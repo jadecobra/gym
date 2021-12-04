@@ -4,6 +4,6 @@ delimiter() {
 
 header() {
     delimiter
-    echo $1
+    echo "\t$1"
     delimiter
 }

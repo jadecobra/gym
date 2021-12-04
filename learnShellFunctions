@@ -1,4 +1,4 @@
-source ../../helper     # you can change this to whatever path you put the helper script in
+source helper
 
 display_variables() {
     echo "\ta_global_variable: $1"

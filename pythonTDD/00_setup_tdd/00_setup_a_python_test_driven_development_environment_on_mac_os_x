@@ -1,10 +1,15 @@
 # Create a Python Test Driven Development Environment on Mac OS X
 #   default project name is testDrivenDevelopmentEnvironment
+source ../../helper
+
+pause() {
+    reply "Press [Enter] key to continue...\n"
+}
 
 displayDirectory () {
     echo "\tcurrentDirectory: $PWD"
     ls -a
-    reply "Press [Enter] key to continue..."
+    pause
 }
 
 setupVirtualEnvironment () {
@@ -16,14 +21,14 @@ setupVirtualEnvironment () {
 }
 
 getProjectName () {
-    read -p "Enter the name of your project:" projectName
+    read -p "Enter the name of your project: " projectName
     [[ -z $projectName ]] && projectName="testDrivenDevelopmentEnvironment" || echo
     echo "\tprojectName: $projectName"
-    read -p "Press [Enter] key to continue..."
+    pause
 }
 
 createDirectoryStructure() {
-    echo "\tCreating directory structure: $projectName/tests..."
+    header "\tCreating directory structure: $projectName/tests..."
     mkdir -p $projectName/tests
     cd $projectName
     displayDirectory
@@ -32,7 +37,7 @@ createDirectoryStructure() {
 createBoilerPlateCode() {
     touch $projectName.py
     touch tests/__init__.py
-    echo 'Current File/Directory Structure'
+    header '\tCurrent File/Directory Structure'
     tree
 }
 
@@ -50,6 +55,7 @@ DELIMITER
 }
 
 clear
+header 'Creating a Python Test Driven Development Environment on Mac OS X'
 getProjectName
 createDirectoryStructure
 createBoilerPlateCode
