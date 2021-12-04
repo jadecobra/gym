@@ -1,5 +1,8 @@
 delimiter() {
-    echo "\n---------------------\n"
+    printf "\n"
+    printf '=%.0s' {1..80}
+    printf "\n"
+
 }
 
 header() {
