@@ -1,0 +1,9 @@
+delimiter() {
+    echo "\n---------------------\n"
+}
+
+header() {
+    delimiter
+    echo $1
+    delimiter
+}

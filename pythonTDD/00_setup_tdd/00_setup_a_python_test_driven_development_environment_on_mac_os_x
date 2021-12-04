@@ -1,65 +1,62 @@
-receiver() {
-    echo "In receiver function"
-    echo "--------------------"
-    echo "\tlocal_variable is $local_variable"
-    echo "\tglobal_variable is $global_variable"
+# Create a Python Test Driven Development Environment on Mac OS X
+#   default project name is testDrivenDevelopmentEnvironment
+
+displayDirectory () {
+    echo "\tcurrentDirectory: $PWD"
+    ls -a
+    reply "Press [Enter] key to continue..."
 }
 
-sender() {
-    echo "In sender function"
-    echo "------------------"
-    # local variable='local variable in sender'
-    local_variable=localVariableInSender
-    echo "\tlocal_variable is $local_variable"
-    echo "\tglobal_variable is $global_variable"
-    receiver
+setupVirtualEnvironment () {
+    python3 -m venv .venv
+    displayDirectory
+    source .venv/bin/activate
+    pip install -U pip
+    pip install sniffer macFSevents
 }
 
+getProjectName () {
+    read -p "Enter the name of your project:" projectName
+    [[ -z $projectName ]] && projectName="testDrivenDevelopmentEnvironment" || echo
+    echo "\tprojectName: $projectName"
+    read -p "Press [Enter] key to continue..."
+}
 
-echo "In Global Namespace"
-echo "------------------"
-global_variable=GlobalVariable
-echo "\tglobal_variable is $global_variable"
-sender
+createDirectoryStructure() {
+    echo "\tCreating directory structure: $projectName/tests..."
+    mkdir -p $projectName/tests
+    cd $projectName
+    displayDirectory
+}
 
-# displayDirectory () {
-#     echo $PWD
-#     ls -a
-#     reply "Press [Enter] key to continue..."
-# }
+createBoilerPlateCode() {
+    touch $projectName.py
+    touch tests/__init__.py
+    echo 'Current File/Directory Structure'
+    tree
+}
 
-# setupVirtualEnvironment () {
-#     python3 -m venv .venv
-#     displayDirectory
-#     source .venv/bin/activate
-#     pip install -U pip
-#     pip install sniffer macFSevents
-# }
+createFailingTest() {
+    echo '\tCreating a failing python test...'
+    cat << DELIMITER > tests/test_$projectName.py
+from unittest import TestCase
 
-# getProjectName () {
-#     echo "Enter the name of your project:"
-#     read projectName
-#     echo "You entered: $projectName"
-#     read -p "Press [Enter] key to continue..."
-#     return $projectName
-# }
+class Test$projectName(TestCase):
 
-# getProjectName
+    def test_failure(self):
+        self.assertTrue(False)
+DELIMITER
+    cat tests/test_$projectName.py
+}
 
-# projectName=$1
-# mkdir -p $projectName/tests
-# cd $projectName
-
+clear
+getProjectName
+createDirectoryStructure
+createBoilerPlateCode
+createFailingTest
 # touch $projectName.py
 # touch tests/__init__.py
-# cat << DELIMITER > tests/test_$projectName.py
-# from unittest import TestCase
 
-# class Test$projectName(TestCase):
-
-#     def test_failure(self):
-#         self.assertTrue(False)
-# DELIMITER
 
 # setupVirtualEnvironment
 

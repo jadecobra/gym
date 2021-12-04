@@ -1,12 +1,4 @@
-delimiter() {
-    echo "\n---------------------\n"
-}
-
-header() {
-    delimiter
-    echo $1
-    delimiter
-}
+source helper
 
 display_variables() {
     echo "\ta_global_variable: $1"
