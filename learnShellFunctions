@@ -1,4 +1,4 @@
-curl https://raw.githubusercontent.com/jadecobra/arsenal/main/helper
+sudo curl https://raw.githubusercontent.com/jadecobra/arsenal/main/helper -o /usr/local/bin/helper
 source helper
 
 display_variables() {
