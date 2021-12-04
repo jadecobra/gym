@@ -1,14 +1,26 @@
-function1() {
-    local variable='func1 local'
-    function2
+receiver() {
+    echo "In receiver function"
+    echo "--------------------"
+    echo "\tlocal_variable is $local_variable"
+    echo "\tglobal_variable is $global_variable"
 }
 
-function2() {
-    echo "In func2, var = $var"
+sender() {
+    echo "In sender function"
+    echo "------------------"
+    # local variable='local variable in sender'
+    local_variable=localVariableInSender
+    echo "\tlocal_variable is $local_variable"
+    echo "\tglobal_variable is $global_variable"
+    receiver
 }
 
-var=global
-function1
+
+echo "In Global Namespace"
+echo "------------------"
+global_variable=GlobalVariable
+echo "\tglobal_variable is $global_variable"
+sender
 
 # displayDirectory () {
 #     echo $PWD

@@ -1,0 +1,40 @@
+delimiter() {
+    echo "\n---------------------\n"
+}
+
+header() {
+    delimiter
+    echo $1
+    delimiter
+}
+
+display_variables() {
+    echo "\ta_global_variable: $1"
+    echo "\tanother_global_variable: $2"
+    echo "\tcaller_local_variable: $3"
+    echo "\treceived_parameter: $4"
+}
+
+receiver() {
+    header "In receiver"
+    display_variables $a_global_variable $another_global_variable $caller_local_variable $1
+}
+
+caller() {
+    header "In caller"
+    another_global_variable="global_variable_created_in_caller"
+    local caller_local_variable="local_variable_created_in_caller"
+    display_variables $a_global_variable $another_global_variable $caller_local_variable
+    receiver "parameter_sent_to_receiver"
+}
+
+clear
+
+header "In Global Namespace"
+a_global_variable="a_global_variable"
+display_variables $a_global_variable $another_global_variable $caller_local_variable $1
+caller
+header "after executing caller"
+display_variables $a_global_variable $another_global_variable $caller_local_variable $1
+
+delimiter
