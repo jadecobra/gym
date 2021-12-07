@@ -1,7 +1,8 @@
 emailAddress=$1
-ssh-keygen -t rsa -C "$emailAddress"
+filename=~/.ssh/id_rsa
+ssh-keygen -t rsa -C "$emailAddress" -f ~/.ssh/id_rsa
 cat ~/.ssh/id_rsa.pub
-pbcopy < ~/.ssh/id_rsa.pub
+pbcopy < $filename.pub
 
 # add SSH Key to Version Control Profile
 python3 -m webbrowser https://github.com/
