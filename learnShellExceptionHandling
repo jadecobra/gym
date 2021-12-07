@@ -1,0 +1,39 @@
+get_helper_file() {
+    local helperPath=/usr/local/bin/helper
+    cat $helperPath ||sudo curl https://raw.githubusercontent.com/jadecobra/arsenal/main/helper -o $helperPath
+    source $helperPath
+}
+
+get_helper_file
+clear
+true
+print "true returns: $?"
+false
+print "false returns: $?"
+
+header 'Conditionals'
+
+print "How to use AND and OR"
+print "\ttrue || print"
+print "\ttrue or command2"
+print "\tcommand2 ignored\n"
+true || print "print executed"
+
+print "\tfalse || print"
+print "\tfalse or command2"
+print "\tcommand2 executed\n"
+false || print "print executed"
+
+print "\ttrue && print"
+print "\ttrue and command2"
+print "\tcommand2 executed\n"
+true && print "print executed"
+
+print "\ttrue && print"
+print "\tfalse and command2"
+print "\tcommand2 ignored\n"
+false && print "print executed"
+
+echo "\n"
+echo 'This only allows you to catch errors that return non-zero on failure'
+echo 'It fails for errors that return zero'
