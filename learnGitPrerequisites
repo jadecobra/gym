@@ -1,7 +1,8 @@
 emailAddress=$1
-filename=~/.ssh/id_rsa
-ssh-keygen -t rsa -C "$emailAddress" -f ~/.ssh/id_rsa
-cat ~/.ssh/id_rsa.pub
+filename=id_rsa
+cd ~/.ssh
+ssh-keygen -t rsa -C "$emailAddress" -f $filename
+cat id_rsa.pub
 pbcopy < $filename.pub
 
 # add SSH Key to Version Control Profile
@@ -14,6 +15,14 @@ python3 -m webbrowser https://github.com/
 # New SSH Keys
 # Paste Key # ctrl+V
 # Add SSH Key
+
+cat << EOF >> ~/.ssh/config
+
+Host github.com
+    Hostname github.com
+    User git
+    IdentityFile ~/.ssh/$filename
+EOF
 
 # Verify SSH Key
 ssh -T git@github.com
