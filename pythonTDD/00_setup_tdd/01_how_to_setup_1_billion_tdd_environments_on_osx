@@ -6,9 +6,9 @@ setupTDDEnvironment () {
     touch $projectName.py
     touch tests/__init__.py
 cat << DELIMITER > tests/test_$projectName.py
-from unittest import TestCase
+import unittest
 
-class Test$projectName(TestCase):
+class Test$projectName(unittest.TestCase):
 
     def test_failure(self):
         self.assertTrue(False)
