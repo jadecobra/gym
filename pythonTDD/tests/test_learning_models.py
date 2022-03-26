@@ -1,5 +1,4 @@
-from unittest import TestCase, main
-
+import unittest
 
 def learning_model(expectations, reality):
     while reality < expectations:
@@ -7,7 +6,7 @@ def learning_model(expectations, reality):
     return reality + 1
 
 
-class TestInfiniteLearningModel(TestCase):
+class TestInfiniteLearningModel(unittest.TestCase):
 
     def test_learning_model_when_expectations_are_greater_than_reality(self):
         "When our expectations are greater than reality we add to our reality until it exceeds expectations"
@@ -31,4 +30,4 @@ class TestInfiniteLearningModel(TestCase):
         self.assertEqual(expectations + 1, learning_model(expectations, reality))
 
 if __name__ == "__main__":
-    main()
+    unittest.main()
