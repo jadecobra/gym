@@ -1,152 +1,157 @@
 import unittest
-
-from classes import (
-    ClassWithPass, ClassWithParentheses, ClassWithObject, ClassWithAttributes, ClassWithMethods, ClassWithAttributesAndMethods, Me, SisterA, ChildA, ChildB, BrotherA, SisterB, BrotherB, SisterC, LastName, Boy, Girl, Other
-)
+import classes
 
 
 class TestClasses(unittest.TestCase):
 
-	def test_class_definitions_with_pass(self):
-		self.assertIsInstance(ClassWithPass(), object)
+    def test_class_definitions_with_pass(self):
+        self.assertIsInstance(classes.ClassWithPass(), object)
 
-	def test_class_definitions_with_parentheses(self):
-		self.assertIsInstance(ClassWithParentheses(), object)
+    def test_class_definitions_with_parentheses(self):
+        self.assertIsInstance(classes.ClassWithParentheses(), object)
 
-	def test_class_definition_with_object(self):
-		self.assertIsInstance(ClassWithObject(), object)
+    def test_class_definition_with_object(self):
+        self.assertIsInstance(classes.ClassWithObject(), object)
 
-	def test_classes_with_attributes(self):
-		self.assertEqual(
-			ClassWithAttributes.attribute_a, 'AttributeA'
-		)
-		self.assertEqual(
-			ClassWithAttributes.attribute_b, 'AttributeB'
-		)
-		self.assertEqual(
-			ClassWithAttributes.attribute_c, 'AttributeC'
-		)
-		self.assertEqual(
-			ClassWithAttributes.attribute_d, 'AttributeD'
-		)
+    def test_classes_with_attributes(self):
+        self.assertEqual(
+            classes.ClassWithAttributes.attribute_a,
+            'AttributeA'
+        )
+        self.assertEqual(
+            classes.ClassWithAttributes.attribute_b,
+            'AttributeB'
+        )
+        self.assertEqual(
+            classes.ClassWithAttributes.attribute_c,
+            'AttributeC'
+        )
+        self.assertEqual(
+            classes.ClassWithAttributes.attribute_d,
+            'AttributeD'
+        )
 
-	def test_classes_with_methods(self):
-		self.assertEqual(
-			ClassWithMethods.method_a(), 'MethodA'
-		)
-		self.assertEqual(
-			ClassWithMethods.method_b(), 'MethodB'
-		)
-		self.assertEqual(
-			ClassWithMethods.method_c(), 'MethodC'
-		)
-		self.assertEqual(
-			ClassWithMethods.method_d(), 'MethodD'
-		)
+    def test_classes_with_methods(self):
+        self.assertEqual(
+            classes.ClassWithMethods.method_a(),
+            'You called MethodA'
+        )
+        self.assertEqual(
+            classes.ClassWithMethods.method_b(),
+            'You called MethodB'
+        )
+        self.assertEqual(
+            classes.ClassWithMethods.method_c(),
+            'You called MethodC'
+        )
+        self.assertEqual(
+            classes.ClassWithMethods.method_d(),
+            'You called MethodD'
+        )
 
-	def test_classes_with_attributes_and_methods(self):
-		self.assertEqual(
-			ClassWithAttributesAndMethods.attribute,
-			'Attribute'
-		)
-		self.assertEqual(
-			ClassWithAttributesAndMethods.method(), 'Method'
-		)
+    def test_classes_with_attributes_and_methods(self):
+        self.assertEqual(
+            classes.ClassWithAttributesAndMethods.attribute,
+            'Attribute'
+        )
+        self.assertEqual(
+            classes.ClassWithAttributesAndMethods.method(),
+            'You called a Method'
+        )
 
-	def test_classes_with_initializers(self):
-		self.assertEqual(Boy().sex, 'M')
-		self.assertEqual(Girl(sex='F').sex, 'F')
-		self.assertEqual(Other(sex='?').sex, '?')
+    def test_classes_with_initializers(self):
+        self.assertEqual(classes.Boy().sex, 'M')
+        self.assertEqual(classes.Girl(sex='F').sex, 'F')
+        self.assertEqual(classes.Other(sex='?').sex, '?')
 
-	def test_me_knows_classes(self):
-		self.assertEqual(Me().last_name, 'LastName')
-		self.assertEqual(SisterA().last_name, 'LastName')
-		self.assertEqual(ChildA().last_name, 'LastName')
-		self.assertEqual(ChildB().last_name, 'LastName')
-		self.assertEqual(BrotherA().last_name, 'LastName')
-		self.assertEqual(SisterB().last_name, 'LastName')
-		self.assertEqual(BrotherA().last_name, 'LastName')
-		self.assertEqual(SisterC().last_name, 'LastName')
+    def test_me_knows_classes(self):
+        self.assertEqual(classes.Me().last_name, 'LastName')
+        self.assertEqual(classes.SisterA().last_name, 'LastName')
+        self.assertEqual(classes.ChildA().last_name, 'LastName')
+        self.assertEqual(classes.ChildB().last_name, 'LastName')
+        self.assertEqual(classes.BrotherA().last_name, 'LastName')
+        self.assertEqual(classes.SisterB().last_name, 'LastName')
+        self.assertEqual(classes.BrotherA().last_name, 'LastName')
+        self.assertEqual(classes.SisterC().last_name, 'LastName')
 
-		self.assertEqual(Me().first_name, 'me')
-		self.assertEqual(SisterA().first_name, 'sisterA')
-		self.assertEqual(ChildA().first_name, 'ChildA')
-		self.assertEqual(ChildB().first_name, 'ChildB')
-		self.assertEqual(BrotherA().first_name, 'BrotherA')
-		self.assertEqual(SisterB().first_name, 'SisterB')
-		self.assertEqual(BrotherA().first_name, 'BrotherB')
-		self.assertEqual(SisterC().first_name, 'SisterC')
+        self.assertEqual(classes.Me().first_name, 'me')
+        self.assertEqual(classes.SisterA().first_name, 'sisterA')
+        self.assertEqual(classes.ChildA().first_name, 'ChildA')
+        self.assertEqual(classes.ChildB().first_name, 'ChildB')
+        self.assertEqual(classes.BrotherA().first_name, 'BrotherA')
+        self.assertEqual(classes.SisterB().first_name, 'SisterB')
+        self.assertEqual(classes.BrotherA().first_name, 'BrotherB')
+        self.assertEqual(classes.SisterC().first_name, 'SisterC')
 
-		self.assertEqual(Me().sex, 'M')
-		self.assertEqual(SisterA().sex, 'F')
-		self.assertEqual(ChildA().sex, 'M')
-		self.assertEqual(ChildB().sex, 'F')
-		self.assertEqual(BrotherA().sex, 'M')
-		self.assertEqual(SisterB().sex, 'F')
-		self.assertEqual(BrotherA().sex, 'M')
-		self.assertEqual(SisterC().sex, 'F')
+        self.assertEqual(classes.Me().sex, 'M')
+        self.assertEqual(classes.SisterA().sex, 'F')
+        self.assertEqual(classes.ChildA().sex, 'M')
+        self.assertEqual(classes.ChildB().sex, 'F')
+        self.assertEqual(classes.BrotherA().sex, 'M')
+        self.assertEqual(classes.SisterB().sex, 'F')
+        self.assertEqual(classes.BrotherA().sex, 'M')
+        self.assertEqual(classes.SisterC().sex, 'F')
 
-		self.assertEqual(Me().year_of_birth, 2021)
-		self.assertEqual(SisterA().year_of_birth, 2O21)
-		self.assertEqual(ChildA().year_of_birth, 2021)
-		self.assertEqual(ChildB().year_of_birth, 2021)
-		self.assertEqual(BrotherA().year_of_birth, 2021)
-		self.assertEqual(SisterB().year_of_birth, 2021)
-		self.assertEqual(BrotherB().year_of_birth, 2021)
-		self.assertEqual(SisterC().year_of_birth, 2021)
+        self.assertEqual(classes.Me().year_of_birth, 2021)
+        self.assertEqual(classes.SisterA().year_of_birth, 2O21)
+        self.assertEqual(classes.ChildA().year_of_birth, 2021)
+        self.assertEqual(classes.ChildB().year_of_birth, 2021)
+        self.assertEqual(classes.BrotherA().year_of_birth, 2021)
+        self.assertEqual(classes.SisterB().year_of_birth, 2021)
+        self.assertEqual(classes.BrotherB().year_of_birth, 2021)
+        self.assertEqual(classes.SisterC().year_of_birth, 2021)
 
-		self.assertEqual(Me().age(), 35)
-		self.assertEqual(SisterA().age(), 38)
-		self.assertEqual(ChildA().age(), 7)
-		self.assertEqual(ChildB().age(), 4)
-		self.assertEqual(BrotherA().age(), 23)
-		self.assertEqual(SisterB().age(), 31)
-		self.assertEqual(BrotherB().age(), 52)
-		self.assertEqual(SisterC().age(), 31)
+        self.assertEqual(classes.Me().age(), 35)
+        self.assertEqual(classes.SisterA().age(), 38)
+        self.assertEqual(classes.ChildA().age(), 7)
+        self.assertEqual(classes.ChildB().age(), 4)
+        self.assertEqual(classes.BrotherA().age(), 23)
+        self.assertEqual(classes.SisterB().age(), 31)
+        self.assertEqual(classes.BrotherB().age(), 52)
+        self.assertEqual(classes.SisterC().age(), 31)
 
-		self.assertEqual(Me().is_minor(), False)
-		self.assertEqual(SisterA().is_minor(), False)
-		self.assertEqual(ChildA().is_minor(), True)
-		self.assertEqual(ChildB().is_minor(), True)
-		self.assertEqual(BrotherA().is_minor(), False)
-		self.assertEqual(SisterB().is_minor(), False)
-		self.assertEqual(BrotherB().is_minor(), False)
-		self.assertEqual(SisterC().is_minor(), False)
+        self.assertEqual(classes.Me().is_minor(), False)
+        self.assertEqual(classes.SisterA().is_minor(), False)
+        self.assertEqual(classes.ChildA().is_minor(), True)
+        self.assertEqual(classes.ChildB().is_minor(), True)
+        self.assertEqual(classes.BrotherA().is_minor(), False)
+        self.assertEqual(classes.SisterB().is_minor(), False)
+        self.assertEqual(classes.BrotherB().is_minor(), False)
+        self.assertEqual(classes.SisterC().is_minor(), False)
 
-	@unittest.skip
-	def test_listing_class_attributes(self):
-		self.assertEqual(
-			dir(LastName),
-			[
-				'__class__',
-				'__delattr__',
-				'__dict__',
-				'__dir__',
-				'__doc__',
-				'__eq__',
-				'__format__',
-				'__ge__',
-				'__getattribute__',
-				'__gt__',
-				'__hash__',
-				'__init__',
-				'__init_subclass__',
-				'__le__',
-				'__lt__',
-				'__module__',
-				'__ne__',
-				'__new__',
-				'__reduce__',
-				'__reduce_ex__',
-				'__repr__',
-				'__setattr__',
-				'__sizeof__',
-				'__str__',
-				'__subclasshook__',
-				'__weakref__',
-				'age',
-				'is_minor',
-				'last_name',
-				'sex'
-			]
-		)
+    def test_listing_class_attributes(self):
+        self.assertEqual(
+            dir(classes.LastName),
+            [
+                '__class__',
+                '__delattr__',
+                '__dict__',
+                '__dir__',
+                '__doc__',
+                '__eq__',
+                '__format__',
+                '__ge__',
+                '__getattribute__',
+                '__gt__',
+                '__hash__',
+                '__init__',
+                '__init_subclass__',
+                '__le__',
+                '__lt__',
+                '__module__',
+                '__ne__',
+                '__new__',
+                '__reduce__',
+                '__reduce_ex__',
+                '__repr__',
+                '__setattr__',
+                '__sizeof__',
+                '__str__',
+                '__subclasshook__',
+                '__weakref__',
+                'age',
+                'is_minor',
+                'last_name',
+                'sex'
+            ]
+        )
