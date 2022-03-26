@@ -1,5 +1,6 @@
 import unittest
 import classes
+import datetime
 
 
 class TestClasses(unittest.TestCase):
@@ -92,23 +93,47 @@ class TestClasses(unittest.TestCase):
         self.assertEqual(classes.BrotherA().sex, 'M')
         self.assertEqual(classes.SisterC().sex, 'F')
 
-        self.assertEqual(classes.Me().year_of_birth, 2021)
-        self.assertEqual(classes.SisterA().year_of_birth, 2O21)
-        self.assertEqual(classes.ChildA().year_of_birth, 2021)
-        self.assertEqual(classes.ChildB().year_of_birth, 2021)
-        self.assertEqual(classes.BrotherA().year_of_birth, 2021)
-        self.assertEqual(classes.SisterB().year_of_birth, 2021)
-        self.assertEqual(classes.BrotherB().year_of_birth, 2021)
-        self.assertEqual(classes.SisterC().year_of_birth, 2021)
+        self.assertEqual(classes.Me().year_of_birth, 1979)
+        self.assertEqual(classes.SisterA().year_of_birth, 1981)
+        self.assertEqual(classes.ChildA().year_of_birth, 1990)
+        self.assertEqual(classes.ChildB().year_of_birth, 1992)
+        self.assertEqual(classes.BrotherA().year_of_birth, 1983)
+        self.assertEqual(classes.SisterB().year_of_birth, 1985)
+        self.assertEqual(classes.BrotherB().year_of_birth, 1987)
+        self.assertEqual(classes.SisterC().year_of_birth, 1989)
 
-        self.assertEqual(classes.Me().age(), 35)
-        self.assertEqual(classes.SisterA().age(), 38)
-        self.assertEqual(classes.ChildA().age(), 7)
-        self.assertEqual(classes.ChildB().age(), 4)
-        self.assertEqual(classes.BrotherA().age(), 23)
-        self.assertEqual(classes.SisterB().age(), 31)
-        self.assertEqual(classes.BrotherB().age(), 52)
-        self.assertEqual(classes.SisterC().age(), 31)
+        self.assertEqual(
+            classes.Me().age(),
+            datetime.datetime.now().year - 1979
+        )
+        self.assertEqual(
+            classes.SisterA().age(),
+            datetime.datetime.now().year - 1981
+        )
+        self.assertEqual(
+            classes.ChildA().age(),
+            datetime.datetime.now().year - 1990
+        )
+        self.assertEqual(
+            classes.ChildB().age(),
+            datetime.datetime.now().year - 1992
+        )
+        self.assertEqual(
+            classes.BrotherA().age(),
+            datetime.datetime.now().year - 1983
+        )
+        self.assertEqual(
+            classes.SisterB().age(),
+            datetime.datetime.now().year - 1985
+        )
+        self.assertEqual(
+            classes.BrotherB().age(),
+            datetime.datetime.now().year - 1987
+        )
+        self.assertEqual(
+            classes.SisterC().age(),
+            datetime.datetime.now().year - 1989
+        )
 
         self.assertEqual(classes.Me().is_minor(), False)
         self.assertEqual(classes.SisterA().is_minor(), False)
