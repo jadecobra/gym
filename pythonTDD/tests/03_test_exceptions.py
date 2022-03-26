@@ -82,3 +82,7 @@ class TestExceptionHandling(unittest.TestCase):
             str(exceptions.error_catcher(ZeroDivisionError)),
             str(ZeroDivisionError())
         )
+
+
+if __name__ == "__main__":
+    unittest.main()

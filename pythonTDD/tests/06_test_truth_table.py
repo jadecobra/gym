@@ -258,3 +258,6 @@ class TestBinaryOperations(unittest.TestCase):
         self.assertFalse(
             truth_table.TruthTable().contradiction(False, False)
         )
+
+if __name__ == "__main__":
+    unittest.main()

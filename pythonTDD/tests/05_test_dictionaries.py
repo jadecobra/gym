@@ -324,3 +324,7 @@ class TestDictionaries(unittest.TestCase):
                 'decaying': 'sugar'
             }
         )
+
+
+if __name__ == "__main__":
+    unittest.main()

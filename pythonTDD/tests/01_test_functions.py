@@ -84,3 +84,6 @@ class TestFunctions(unittest.TestCase):
 
     def test_singleton_function_with_input(self):
         self.assertEqual(functions.joe('Bob', 'James', 'Frank'), 'joe')
+
+if __name__ == "__main__":
+    unittest.main()

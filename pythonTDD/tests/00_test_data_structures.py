@@ -54,3 +54,6 @@ class TestDataStructures(unittest.TestCase):
                 'n': 'n',
             }
         )
+
+if __name__ == "__main__":
+    unittest.main()

@@ -180,3 +180,7 @@ class TestClasses(unittest.TestCase):
                 'sex'
             ]
         )
+
+
+if __name__ == "__main__":
+    unittest.main()

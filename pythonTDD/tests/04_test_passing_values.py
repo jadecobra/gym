@@ -19,3 +19,7 @@ class TestPassingValues(unittest.TestCase):
             telephone.Telephone().call(1234567890),
             'Helloooo! did you mean to call: 1234567890'
         )
+
+
+if __name__ == "__main__":
+    unittest.main()
