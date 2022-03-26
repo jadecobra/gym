@@ -1,11 +1,8 @@
-from unittest import TestCase
-
-from functions import (
-    function_with_pass, function_with_return, function_with_return_none, passthrough, parameter_counter, passthrough_with_keywords, passthrough_with_positions, keyword_counter, argument_counter, name, singleton
-)
+import unittest
+import functions
 
 
-class TestFunctions(TestCase):
+class TestFunctions(unittest.TestCase):
 
 	def test_functions_with_pass(self):
 		self.assertIsNone(function_with_pass())
