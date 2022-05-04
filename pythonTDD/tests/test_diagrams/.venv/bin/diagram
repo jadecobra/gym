@@ -1,0 +1,6 @@
+#!/Users/johnnyblase/gym/python/how_to_create_diagrams/.venv/bin/python3.9
+
+import diagram
+import sys
+
+sys.exit(diagram.run())
