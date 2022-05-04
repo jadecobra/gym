@@ -1,0 +1,82 @@
+setup_tdd() {
+    local filename=createPythonTestDrivenDevelopmentProjectNamed
+    local setupTDDPath=/usr/local/bin/$filename
+    cat $setupTDDPath ||sudo curl https://raw.githubusercontent.com/jadecobra/arsenal/main/$filename -o $setupTDDPath
+    $SHELL $setupTDDPath $1
+}
+
+test() {
+    python -m unittest -f
+}
+
+setup_example() {
+    project_name=$1
+    rm -rf $project_name
+    setup_tdd $project_name
+    cd $project_name
+}
+
+setup_example "write_tests_with_hypothesis"
+source .venv/bin/activate
+pip install hypothesis
+
+header "How to write tests"
+cat << EOF > tests/test_$project_name.py
+from signal import pause
+from unittest import TestCase
+from hypothesis import given
+from hypothesis.strategies import (
+    integers, lists, text, tuples, booleans
+)
+
+class TestWritingTests(TestCase):
+
+    @given(integers(), integers())
+    def test_ints_are_commutative(self, x, y):
+        self.assertEqual(x + y, y + x)
+
+    @given(x=integers(), y=integers())
+    def test_ints_cancel(self, x, y):
+        self.assertEqual((x + y) - y, x)
+
+    @given(lists(integers()))
+    def test_reversing_twice_gives_same_list(self, xs):
+        # This will generate lists of arbitrary length
+        # (usually between 0 and 100 elements) whose elements are integers
+        ys = list(xs)
+        ys.reverse()
+        ys.reverse()
+        self.assertEqual(xs, ys)
+
+    @given(tuples(booleans(), text()))
+    def test_look_tuples_work_too(self, t):
+        # A tuple is generated as the one you provided,
+        # with the corresponding types in those positions
+        self.assertEqual(len(t), 2)
+        self.assertIsInstance(t[0], bool)
+        self.assertIsInstance(t[1], str)
+EOF
+
+cat tests/test_$project_name.py
+test
+pause
+
+cat << EOF > tests/test_additional_test_output.py
+from hypothesis import given, note
+from hypothesis.strategies import lists, integers, randoms
+from unittest import TestCase
+
+class TestAdditionTestOutput(TestCase):
+
+    @given(lists(integers()), randoms())
+    def test_shuffle_is_no_op(self, ls, r):
+        ls2 = list(ls)
+        r.shuffle(ls2)
+        note(f"Shuffle: {ls2!r}")
+        self.assertEqual(ls, ls2)
+
+EOF
+cat tests/test_additional_test_output.py
+test
+pause
+
