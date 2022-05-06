@@ -2,7 +2,6 @@ import unittest
 import functions
 
 
-@unittest.skip
 class TestFunctions(unittest.TestCase):
     def test_functions_with_pass(self):
         self.assertIsNone(functions.function_with_pass())
