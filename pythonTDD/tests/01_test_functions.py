@@ -39,7 +39,7 @@ class TestFunctions(unittest.TestCase):
         )
         self.assertEqual(
             functions.passthrough_with_positions("my_last_name", "my_first_name"),
-            ("my_first_name", "my_last_name"),
+            ("my_last_name", "my_first_name"),
         )
 
     def test_functions_with_keyword_arguments(self):
