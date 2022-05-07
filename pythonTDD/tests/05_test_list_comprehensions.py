@@ -47,7 +47,7 @@ class TestListComprehensions(unittest.TestCase):
             a_list,
         )
 
-    def test_list_comprehensions_with_conditions(self):
+    def test_list_comprehensions_with_conditions_i(self):
         collection = range(10)
 
         even_numbers = []
@@ -61,26 +61,28 @@ class TestListComprehensions(unittest.TestCase):
             even_numbers,
         )
         self.assertEqual(
-            list_comprehensions.with_conditions(collection),
+            list_comprehensions.with_conditions_i(collection),
             even_numbers,
         )
 
+    def test_list_comprehensions_with_conditions_ii(self):
+        collection = range(10)
         odd_numbers = []
         for element in collection:
             if element % 2 != 0:
                 odd_numbers.append(element)
 
-        self.assertEqual(odd_numbers, [0, 1, 3, 5, 7, 9])
+        self.assertEqual(odd_numbers, [1, 3, 5, 7, 9])
         self.assertEqual(
             [element for element in collection if element % 2 != 0],
             odd_numbers,
         )
         self.assertEqual(
-            list_comprehensions.with_conditions(collection),
+            list_comprehensions.with_conditions_ii(collection),
             odd_numbers,
         )
 
-    def test_list_comprehensions_with_and_conditions(self):
+    def test_list_comprehensions_with_and_conditions_i(self):
         collection = range(10)
 
         result = []
@@ -98,16 +100,18 @@ class TestListComprehensions(unittest.TestCase):
             result,
         )
         self.assertEqual(
-            list_comprehensions.with_and_conditions(collection),
+            list_comprehensions.with_and_conditions_i(collection),
             result,
         )
 
+    def test_list_comprehensions_with_and_conditions_ii(self):
+        collection = range(10)
         result = []
         for element in collection:
             if element % 2 != 0 and element % 3 != 0:
                 result.append(element)
 
-        self.assertEqual(result, [1, 2, 3, 4, 5, 7, 8, 9])
+        self.assertEqual(result, [1, 5, 7])
         self.assertEqual(
             [
                 element
@@ -117,11 +121,11 @@ class TestListComprehensions(unittest.TestCase):
             result,
         )
         self.assertEqual(
-            list_comprehensions.with_and_conditions(collection),
+            list_comprehensions.with_and_conditions_ii(collection),
             result,
         )
 
-    def test_list_comprehensions_with_or_conditions(self):
+    def test_list_comprehensions_with_or_conditions_i(self):
         collection = range(10)
 
         result = []
@@ -129,27 +133,29 @@ class TestListComprehensions(unittest.TestCase):
             if element % 2 == 0 or element % 3 == 0:
                 result.append(element)
 
-        self.assertEqual(result, [0, 2, 4, 6, 8, 3, 9])
+        self.assertEqual(result, [0, 2, 3, 4, 6, 8, 9])
         self.assertEqual(
             [element for element in collection if element % 2 == 0 or element % 3 == 0],
             result,
         )
         self.assertEqual(
-            list_comprehensions.with_or_conditions(collection),
+            list_comprehensions.with_or_conditions_i(collection),
             result,
         )
 
+    def test_list_comprehensions_with_or_conditions_ii(self):
+        collection = range(10)
         result = []
         for element in collection:
             if element % 2 != 0 or element % 3 != 0:
                 result.append(element)
 
-        self.assertEqual(result, [1, 3, 5, 7])
+        self.assertEqual(result, [1, 2, 3, 4, 5, 7, 8, 9])
         self.assertEqual(
             [element for element in collection if element % 2 != 0 or element % 3 != 0],
             result,
         )
         self.assertEqual(
-            list_comprehensions.with_or_conditions(collection),
+            list_comprehensions.with_or_conditions_ii(collection),
             result,
         )

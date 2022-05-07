@@ -1,5 +1,10 @@
 import unittest
 import dictionaries
+import datetime
+
+
+def this_year():
+    return datetime.datetime.now().year
 
 
 class TestDictionaries(unittest.TestCase):
@@ -83,15 +88,15 @@ class TestDictionaries(unittest.TestCase):
             dictionaries.person_factory(
                 first_name="sibling",
                 last_name="last_name",
-                year_of_birth=2022,
+                year_of_birth=this_year(),
                 sex="F",
             ),
             {
                 "first_name": "sibling",
                 "last_name": "last_name",
-                "year_of_birth": 2022,
+                "year_of_birth": this_year(),
                 "sex": "F",
-                "age": 2021 - 2022,
+                "age": this_year() - this_year(),
             },
         )
         self.assertEqual(
@@ -106,7 +111,7 @@ class TestDictionaries(unittest.TestCase):
                 "last_name": "last_name",
                 "year_of_birth": 2021,
                 "sex": "M",
-                "age": 2021 - 2021,
+                "age": this_year() - 2021,
             },
         )
         self.assertEqual(
@@ -120,7 +125,7 @@ class TestDictionaries(unittest.TestCase):
                 "last_name": "last_name",
                 "year_of_birth": 2014,
                 "sex": "M",
-                "age": 2021 - 2014,
+                "age": this_year() - 2014,
             },
         )
         self.assertEqual(
@@ -134,7 +139,7 @@ class TestDictionaries(unittest.TestCase):
                 "last_name": "last_name",
                 "year_of_birth": 2000,
                 "sex": "M",
-                "age": 2021 - 2000,
+                "age": this_year() - 2000,
             },
         )
         self.assertEqual(
@@ -147,7 +152,7 @@ class TestDictionaries(unittest.TestCase):
                 "last_name": "last_name",
                 "year_of_birth": 1900,
                 "sex": "F",
-                "age": 121,
+                "age": this_year() - 1900,
             },
         )
 
