@@ -74,11 +74,6 @@ class TestExceptionHandling(unittest.TestCase):
             "only the finally block is returned",
         )
 
-    def test_catching_specific_errors(self):
-        self.assertEqual(
-            str(exceptions.error_catcher(ZeroDivisionError)), str(ZeroDivisionError())
-        )
-
 
 if __name__ == "__main__":
     unittest.main()
