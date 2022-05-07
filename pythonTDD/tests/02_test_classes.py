@@ -52,7 +52,7 @@ class TestClasses(unittest.TestCase):
         self.assertEqual(classes.ChildB().first_name, "ChildB")
         self.assertEqual(classes.BrotherA().first_name, "BrotherA")
         self.assertEqual(classes.SisterB().first_name, "SisterB")
-        self.assertEqual(classes.BrotherA().first_name, "BrotherB")
+        self.assertEqual(classes.BrotherB().first_name, "BrotherB")
         self.assertEqual(classes.SisterC().first_name, "SisterC")
 
         self.assertEqual(classes.Me().sex, "M")
@@ -66,8 +66,8 @@ class TestClasses(unittest.TestCase):
 
         self.assertEqual(classes.Me().year_of_birth, 1979)
         self.assertEqual(classes.SisterA().year_of_birth, 1981)
-        self.assertEqual(classes.ChildA().year_of_birth, 1990)
-        self.assertEqual(classes.ChildB().year_of_birth, 1992)
+        self.assertEqual(classes.ChildA().year_of_birth, 2010)
+        self.assertEqual(classes.ChildB().year_of_birth, 2012)
         self.assertEqual(classes.BrotherA().year_of_birth, 1983)
         self.assertEqual(classes.SisterB().year_of_birth, 1985)
         self.assertEqual(classes.BrotherB().year_of_birth, 1987)
@@ -75,8 +75,8 @@ class TestClasses(unittest.TestCase):
 
         self.assertEqual(classes.Me().age(), datetime.datetime.now().year - 1979)
         self.assertEqual(classes.SisterA().age(), datetime.datetime.now().year - 1981)
-        self.assertEqual(classes.ChildA().age(), datetime.datetime.now().year - 1990)
-        self.assertEqual(classes.ChildB().age(), datetime.datetime.now().year - 1992)
+        self.assertEqual(classes.ChildA().age(), datetime.datetime.now().year - 2010)
+        self.assertEqual(classes.ChildB().age(), datetime.datetime.now().year - 2012)
         self.assertEqual(classes.BrotherA().age(), datetime.datetime.now().year - 1983)
         self.assertEqual(classes.SisterB().age(), datetime.datetime.now().year - 1985)
         self.assertEqual(classes.BrotherB().age(), datetime.datetime.now().year - 1987)
@@ -93,7 +93,7 @@ class TestClasses(unittest.TestCase):
 
     def test_listing_class_attributes(self):
         self.assertEqual(
-            dir(classes.LastName),
+            dir(classes.LastName()),
             [
                 "__class__",
                 "__delattr__",
@@ -122,9 +122,11 @@ class TestClasses(unittest.TestCase):
                 "__subclasshook__",
                 "__weakref__",
                 "age",
+                "first_name",
                 "is_minor",
                 "last_name",
                 "sex",
+                "year_of_birth",
             ],
         )
 
