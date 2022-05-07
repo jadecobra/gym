@@ -59,17 +59,19 @@ class TestExceptionHandling(unittest.TestCase):
     def test_catching_explicit_errors_with_finally(self):
         self.assertEqual(
             exceptions.zero_division_catcher_with_finally(ZeroDivisionError),
-            "caught_zero_division_error",
+            "only the finally block is returned",
         )
         self.assertEqual(
-            exceptions.zero_division_catcher_with_finally(TypeError), "caught_nothing"
+            exceptions.zero_division_catcher_with_finally(TypeError),
+            "only the finally block is returned",
         )
         self.assertEqual(
             exceptions.zero_division_catcher_with_finally(AttributeError),
-            "caught_nothing",
+            "only the finally block is returned",
         )
         self.assertEqual(
-            exceptions.zero_division_catcher_with_finally(Exception), "caught_nothing"
+            exceptions.zero_division_catcher_with_finally(Exception),
+            "only the finally block is returned",
         )
 
     def test_catching_specific_errors(self):
