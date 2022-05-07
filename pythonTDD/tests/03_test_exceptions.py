@@ -2,7 +2,6 @@ import unittest
 import exceptions
 
 
-@unittest.skip
 class TestExceptionHandling(unittest.TestCase):
     def test_catching_exceptions_in_tests(self):
         with self.assertRaises(ZeroDivisionError):
