@@ -56,24 +56,6 @@ class TestExceptionHandling(unittest.TestCase):
         with self.assertRaises(Exception):
             exceptions.zero_division_catcher(Exception)
 
-    def test_catching_explicit_errors_with_finally(self):
-        self.assertEqual(
-            exceptions.zero_division_catcher_with_finally(ZeroDivisionError),
-            "only the finally block is returned",
-        )
-        self.assertEqual(
-            exceptions.zero_division_catcher_with_finally(TypeError),
-            "only the finally block is returned",
-        )
-        self.assertEqual(
-            exceptions.zero_division_catcher_with_finally(AttributeError),
-            "only the finally block is returned",
-        )
-        self.assertEqual(
-            exceptions.zero_division_catcher_with_finally(Exception),
-            "only the finally block is returned",
-        )
-
 
 if __name__ == "__main__":
     unittest.main()
