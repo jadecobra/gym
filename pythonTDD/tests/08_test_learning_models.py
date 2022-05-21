@@ -1,4 +1,5 @@
 import unittest
+import learning
 
 
 class TestInfiniteLearningModel(unittest.TestCase):
