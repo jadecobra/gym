@@ -11,7 +11,7 @@ class TestInfiniteLearningModel(unittest.TestCase):
         self.assertEqual(expectations + 1, learning.model(expectations, reality))
 
     def test_learning_model_when_expectations_are_less_than_reality(self):
-        "When expectations exceed reality, add to expectations until it exceeds reality"
+        "When reality exceeds expectations, add to expectations until it exceeds reality"
         expectations = 0
         reality = 1
 
