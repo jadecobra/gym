@@ -1,22 +1,23 @@
+"How do I know I am learning?"
 import unittest
 import random
 import learning
 
 
 class TestInfiniteLearningModel(unittest.TestCase):
-    def test_learning_model_when_expectations_are_greater_than_reality(self):
-        "When expectations exceed reality, add to reality until it exceeds expectations"
+    def test_learning_model_when_expectations_greater_than_reality(self):
+        "When expectations exceed reality, update reality to exceed expectations"
         reality = random.random()
         expectations = reality + 1
         self.assertGreater(learning.model(expectations, reality), expectations)
 
-    def test_learning_model_when_expectations_are_less_than_reality(self):
-        "When reality exceeds expectations, add to expectations until it exceeds reality"
+    def test_learning_model_when_expectations_less_than_reality(self):
+        "When reality exceeds expectations, update expectations to exceed reality"
         reality = random.random()
         expectations = reality - 1
         self.assertGreater(learning.model(expectations, reality), reality)
 
-    def test_learning_model_when_expectations_are_equal_to_reality(self):
+    def test_learning_model_when_expectations_equal_to_reality(self):
         "When expectations equal reality, raise expectations"
         reality = random.random()
         expectations = reality
