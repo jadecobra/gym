@@ -1,4 +1,3 @@
-import unittest
 import module_a
 import module_b
 import module_c
