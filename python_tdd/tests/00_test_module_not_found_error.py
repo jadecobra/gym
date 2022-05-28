@@ -1,3 +1,8 @@
+"""
+A python module is any file that ends in .py
+fix the import errors by creating python modules
+"""
+
 import module_a
 import module_b
 import module_c

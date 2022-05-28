@@ -1,3 +1,8 @@
+from module import *
+
+false
+true
+
 variable_a
 variable_b
 variable_c
