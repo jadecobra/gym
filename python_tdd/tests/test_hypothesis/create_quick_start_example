@@ -1,0 +1,140 @@
+setup_tdd() {
+    local filename=createPythonTestDrivenDevelopmentProjectNamed
+    local setupTDDPath=/usr/local/bin/$filename
+    cat $setupTDDPath ||sudo curl https://raw.githubusercontent.com/jadecobra/arsenal/main/$filename -o $setupTDDPath
+    $SHELL $setupTDDPath $1
+}
+
+test() {
+    python -m unittest -f
+}
+
+setup_example() {
+    project_name=$1
+    rm -rf $project_name
+    setup_tdd $project_name
+    cd $project_name
+}
+
+setup_example "quick_start_example"
+
+cat << EOF > $project_name.py
+def encode(input_string):
+    count = 1
+    prev = ""
+    lst = []
+    for character in input_string:
+        if character != prev:
+            if prev:
+                entry = (prev, count)
+                lst.append(entry)
+            count = 1
+            prev = character
+        else:
+            count += 1
+    entry = (character, count)
+    lst.append(entry)
+    return lst
+
+
+def decode(lst):
+    q = ""
+    for character, count in lst:
+        q += character * count
+    return q
+EOF
+
+cat << EOF > tests/test_$project_name.py
+from unittest import TestCase
+from hypothesis import given
+from hypothesis.strategies import text
+from $project_name import encode, decode
+
+class Test$project_name(TestCase):
+
+    @given(text())
+    def test_decode_inverts_encode(self, s):
+        self.assertEqual(decode(encode(s)), s)
+EOF
+cat tests/test_$project_name.py
+
+source .venv/bin/activate
+pip install hypothesis
+test
+
+cat << EOF > $project_name.py
+def encode(input_string):
+    if not input_string:
+        return []
+
+    count = 1
+    prev = ""
+    lst = []
+    for character in input_string:
+        if character != prev:
+            if prev:
+                entry = (prev, count)
+                lst.append(entry)
+            count = 1
+            prev = character
+        else:
+            count += 1
+    entry = (character, count)
+    lst.append(entry)
+    return lst
+
+
+def decode(lst):
+    q = ""
+    for character, count in lst:
+        q += character * count
+    return q
+EOF
+
+cat $project_name
+test
+
+cat << EOF > tests/test_$project_name.py
+from unittest import TestCase
+from hypothesis import given, example
+from hypothesis.strategies import text
+from $project_name import encode, decode
+
+class Test$project_name(TestCase):
+
+    @given(text())
+    @example("")
+    def test_decode_inverts_encode(self, s):
+        self.assertEqual(decode(encode(s)), s)
+EOF
+cat tests/test_$project_name.py
+
+test
+
+echo 'A more interesting bug'
+cat << EOF > $project_name.py
+def encode(input_string):
+    count = 1
+    prev = ""
+    lst = []
+    for character in input_string:
+        if character != prev:
+            if prev:
+                entry = (prev, count)
+                lst.append(entry)
+            # count = 1  # Missing reset operation
+            prev = character
+        else:
+            count += 1
+    entry = (character, count)
+    lst.append(entry)
+    return lst
+
+def decode(collection):
+    result = ""
+    for character, count in collection:
+        result += character * count
+    return result
+EOF
+cat $project_name.py
+test
