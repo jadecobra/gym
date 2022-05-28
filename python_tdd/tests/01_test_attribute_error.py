@@ -1,3 +1,8 @@
+"""
+AttributeError means there is a reference to something that does not exist
+
+you can create variables, functions, classes, attributes and methods to solve AttributeError
+"""
 import unittest
 import module
 

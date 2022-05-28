@@ -1,8 +1,7 @@
 """
-ModuleNotFoundError for import <filename> means filename.py does not exist
+ModuleNotFoundError for import filename means filename.py does not exist
 
-A python module is any file that ends in .py
-fix the import errors by creating python modules
+Solve ModuleNotFoundError by creating filename.py
 """
 
 import module_a
