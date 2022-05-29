@@ -1,18 +1,45 @@
 # Learn Python through Test Driven Development
 
-- 00 Learn to Setup a Test Driven Python Project
-- 00 Python Data Structures - Learn the primitives
-- 01 Functions
-- 02 Classes
-- 03 Exceptions
-- 04 Passing Values
-- 05 Dictionaries
-- 06 Truth Table
+- Learn to Setup a Test Driven Python Project
+- ModuleNotFoundError
+- AttributeError
+- NameError
+- IndentationError
+- TypeError
+- AssertionError
+- Exception Handling
+- Data Structures
+- Functions
+- Classes
+- Passing Values
+- Truth Table
+- List Comprehensions
+- Dictionaries
+- Learning Models
 
-## How to start testing
+## How to start testing on MacOS
+
 ```
 python3 -m venv .venv
 .venv/bin/activate
 pip install sniffer macFSevents
+sniffer
+```
+
+## How to start testing on Linux
+
+```
+python3 -m venv .venv
+.venv/bin/activate
+pip install sniffer pyinotify
+sniffer
+```
+
+## How to start testing on Windows
+
+```
+python -m venv .venv
+source .venv/bin/activate
+pip install sniffer pywin32
 sniffer
 ```
