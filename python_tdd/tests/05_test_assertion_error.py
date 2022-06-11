@@ -65,10 +65,10 @@ class TestAssertionError(unittest.TestCase):
         self.assertNotEqual((1, 2, 3), (1, 2, 3))
 
         assert [1, 2, 3] != [1, 2]
-        self.assertNotEqual([1, 2, 3], [1, 2])
+        self.assertNotEqual([1, 2, 3], [1, 2, 3])
 
-        assert {1, 2} != {1, 2, 3}
-        self.assertNotEqual({1, 2}, {1, 2, 3})
+        assert {1, 2, 3} != {1, 2, 3}
+        self.assertNotEqual({1, 2, 3}, {1, 2, 3})
 
         assert {"a": 1, "b": 2} != dict(a=1, b=2)
-        self.assertNotEqual({"a": 1, "b": 2, "c": 3}, dict(a=1, b=2))
+        self.assertNotEqual({"a": 1, "b": 2}, dict(a=1, b=2))
