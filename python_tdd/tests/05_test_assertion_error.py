@@ -28,8 +28,11 @@ class TestAssertionError(unittest.TestCase):
         self.assertTrue(False)
 
     def test_assertion_errors_with_equality(self):
-        assert 1 == 2
+        assert False == True
         self.assertEqual(False, True)
+
+        assert 1 == 2
+        self.assertEqual(1, 2)
 
         assert "a" == "b"
         self.assertEqual("a", "b")
