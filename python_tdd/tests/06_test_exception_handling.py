@@ -76,6 +76,17 @@ class TestExceptionHandling(unittest.TestCase):
         with self.assertRaises(Exception):
             exceptions.zero_division_catcher(Exception)
 
+    def test_catching_multiple_errors(self):
+        self.assertEqual(
+            exceptions.multiple_errors_catcher(TypeError),
+            "caught an exception"
+        )
+        self.assertEqual(
+            exceptions.multiple_errors_catcher(ZeroDivisionError),
+            "caught an exception"
+        )
+        with self.assertRaises(AttributeError):
+            exceptions.multiple_errors_catcher(AtrributeError)
 
 if __name__ == "__main__":
     unittest.main()

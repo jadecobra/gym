@@ -3,7 +3,7 @@ NameError means you are referencing something that does not exist in this file
 
 solve NameErrors by defining the reference
 """
-# from module import *
+from module import *
 
 false
 true

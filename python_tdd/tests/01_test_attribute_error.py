@@ -35,6 +35,8 @@ class TestAttributeError(unittest.TestCase):
         self.assertIsNone(module.variable_x)
         self.assertIsNone(module.variable_y)
         self.assertIsNone(module.variable_z)
+        self.assertFalse(module.false)
+        self.assertTrue(module.true)
 
     def test_defining_functions_to_solve_attribute_errors(self):
         self.assertIsNone(module.function_a())
