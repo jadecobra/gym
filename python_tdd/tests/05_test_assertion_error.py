@@ -14,7 +14,7 @@ class TestAssertionError(unittest.TestCase):
 
     def test_assertion_errors_with_none(self):
         assert None == False        # the python assert keyword
-        self.assertIsNone(None)     # the unittest library assert
+        self.assertIsNotNone(None)     # the unittest library assert
 
         assert None != None
         self.assertIsNotNone(None)
@@ -64,7 +64,7 @@ class TestAssertionError(unittest.TestCase):
         assert (1, 2, 3) != (1, 2, 3)
         self.assertNotEqual((1, 2, 3), (1, 2, 3))
 
-        assert [1, 2, 3] != [1, 2]
+        assert [1, 2, 3] != [1, 2, 3]
         self.assertNotEqual([1, 2, 3], [1, 2, 3])
 
         assert {1, 2, 3} != {1, 2, 3}

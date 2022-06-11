@@ -35,3 +35,11 @@ def error_catcher(exception):
 
 def always_returns(function):
     return "always_returns_this"
+
+def multiple_errors_catcher(exception):
+    try:
+        raise exception
+    except AttributeError:
+        raise
+    except Exception:
+        return 'caught an exception'
