@@ -10,6 +10,9 @@ class ClassA(object): pass
 class ClassB(object): pass
 
 
+class ClassC(object):
+    attribute = None
+
 def function():
     return {
         "key1": "value1",

@@ -139,3 +139,68 @@ class TestMocks(unittest.TestCase):
             [unittest.mock.call(4), unittest.mock.call(2), unittest.mock.call(3)],
             any_order=True
         )
+
+    def test_assert_not_called(self):
+        mocked_object = unittest.mock.Mock()
+        mocked_object.hello.assert_not_called()
+        mocked_object.hello()
+        with self.assertRaises(AssertionError):
+            mocked_object.hello.assert_not_called()
+
+    def test_resetting_all_the_call_attributes_on_a_mock(self):
+        mocked_object = unittest.mock.Mock(return_value=None)
+        mocked_object('hello')
+        self.assertTrue(mocked_object.called)
+        mocked_object.reset_mock()
+        self.assertFalse(mocked_object.called)
+
+    def test_setting_attributes_on_mock_through_keyword_arguments(self):
+        mocked_object = unittest.mock.Mock()
+        mocked_object.configure_mock(
+            **{
+                'method.return_value': 3,
+                'raises_error.side_effect': KeyError
+            }
+        )
+        self.assertEqual(mocked_object.method(), 3)
+        with self.assertRaises(KeyError):
+            mocked_object.raises_error()
+
+    def test_setting_attributes_during_mock_construction(self):
+        mocked_object = unittest.mock.Mock(
+            attribute_a='eggs',
+            **{
+                'method.return_value': 3,
+                'raises_error.side_effect': ValueError
+            }
+        )
+        self.assertEqual(mocked_object.attribute_a, 'eggs')
+        self.assertEqual(mocked_object.method(), 3)
+        with self.assertRaises(ValueError):
+            mocked_object.raises_error()
+
+    def test_asserting_mock_calls(self):
+        mocked_object = unittest.mock.Mock(return_value=None)
+        self.assertFalse(mocked_object.called)
+
+        mocked_object()
+        self.assertTrue(mocked_object.called)
+
+    def test_counting_calls(self):
+        mocked_object = unittest.mock.Mock(return_value=None)
+        self.assertEqual(mocked_object.call_count, 0)
+
+        mocked_object()
+        mocked_object()
+        self.assertEqual(mocked_object.call_count, 2)
+
+    def test_configuring_value_returned_by_calling_monk(self):
+        return_value = 'return_value'
+        mocked_object = unittest.mock.Mock()
+        mocked_object.return_value = return_value
+        self.assertEqual(mocked_object(), return_value)
+
+    def test_default_return_value(self):
+        mocked_object = unittest.mock.Mock()
+        mocked_object.return_value.attribute = sentinel.Attribute
+        mocked_object.return_value()
