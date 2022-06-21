@@ -17,3 +17,6 @@ def function():
         "key3": "value3",
         "keyN": "valueN",
     }
+
+def function_with_positional_arguments(a, b, c):
+    return function()

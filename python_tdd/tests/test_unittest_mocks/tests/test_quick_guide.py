@@ -1,11 +1,11 @@
+from multiprocessing import parent_process
 import unittest
 import unittest.mock
 import module
-import mock_module
 
 
 MOCKED_CLASS = module.Class()
-MOCKED_CLASS.method = mock_module.mock_function(module.function())
+MOCKED_CLASS.method = unittest.mock.MagicMock(return_value=module.function())
 
 
 class TestUnittestMock(unittest.TestCase):
@@ -21,16 +21,18 @@ class TestUnittestMock(unittest.TestCase):
             MOCKED_CLASS.method.assert_called_with(module.function())
 
     def test_sending_exceptions(self):
-        mocked_object = mock_module.mock(
-            side_effect=Exception
+        mocked_object = unittest.mock.Mock(
+            side_effect=Exception,
+            return_value=None,
         )
         self.assertIsInstance(mocked_object, unittest.mock.Mock)
         with self.assertRaises(Exception):
             mocked_object()
 
     def test_side_effects(self):
-        mocked_object = mock_module.mock(
-            side_effect=module.function()
+        mocked_object = unittest.mock.Mock(
+            side_effect=module.function(),
+            return_value=None,
         )
         self.assertIsInstance(mocked_object, unittest.mock.Mock)
 
@@ -47,7 +49,7 @@ class TestUnittestMock(unittest.TestCase):
         def method(arg):
             return values()[arg]
 
-        mocked_object = mock_module.mock()
+        mocked_object = unittest.mock.Mock()
         mocked_object.side_effect = method
 
         for key, value in values().items():
@@ -63,7 +65,7 @@ class TestUnittestMock(unittest.TestCase):
         def a_tuple():
             return (1, 2, 3, 'N')
 
-        mocked_object = mock_module.mock()
+        mocked_object = unittest.mock.Mock()
         mocked_object.side_effect = a_list()
 
         for item in a_list():
@@ -121,6 +123,30 @@ class TestUnittestMock(unittest.TestCase):
         self.assertNotEqual(original_dict, mocked_dict)
 
     def test_patching_magic_methods(self):
-        mocked_object = mock_module.mock_function()
-        mocked_object.__str__.return_value = 'mocked_object'
-        self.assertEqual(str(mocked_object), 'mocked_object')
+        return_value = 'return_value'
+        mocked_object = unittest.mock.MagicMock()
+        mocked_object.__str__.return_value = return_value
+        self.assertEqual(str(mocked_object), return_value)
+        mocked_object.__str__.assert_called_with()
+
+    def test_magic_methods_with_mock_class(self):
+        return_value = 'return_value'
+        mocked_object = unittest.mock.Mock()
+        mocked_object.__str__ = unittest.mock.Mock(return_value=return_value)
+        self.assertEqual(str(mocked_object), return_value)
+
+    def test_ensuring_mock_has_same_api_as_original(self):
+        return_value = 'return_value'
+        mock_function = unittest.mock.create_autospec(
+            module.function_with_positional_arguments,
+            return_value=return_value
+        )
+        self.assertEqual(mock_function(1, 2, 3), return_value)
+        mock_function.assert_called_once_with(1, 2, 3)
+        self.assertNotEqual(
+            mock_function(1, 2, 3),
+            module.function_with_positional_arguments(1, 2, 3)
+        )
+        with self.assertRaises(TypeError):
+            mock_function('invalid argument')
+            module.function('invalid argument')
