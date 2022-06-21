@@ -90,15 +90,52 @@ class TestMocks(unittest.TestCase):
             mocked_object.method.assert_called_once()
 
     def test_assert_called_with(self):
+        args = (1, 2)
+        kwargs =  {'keyA':'valueA', 'keyN':'valueN'}
+
         mocked_object = unittest.mock.Mock()
+        mocked_object.method(*args, **kwargs)
+        mocked_object.method.assert_called_with(*args, **kwargs)
 
-        args = (1, 2, 3, {'test':'boom'})
-        mocked_object.method(*args)
-        mocked_object.method.assert_called_with(*args)
-
-    def test_assert_called_once_with(self):
+    def test_assert_called_exactly_once(self):
         args = ('a', 'b')
         kwargs = dict(keyC='valueC', keyN='valueN')
+
         mocked_object = unittest.mock.Mock(return_value=None)
         mocked_object(*args, **kwargs)
-        mocked_object.assert_called_once_with(*args)
+        mocked_object.assert_called_once_with(*args, **kwargs)
+
+        mocked_object('other', bar='values')
+        with self.assertRaises(AssertionError):
+            mocked_object.assert_called_once_with('other', bar='values')
+
+    def test_assert_any_call(self):
+        args = ('a', 'b')
+        kwargs = dict(keyC='valueC', keyN='valueN')
+
+        mocked_object = unittest.mock.Mock(return_value=None)
+        mocked_object(*args, **kwargs)
+        mocked_object('some', 'thing', 'else')
+        mocked_object.assert_any_call(*args, **kwargs)
+
+    def test_assert_has_calls(self):
+        mocked_object = unittest.mock.Mock(return_value=None)
+        self.assertIsNone(mocked_object(1))
+        self.assertIsNone(mocked_object(2))
+        self.assertIsNone(mocked_object(3))
+        self.assertIsNone(mocked_object(4))
+
+        mocked_object.assert_has_calls(
+            [unittest.mock.call(2), unittest.mock.call(3)]
+        )
+
+        with self.assertRaises(AssertionError):
+            mocked_object.assert_has_calls(
+                [unittest.mock.call(4), unittest.mock.call(2), unittest.mock.call(3)],
+                any_order=False
+            )
+
+        mocked_object.assert_has_calls(
+            [unittest.mock.call(4), unittest.mock.call(2), unittest.mock.call(3)],
+            any_order=True
+        )
