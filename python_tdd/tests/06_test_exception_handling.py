@@ -36,8 +36,8 @@ class TestExceptionHandling(unittest.TestCase):
         1 / 0
 
     def test_catching_exceptions(self):
-        with self.assertRaises(Exception):
-            exceptions.raises_exception_error()
+        'Solve this before catching the error'
+        exceptions.raises_exception_error()
 
     def test_catches_things_that_fail_0(self):
         self.assertEqual(
