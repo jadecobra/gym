@@ -235,5 +235,3 @@ class TestMocks(unittest.TestCase):
         mock_f(*POSITIONAL_ARGUMENTS)
         mock_f.assert_called_with(*POSITIONAL_ARGUMENTS)
         mock_f.assert_called_with(a=1, b=2, c=3, d=4)
-
-    

@@ -2,6 +2,8 @@ import unittest
 import unittest.mock
 import module
 
+from utilities import POSITIONAL_ARGUMENTS, KEYWORD_ARGUMENTS
+
 
 class TestSideEffect(unittest.TestCase):
 
@@ -19,16 +21,13 @@ class TestSideEffect(unittest.TestCase):
             mocked_object()
 
     def test_side_effect_with_dictionaries(self):
-        def values():
-            return {'a': 1, 'b': 2, 'c': 3, 'n': 'N'}
-
         def method(arg):
-            return values()[arg]
+            return KEYWORD_ARGUMENTS[arg]
 
         mocked_object = unittest.mock.Mock()
         mocked_object.side_effect = method
 
-        for key, value in values().items():
+        for key, value in KEYWORD_ARGUMENTS.items():
             with self.subTest(i=key):
                 self.assertEqual(mocked_object(key), value)
         with self.assertRaises(KeyError):
@@ -66,12 +65,22 @@ class TestSideEffect(unittest.TestCase):
 
     def test_setting_exceptions_in_constructor(self):
         mocked_object = unittest.mock.Mock(
-            side_effect=Exception('BOOM'),
+            side_effect=Exception('BOOM!'),
             return_value=None,
         )
         self.assertIsInstance(mocked_object, unittest.mock.Mock)
         with self.assertRaises(Exception):
             mocked_object()
+
+    def test_index_error_side_effect(self):
+        mocked_object = unittest.mock.MagicMock(side_effect=IndexError)
+        with self.assertRaises(IndexError):
+            mocked_object(*POSITIONAL_ARGUMENTS)
+
+        self.assertEqual(
+            mocked_object.mock_calls,
+            [unittest.mock.call(*POSITIONAL_ARGUMENTS)]
+        )
 
     def test_setting_side_effects_in_constructor(self):
         mocked_object = unittest.mock.Mock(side_effect=lambda value: value + 1)

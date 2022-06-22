@@ -18,7 +18,7 @@ class ClassD:
 
     @property
     def attribute(self):
-        return 'something'
+        return 'attribute'
 
     @attribute.setter
     def attribute(self, value):
