@@ -63,25 +63,6 @@ class TestSideEffect(unittest.TestCase):
         with self.assertRaises(Exception):
             mocked_object()
 
-    def test_setting_exceptions_in_constructor(self):
-        mocked_object = unittest.mock.Mock(
-            side_effect=Exception('BOOM!'),
-            return_value=None,
-        )
-        self.assertIsInstance(mocked_object, unittest.mock.Mock)
-        with self.assertRaises(Exception):
-            mocked_object()
-
-    def test_index_error_side_effect(self):
-        mocked_object = unittest.mock.MagicMock(side_effect=IndexError)
-        with self.assertRaises(IndexError):
-            mocked_object(*POSITIONAL_ARGUMENTS)
-
-        self.assertEqual(
-            mocked_object.mock_calls,
-            [unittest.mock.call(*POSITIONAL_ARGUMENTS)]
-        )
-
     def test_setting_side_effects_in_constructor(self):
         mocked_object = unittest.mock.Mock(side_effect=lambda value: value + 1)
         self.assertEqual(mocked_object(-1), 0)
@@ -95,3 +76,44 @@ class TestSideEffect(unittest.TestCase):
 
         mocked_object.side_effect = None
         self.assertEqual(mocked_object(), 3)
+
+    def test_setting_exceptions_in_constructor(self):
+        mocked_object = unittest.mock.Mock(
+            side_effect=Exception('BOOM!'),
+            return_value=None,
+        )
+        self.assertIsInstance(mocked_object, unittest.mock.Mock)
+        with self.assertRaises(Exception):
+            mocked_object()
+
+    def test_setting_exception_side_in_constructor_again(self):
+        mocked_object = unittest.mock.MagicMock(side_effect=IndexError)
+        with self.assertRaises(IndexError):
+            mocked_object(*POSITIONAL_ARGUMENTS)
+
+        self.assertEqual(
+            mocked_object.mock_calls,
+            [unittest.mock.call(*POSITIONAL_ARGUMENTS)]
+        )
+
+        mocked_object.side_effect = KeyError('BOOM')
+        with self.assertRaises(KeyError):
+            mocked_object(*POSITIONAL_ARGUMENTS)
+
+        self.assertEqual(
+            mocked_object.mock_calls,
+            [
+                unittest.mock.call(*POSITIONAL_ARGUMENTS),
+                unittest.mock.call(*POSITIONAL_ARGUMENTS)
+            ]
+        )
+
+    def test_adding_exceptions_in_iterable(self):
+        mocked_object = unittest.mock.MagicMock(
+            side_effect=(33, Exception, 66)
+        )
+        self.assertEqual(mocked_object(), 33)
+
+        with self.assertRaises(Exception):
+            mocked_object()
+        self.assertEqual(mocked_object(), 66)
