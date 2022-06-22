@@ -74,4 +74,14 @@ class TestUnittestMagicMock(unittest.TestCase):
         self.assertEqual(mocked_object.attribute_c, 3)
         self.assertEqual(mocked_object.attribute_n, 'N')
 
-    
+    def test_deleting_attributes(self):
+        mocked_object = unittest.mock.MagicMock()
+
+        self.assertTrue(hasattr(mocked_object, 'mocked_attribute'))
+
+        del mocked_object.mocked_attribute
+        self.assertFalse(hasattr(mocked_object, 'mocked_attribute'))
+
+        del mocked_object.non_existent_attribute
+        with self.assertRaises(AttributeError):
+            mocked_object.non_existent_attribute
