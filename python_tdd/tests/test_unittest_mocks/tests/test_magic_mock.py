@@ -1,10 +1,14 @@
+from ast import Assert
 import unittest
 import unittest.mock
 import module
 
+from utilities import POSITIONAL_ARGUMENTS, KEYWORD_ARGUMENTS
 
 MOCKED_CLASS = module.Class()
 MOCKED_CLASS.method = unittest.mock.MagicMock(return_value=module.function())
+
+
 
 
 class TestUnittestMagicMock(unittest.TestCase):
@@ -25,3 +29,40 @@ class TestUnittestMagicMock(unittest.TestCase):
         mocked_object.__str__.return_value = return_value
         self.assertEqual(str(mocked_object), return_value)
         mocked_object.__str__.assert_called_with()
+
+    def test_mock_calls_records_all_calls_to_object(self):
+        mocked_object = unittest.mock.MagicMock()
+
+        mocked_object(POSITIONAL_ARGUMENTS)
+        mocked_object(KEYWORD_ARGUMENTS)
+        mocked_object.first(a=3)
+        mocked_object.second()
+        self.assertEqual(int(mocked_object), 1)
+
+        self.assertEqual(
+            mocked_object.mock_calls,
+            [
+                unittest.mock.call(POSITIONAL_ARGUMENTS),
+                unittest.mock.call(KEYWORD_ARGUMENTS),
+                unittest.mock.call.first(a=3),
+                unittest.mock.call.second(),
+                unittest.mock.call.__int__(),
+            ]
+        )
+
+    def test_nested_mock_calls(self):
+        mocked_object = unittest.mock.MagicMock()
+        mocked_object.top(a=3).bottom()
+
+        self.assertEqual(
+            mocked_object.mock_calls,
+            [
+                unittest.mock.call.top(a=3),
+                unittest.mock.call.top().bottom()
+            ]
+        )
+
+    def test_class_attribute(self):
+        self.assertIsInstance(unittest.mock.Mock(spec=3), int)
+        self.assertIsInstance(unittest.mock.Mock(spec='3'), str)
+        self.assertIsInstance(unittest.mock.Mock(spec=KEYWORD_ARGUMENTS), dict)

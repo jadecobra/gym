@@ -11,21 +11,29 @@ import module
 
 
 class TestExceptionHandling(unittest.TestCase):
-    def test_catching_exceptions_in_tests(self):
+
+    '''
+    adding with self.assertRaises(ExceptionName):
+    before an exception will ensure the exception was raised
+    e.g.
         with self.assertRaises(ModuleNotFoundError):
             import non_existent_module
-        with self.assertRaises(AttributeError):
-            module.non_existent_attribute
-        with self.assertRaises(AttributeError):
-            module.non_existent_function()
-        with self.assertRaises(AttributeError):
-            module.NonExistentClass()
-        with self.assertRaises(AttributeError):
-            module.Class.non_existent_attribute
-        with self.assertRaises(AttributeError):
-            module.Class.non_existent_method()
-        with self.assertRaises(ZeroDivisionError):
-            1 / 0
+    catches a ModuleNotFoundError
+    '''
+
+    def test_catching_module_not_found_error_exceptions_in_tests(self):
+        import non_existent_module
+
+    def test_catching_attribute_errors_in_tests(self):
+        import non_existent_module
+        module.non_existent_attribute
+        module.non_existent_function()
+        module.NonExistentClass()
+        module.Class.non_existent_attribute
+        module.Class.non_existent_method()
+
+    def test_catching_zero_division_error_in_tests(self):
+        1 / 0
 
     def test_catching_exceptions(self):
         with self.assertRaises(Exception):
