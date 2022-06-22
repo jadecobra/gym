@@ -227,3 +227,13 @@ class TestMocks(unittest.TestCase):
         self.assertIsInstance(unittest.mock.Mock(spec=3), int)
         self.assertIsInstance(unittest.mock.Mock(spec='3'), str)
         self.assertIsInstance(unittest.mock.Mock(spec=KEYWORD_ARGUMENTS), dict)
+
+    def test_creating_a_mock_with_a_spec(self):
+        def f(a, b, c, d): pass
+
+        mock_f = unittest.mock.Mock(spec=f)
+        mock_f(*POSITIONAL_ARGUMENTS)
+        mock_f.assert_called_with(*POSITIONAL_ARGUMENTS)
+        mock_f.assert_called_with(a=1, b=2, c=3, d=4)
+
+    

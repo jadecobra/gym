@@ -13,6 +13,18 @@ class ClassB(object): pass
 class ClassC(object):
     attribute = None
 
+
+class ClassD:
+
+    @property
+    def attribute(self):
+        return 'something'
+
+    @attribute.setter
+    def attribute(self, value):
+        pass
+
+
 def function():
     return {
         "key1": "value1",

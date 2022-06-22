@@ -41,7 +41,7 @@ class TestExceptionHandling(unittest.TestCase):
 
     def test_catches_things_that_fail_0(self):
         self.assertEqual(
-            exceptions.exception_handler(exceptions.raises_exception), "failed"
+            exceptions.exception_handler(exceptions.raises_exception_error), "failed"
         )
 
     def test_catches_things_that_dont_fail_0(self):
@@ -51,7 +51,7 @@ class TestExceptionHandling(unittest.TestCase):
 
     def test_catches_things_that_fail_1(self):
         self.assertEqual(
-            exceptions.another_exception_handler(exceptions.raises_exception), "failed"
+            exceptions.another_exception_handler(exceptions.raises_exception_error), "failed"
         )
 
     def test_catches_things_that_dont_fail_1(self):
@@ -66,7 +66,7 @@ class TestExceptionHandling(unittest.TestCase):
             "always_returns_this",
         )
         self.assertEqual(
-            exceptions.always_returns(exceptions.raises_exception),
+            exceptions.always_returns(exceptions.raises_exception_error),
             "always_returns_this",
         )
 
