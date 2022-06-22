@@ -222,3 +222,8 @@ class TestMocks(unittest.TestCase):
                 unittest.mock.call.property.method.attribute()
             ]
         )
+
+    def test_class_attribute(self):
+        self.assertIsInstance(unittest.mock.Mock(spec=3), int)
+        self.assertIsInstance(unittest.mock.Mock(spec='3'), str)
+        self.assertIsInstance(unittest.mock.Mock(spec=KEYWORD_ARGUMENTS), dict)

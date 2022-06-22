@@ -62,7 +62,16 @@ class TestUnittestMagicMock(unittest.TestCase):
             ]
         )
 
-    def test_class_attribute(self):
-        self.assertIsInstance(unittest.mock.Mock(spec=3), int)
-        self.assertIsInstance(unittest.mock.Mock(spec='3'), str)
-        self.assertIsInstance(unittest.mock.Mock(spec=KEYWORD_ARGUMENTS), dict)
+    def test_setting_arbitrary_attributes_in_constructor(self):
+        mocked_object = unittest.mock.MagicMock(
+            attribute_a=1,
+            attribute_b=2,
+            attribute_c=3,
+            attribute_n='N'
+        )
+        self.assertEqual(mocked_object.attribute_a, 1)
+        self.assertEqual(mocked_object.attribute_b, 2)
+        self.assertEqual(mocked_object.attribute_c, 3)
+        self.assertEqual(mocked_object.attribute_n, 'N')
+
+    

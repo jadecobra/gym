@@ -15,6 +15,7 @@ class TestExceptionHandling(unittest.TestCase):
     '''
     adding with self.assertRaises(ExceptionName):
     before an exception will ensure the exception was raised
+    without stopping program execution
     e.g.
         with self.assertRaises(ModuleNotFoundError):
             import non_existent_module
