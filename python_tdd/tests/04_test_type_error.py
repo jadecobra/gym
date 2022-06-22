@@ -21,7 +21,6 @@ class TestTypeErrors(unittest.TestCase):
         self.assertIsNone(functions.function_j(True, False))
         self.assertIsNone(functions.function_k(True, True, False))
         self.assertIsNone(functions.function_l(True, True, False, False))
-        self.assertIsNone(functions.function_l(False, True, False, True))
         self.assertIsNone(functions.function_m(True, True, False))
         self.assertIsNone(functions.function_n(True, True))
         self.assertIsNone(functions.function_o(True))
