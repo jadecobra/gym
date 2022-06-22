@@ -25,7 +25,6 @@ class TestExceptionHandling(unittest.TestCase):
         import non_existent_module
 
     def test_catching_attribute_errors_in_tests(self):
-        import non_existent_module
         module.non_existent_attribute
         module.non_existent_function()
         module.NonExistentClass()
