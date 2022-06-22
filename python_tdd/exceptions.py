@@ -15,7 +15,7 @@ def another_exception_handler(function):
     return exception_handler(function)
 
 
-def raises_exception():
+def raises_exception_error():
     raise Exception()
 
 
