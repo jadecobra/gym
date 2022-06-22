@@ -85,3 +85,19 @@ class TestUnittestMagicMock(unittest.TestCase):
         del mocked_object.non_existent_attribute
         with self.assertRaises(AttributeError):
             mocked_object.non_existent_attribute
+
+    def test_set_name_attribute_with_configure_mock(self):
+        mocked_object = unittest.mock.MagicMock()
+        mocked_object.configure_mock(name='mocked_object')
+        self.assertEqual(
+            mocked_object.name, 'mocked_object'
+        )
+
+    def test_set_name_attribute_with_assignment(self):
+        mocked_object = unittest.mock.MagicMock()
+        mocked_object.name = 'mocked_object'
+        self.assertEqual(
+            mocked_object.name, 'mocked_object'
+        )
+
+    
