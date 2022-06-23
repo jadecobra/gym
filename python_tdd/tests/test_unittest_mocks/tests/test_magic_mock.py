@@ -100,4 +100,38 @@ class TestUnittestMagicMock(unittest.TestCase):
             mocked_object.name, 'mocked_object'
         )
 
-    
+    def test_attaching_mocks_as_attributes(self):
+        parent = unittest.mock.MagicMock()
+        child_a = unittest.mock.MagicMock(return_value=None)
+        child_b = unittest.mock.MagicMock(return_value=None)
+        child_c = unittest.mock.MagicMock(return_value=None)
+        child_n = unittest.mock.MagicMock(return_value=None)
+
+        parent.child_a = child_a
+        parent.child_b = child_b
+        parent.child_c = child_c
+        parent.child_n = child_n
+
+        child_a(1)
+        child_b(2)
+        child_c(3)
+        child_n('N')
+
+        self.assertEqual(
+            parent.mock_calls,
+            [
+                unittest.mock.call.child_a(1),
+                unittest.mock.call.child_b(2),
+                unittest.mock.call.child_c(3),
+                unittest.mock.call.child_n('N')
+            ]
+        )
+
+    def test_attaching_mocks_with_names(self):
+        mocked_object = unittest.mock.MagicMock()
+        not_a_child = unittest.mock.MagicMock(name='not_a_child')
+        mocked_object.attribute = not_a_child
+        mocked_object.attribute()
+
+        self.assertEqual(mocked_object.mock_calls, [])
+

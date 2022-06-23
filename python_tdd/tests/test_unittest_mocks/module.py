@@ -25,6 +25,24 @@ class ClassD:
         pass
 
 
+class Container:
+
+    def __init__(self):
+        self.values = {}
+
+    def __getitem__(self, name):
+        return self.values[name]
+
+    def __setitem__(self, name, value):
+        self.values[name] = value
+
+    def __delitem__(self, name):
+        del self.values[name]
+
+    def __iter__(self):
+        return iter(self.values)
+
+
 def function():
     return {
         "key1": "value1",
