@@ -233,6 +233,34 @@ class TestPatching(unittest.TestCase):
             assert values['ClassA'] is module.ClassA
             assert values['ClassB'] is module.ClassB
 
+    def test_patch_start_stop(self):
+        patcher = unittest.mock.patch('module.ClassC')
+
+        original = module.ClassC
+        self.assertEqual(module.ClassC, original)
+
+        new_mock = patcher.start()
+        self.assertNotEqual(module.ClassC, original)
+        self.assertEqual(module.ClassC, new_mock)
+
+        patcher.stop()
+        self.assertEqual(module.ClassC, original)
+        self.assertNotEqual(module.ClassC, new_mock)
+
+
+    def test_patching_builtins(self):
+        @unittest.mock.patch('__main__.ord')
+        def test(mock_ord):
+            mock_ord.return_value = 101
+            return ord('c')
+
+        with self.assertRaises(AssertionError):
+            self.assertEqual(test(), 101)
+
+
+
+
+
 
 class TestSample(unittest.TestCase):
 
@@ -246,3 +274,20 @@ class TestPatchingDictionaries(unittest.TestCase):
 
     def test_sample(self):
         self.assertEqual(os.environ['key'], 'value')
+
+
+class TestPatchingInSetup(unittest.TestCase):
+
+    def setUp(self):
+        self.patcher1 = unittest.mock.patch('module.ClassA')
+        self.patcher2 = unittest.mock.patch('module.ClassB')
+        self.MockClassA = self.patcher1.start()
+        self.MockClassB = self.patcher2.start()
+
+    def tearDown(self):
+        self.patcher1.stop()
+        self.patcher2.stop()
+
+    def test_something(self):
+        self.assertEqual(module.ClassA, self.MockClassA)
+        self.assertEqual(module.ClassB, self.MockClassB)

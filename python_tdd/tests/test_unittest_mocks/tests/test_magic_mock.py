@@ -10,7 +10,6 @@ MOCKED_CLASS.method = unittest.mock.MagicMock(return_value=module.function())
 
 
 
-
 class TestUnittestMagicMock(unittest.TestCase):
 
     def test_failure(self):
@@ -135,3 +134,24 @@ class TestUnittestMagicMock(unittest.TestCase):
 
         self.assertEqual(mocked_object.mock_calls, [])
 
+    def test_mocking_magic_methods_with_functions(self):
+        def __str__(self):
+            return 'fooble'
+        mocked_object = unittest.mock.Mock()
+        mocked_object.__str__ = __str__
+        self.assertEqual(str(mocked_object), 'fooble')
+
+    def test_mocking_magic_methods_with_return_value(self):
+        return_value = 'return_value'
+        mocked_object = unittest.mock.Mock()
+        mocked_object.__str__ = unittest.mock.Mock()
+        mocked_object.__str__.return_value = return_value
+        self.assertEqual(str(mocked_object), return_value)
+
+    def test_mocking_magic_methods_with_mock_constructor_return_value(self):
+        mocked_object = unittest.mock.Mock()
+        mocked_object.__iter__ = unittest.mock.Mock(return_value=iter(POSITIONAL_ARGUMENTS))
+        self.assertEqual(
+            list(mocked_object),
+            [*POSITIONAL_ARGUMENTS]
+        )

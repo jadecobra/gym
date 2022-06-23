@@ -43,7 +43,7 @@ class TestClasses(unittest.TestCase):
         self.assertEqual(classes.ChildB().last_name, "LastName")
         self.assertEqual(classes.BrotherA().last_name, "LastName")
         self.assertEqual(classes.SisterB().last_name, "LastName")
-        self.assertEqual(classes.BrotherA().last_name, "LastName")
+        self.assertEqual(classes.BrotherC().last_name, "LastName")
         self.assertEqual(classes.SisterC().last_name, "LastName")
 
         self.assertEqual(classes.Me().first_name, "me")
@@ -61,7 +61,7 @@ class TestClasses(unittest.TestCase):
         self.assertEqual(classes.ChildB().sex, "F")
         self.assertEqual(classes.BrotherA().sex, "M")
         self.assertEqual(classes.SisterB().sex, "F")
-        self.assertEqual(classes.BrotherA().sex, "M")
+        self.assertEqual(classes.BrotherB().sex, "M")
         self.assertEqual(classes.SisterC().sex, "F")
 
         self.assertEqual(classes.Me().year_of_birth, 1979)
