@@ -43,7 +43,7 @@ class TestClasses(unittest.TestCase):
         self.assertEqual(classes.ChildB().last_name, "LastName")
         self.assertEqual(classes.BrotherA().last_name, "LastName")
         self.assertEqual(classes.SisterB().last_name, "LastName")
-        self.assertEqual(classes.BrotherC().last_name, "LastName")
+        self.assertEqual(classes.BrotherB().last_name, "LastName")
         self.assertEqual(classes.SisterC().last_name, "LastName")
 
         self.assertEqual(classes.Me().first_name, "me")
