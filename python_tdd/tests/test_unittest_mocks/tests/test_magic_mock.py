@@ -1,4 +1,5 @@
 from ast import Assert
+from this import s
 import unittest
 import unittest.mock
 import module
@@ -155,3 +156,49 @@ class TestUnittestMagicMock(unittest.TestCase):
             list(mocked_object),
             [*POSITIONAL_ARGUMENTS]
         )
+
+    def test_mocking_objects_used_as_context_managers(self):
+        mocked_object = unittest.mock.Mock()
+        mocked_object.__enter__ = unittest.mock.Mock(return_value='foo')
+        mocked_object.__exit__ = unittest.mock.Mock(return_value=False)
+
+        with mocked_object as m:
+            assert m == 'foo'
+
+        mocked_object.__enter__.assert_called_with()
+        mocked_object.__exit__.assert_called_with(None, None, None)
+
+    def test_magic_methods_are_setup_with_magic_mock_objects(self):
+        mocked_object = unittest.mock.MagicMock()
+        mocked_object[3] = 'fish'
+        mocked_object.__setitem__.assert_called_with(3, 'fish')
+        mocked_object.__getitem__.return_value = 'return_value'
+        self.assertEqual(mocked_object[2], 'return_value')
+
+    def test_magic_methods_and_their_defaults(self):
+        mocked_object = unittest.mock.MagicMock()
+        self.assertEqual(int(mocked_object), 1)
+        self.assertEqual(len(mocked_object), 0)
+        self.assertEqual(list(mocked_object), [])
+        self.assertFalse(object() in mocked_object)
+        self.assertTrue(bool(mocked_object))
+
+    def test_equality_methods(self):
+        mocked_object = unittest.mock.MagicMock()
+        self.assertNotEqual(mocked_object, 3)
+        mocked_object.__eq__.return_value = True
+        self.assertEqual(mocked_object, 3)
+
+    def test_iter(self):
+        mocked_object = unittest.mock.MagicMock()
+        mocked_object.__iter__.return_value = POSITIONAL_ARGUMENTS
+        self.assertEqual(list(mocked_object), list(POSITIONAL_ARGUMENTS))
+        self.assertEqual(list(mocked_object), list(POSITIONAL_ARGUMENTS))
+
+    def test_iterator_return_values(self):
+        mocked_object = unittest.mock.MagicMock()
+        mocked_object.__iter__.return_value = iter(POSITIONAL_ARGUMENTS)
+        self.assertEqual(list(mocked_object), list(POSITIONAL_ARGUMENTS))
+        self.assertEqual(list(mocked_object), [])
+
+    
