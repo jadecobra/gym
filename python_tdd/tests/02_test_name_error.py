@@ -3,7 +3,7 @@ NameError means you are referencing something that does not exist in this file
 
 solve NameErrors by defining the reference
 """
-# from module import *
+from module import *
 
 false
 true
@@ -310,32 +310,6 @@ Class96()
 Class97()
 Class98()
 Class99()
-ClassA()
-ClassB()
-ClassC()
-ClassD()
-ClassE()
-ClassF()
-ClassG()
-ClassH()
-ClassI()
-ClassJ()
-ClassK()
-ClassL()
-ClassM()
-ClassN()
-ClassO()
-ClassP()
-ClassQ()
-ClassR()
-ClassS()
-ClassT()
-ClassU()
-ClassV()
-ClassW()
-ClassX()
-ClassY()
-ClassZ()
 
 Class.attribute_0
 Class.attribute_1
