@@ -1,8 +1,8 @@
 from ast import Assert
-from re import M
 import unittest
 import unittest.mock
 import module
+import urllib.request
 
 from utilities import POSITIONAL_ARGUMENTS, KEYWORD_ARGUMENTS
 
@@ -122,7 +122,6 @@ class TestHelpers(unittest.TestCase):
             ]
         )
 
-        import urllib.request
         self.assertEqual(
             sorted(dir(unittest.mock.Mock(spec=urllib.request))),
             [
@@ -405,3 +404,15 @@ class TestHelpers(unittest.TestCase):
 
         with self.assertRaises(AssertionError):
             mock_object.assert_called_once_with('foo')
+
+    def test_sealing_mocks(self):
+        mock_object = unittest.mock.Mock()
+        mock_object.sub_mock.attribute_a = 1
+        mock_object.not_sub_mock = unittest.mock.Mock(name='not_sub_mock')
+        unittest.mock.seal(mock_object)
+
+        with self.assertRaises(AttributeError):
+            mock_object.new_attribute
+
+        mock_object.sub_mock.attribute_b
+        mock_object.not_sub_mock.attribute_a

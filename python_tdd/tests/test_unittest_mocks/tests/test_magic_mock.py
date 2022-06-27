@@ -1,5 +1,3 @@
-from ast import Assert
-from this import s
 import unittest
 import unittest.mock
 import module
@@ -200,5 +198,3 @@ class TestUnittestMagicMock(unittest.TestCase):
         mocked_object.__iter__.return_value = iter(POSITIONAL_ARGUMENTS)
         self.assertEqual(list(mocked_object), list(POSITIONAL_ARGUMENTS))
         self.assertEqual(list(mocked_object), [])
-
-    

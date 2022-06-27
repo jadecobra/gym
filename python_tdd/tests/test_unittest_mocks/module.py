@@ -1,3 +1,5 @@
+from utilities import POSITIONAL_ARGUMENTS, KEYWORD_ARGUMENTS
+
 class Class(object):
 
     def method(self):
@@ -23,6 +25,12 @@ class ClassD:
     @attribute.setter
     def attribute(self, value):
         pass
+
+
+class ClassE:
+
+    def __init__(self):
+        self.attribute = None
 
 
 class Container:
