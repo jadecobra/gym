@@ -4,6 +4,7 @@ import learning
 
 
 class TestInfiniteLearningModel(unittest.TestCase):
+    
     def test_learning_model_when_expectations_greater_than_reality(self):
         "When expectations exceed reality, update reality to exceed expectations"
         reality = 0

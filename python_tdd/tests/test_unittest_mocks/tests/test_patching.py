@@ -27,6 +27,21 @@ class TestPatching(unittest.TestCase):
         self.assertTrue(function(int))
         self.assertTrue(function('bob'))
 
+    def test_patch_object(self):
+        original = module.ClassC.attribute
+        @unittest.mock.patch.object(module.ClassC, 'attribute', unittest.mock.sentinel.attribute)
+        def test():
+            assert module.ClassC.attribute == unittest.mock.sentinel.attribute
+
+        test()
+        assert module.ClassC.attribute == original
+
+        @unittest.mock.patch('urllib.request', unittest.mock.sentinel.attribute)
+        def test():
+            from urllib import request
+            assert request is unittest.mock.sentinel.attribute
+        test()
+
     def test_patch_as_context_manager(self):
         with unittest.mock.patch.object(module.Class, 'method', return_value=None) as mock_method:
             mocked_object = module.Class()
@@ -257,9 +272,37 @@ class TestPatching(unittest.TestCase):
         with self.assertRaises(AssertionError):
             self.assertEqual(test(), 101)
 
+    def test_patching_builtins_with_context_manager(self):
+        mock_object = unittest.mock.MagicMock(
+            return_value=unittest.mock.sentinel.file_handle
+        )
+        with unittest.mock.patch('builtins.open', mock_object):
+            handle = open('filename', 'r')
 
+        mock_object.assert_called_with('filename', 'r')
+        assert handle == unittest.mock.sentinel.file_handle
 
+    def test_mocking_imports_with_patch_dict(self):
+        import sys
 
+        self.assertTrue('fooble' not in sys.modules)
+        mock_object = unittest.mock.Mock()
+        with unittest.mock.patch.dict('sys.modules', {'fooble': mock_object}):
+            import fooble
+            fooble.blob()
+
+        self.assertTrue('fooble' not in sys.modules)
+        mock_object.blob.assert_called_once_with()
+
+        modules = {
+            'package': mock_object,
+            'package.module': mock_object.module
+        }
+        with unittest.mock.patch.dict('sys.modules', modules):
+            from package.module import fooble
+            fooble()
+
+        mock_object.module.fooble.assert_called_once_with()
 
 
 class TestSample(unittest.TestCase):
@@ -291,3 +334,25 @@ class TestPatchingInSetup(unittest.TestCase):
     def test_something(self):
         self.assertEqual(module.ClassA, self.MockClassA)
         self.assertEqual(module.ClassB, self.MockClassB)
+
+
+class TestPatchingInSetupAlternative(unittest.TestCase):
+
+    def setUp(self):
+        self.patcher = unittest.mock.patch('module.ClassA')
+        self.addCleanup(self.patcher.stop)
+        self.mock_object = self.patcher.start()
+
+    def test_something(self):
+        self.assertEqual(module.ClassA, self.mock_object)
+
+
+
+@unittest.mock.patch('module.Class')
+class TestApplyingSamePatchToEveryTest(unittest.TestCase):
+
+    def test_one(self, MockClass):
+        self.assertIs(module.Class, MockClass)
+
+    def test_two(self, MockClass):
+        self.assertIs(module.Class, MockClass)
