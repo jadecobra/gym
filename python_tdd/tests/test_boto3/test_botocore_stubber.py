@@ -1,6 +1,7 @@
 import unittest
 import datetime
 import botocore.stub
+import botocore.exceptions
 import boto3
 
 
@@ -96,7 +97,6 @@ class TestBotocoreStubber(unittest.TestCase):
             'Marker': ''
         }
 
-
         s3 = boto3.client('s3')
         with botocore.stub.Stubber(s3) as mock_s3:
             mock_s3.add_response(
@@ -108,7 +108,18 @@ class TestBotocoreStubber(unittest.TestCase):
                 s3.list_objects(Bucket='test-bucket'),
                 expected
             )
-            self.maxDiff = None
+
+    def test_add_client_error(self):
+        s3 = boto3.client('s3')
+        with botocore.stub.Stubber(s3) as mock_s3:
+            mock_s3.add_client_error(
+                'list_objects',
+                service_error_code='',
+                service_message='',
+                http_status_code=400,
+            )
+            with self.assertRaises(botocore.exceptions.ClientError):
+                s3.list_objects(Bucket='test-bucket')
 
     def test_stubber_attributes(self):
         ec2 = boto3.client('ec2')
