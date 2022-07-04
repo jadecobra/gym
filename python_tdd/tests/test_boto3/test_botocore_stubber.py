@@ -6,14 +6,8 @@ import boto3
 
 class TestBotocoreStubber(unittest.TestCase):
 
-    def test_failure(self):
-        self.assertEqual(1, 1)
-
     def test_botocore_stubber(self):
-        s3 = boto3.client('s3')
-        mock_s3 = botocore.stub.Stubber(s3)
-
-        response = {
+        expected = {
             'IsTruncated': False,
             'Name': 'test-bucket',
             'MaxKeys': 1000,
@@ -38,16 +32,18 @@ class TestBotocoreStubber(unittest.TestCase):
             'Marker': ''
         }
 
+        s3 = boto3.client('s3')
+        mock_s3 = botocore.stub.Stubber(s3)
         mock_s3.add_response(
             'list_objects',
-            response,
+            expected,
             {'Bucket': 'test-bucket'}
         )
         mock_s3.activate()
 
         self.assertEqual(
             s3.list_objects(Bucket='test-bucket'),
-            response
+            expected
         )
 
     def test_botocore_stubber_as_context_manager(self):
