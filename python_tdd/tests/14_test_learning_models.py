@@ -4,21 +4,23 @@ import learning
 
 
 class TestInfiniteLearningModel(unittest.TestCase):
-    
+
     def test_learning_model_when_expectations_greater_than_reality(self):
-        "When expectations exceed reality, update reality to exceed expectations"
+        '''When expectations are greater than reality,
+        increase reality until is greater than expectations'''
         reality = 0
         expectations = reality + 1
         self.assertGreater(learning.model(expectations, reality), expectations)
 
     def test_learning_model_when_expectations_less_than_reality(self):
-        "When reality exceeds expectations, update expectations to exceed reality"
+        '''When expectations are less than reality,
+        increase expectations until they are greater than reality'''
         reality = 1
         expectations = reality - 1
         self.assertGreater(learning.model(expectations, reality), reality)
 
     def test_learning_model_when_expectations_equal_to_reality(self):
-        "When expectations equal reality, raise expectations"
+        '''When expectations equal reality, increase expectations'''
         reality = 1
         expectations = reality
         self.assertGreater(learning.model(expectations, reality), expectations)
