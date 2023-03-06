@@ -1,0 +1,6 @@
+sniffer
+macFSevents
+jadecobra
+aws-cdk-lib
+constructs
+cdk_pipelines_github

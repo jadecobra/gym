@@ -1,0 +1,14 @@
+why do packages exist?
+who will use this software?
+is this for other developers?
+is this for people doing operations?
+is this for the average user?
+
+will this be run on servers?
+will this be run on desktops?
+will this be run on mobile?
+will this be embedded in a dedicated device?
+will this be installed individually or in batches?
+
+what is the target environment?
+what will the deployment experience be?

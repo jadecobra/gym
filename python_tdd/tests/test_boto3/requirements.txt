@@ -1,0 +1,4 @@
+sniffer
+macfsevents
+botocore
+boto3

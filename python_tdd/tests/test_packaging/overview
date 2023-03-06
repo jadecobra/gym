@@ -1,0 +1,30 @@
+who is the audience?
+who is the user?
+what environment will this be run in?
+what os? mac/win/linux
+
+how should I think about deployment?
+what are the packaging libraries?
+what are the packaging tools?
+what are python modules?
+what are python source distributions?
+what are python binary distributions?
+
+how do I package python applications?
+what are the packaging frameworks?
+what are the service platforms?
+how do I deal with web browsers?
+how do I deal with mobile applications?
+
+how can I depend on a pre-installed python version?
+how can I depend on a separate software distribution ecosystem?
+how can I bring my own python executable?
+how can I bring my own userspace?
+how can I bring my own kernel?
+how can I bring my own hardware?
+
+how can I use operating system packages?
+how can I use virtualenv?
+how can I make sure things are secure?
+
+what are the natural boundaries between each packaging solution?

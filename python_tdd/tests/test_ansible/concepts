@@ -1,0 +1,20 @@
+# Concepts
+
+what_is_a_control_node? controller
+what_is_a_managed_node? target - does not require installation. uses ssh
+what_is_the_list_of_managed_nodes? inventory
+what_are_inventory_sources?
+how_can_I_assign_groups?
+what_is_a_playbook?
+what_is_the_basic_unit_of_ansible_execution? a play
+how_can_I_write_a_play?
+what_is_the_main_context_for_ansible_execution?
+how_do_we_manage_nodes_to_tasks?
+what_does_a_play_contain?
+what_is_a_role? reusable ansible content
+what_is_a_task? action to be applied to managed host
+what_is_a_handler? special form of a task
+
+what_is_a_module? code/binary copied to and executed on managed node
+what_is_a_collection? group of modules
+what_is_a_plugin?

@@ -1,0 +1,49 @@
+import wsgiref
+
+wsgiref.util # environment utilities
+wsgiref.util.guess_scheme(environ)
+wsgiref.util.request_uri(environ, include_query=True)
+wsgiref.util.application_uri(environ)
+wsgiref.util.shift_path_info(environ)
+wsgiref.util.setup_testing_defaults(environ)
+wsgiref.util.is_hop_by_hop(header_name)
+
+wsgiref.util.FileWrapper(filelike, blksize=8192)
+
+wsgiref.headers # WSGI response header tools
+wsgiref.headers.Headers([headers])
+wsgiref.headers.Headers([headers]).get_all(name)
+wsgiref.headers.Headers([headers]).add_header(name, value, **_params)
+
+wsgiref.simple_server # simple WSGI HTTP server
+wsgiref.simple_server.make_server(host, port, app, server_class=WSGIServer, handler_class=WSGIRequestHanlder)
+wsgiref.simple_server.demo_app(environ, start_response)
+
+wsgiref.simple_server.WSGIServer(server_address, RequestHandlerClass)
+wsgiref.simple_server.WSGIServer(server_address, RequestHandlerClass).set_app(application)
+wsgiref.simple_server.WSGIServer(server_address, RequestHandlerClass).get_app()
+
+wsgiref.simple_server.WSGIRequestHandler(request, client_address, server)
+wsgiref.simple_server.WSGIRequestHandler(request, client_address, server).get_environ()
+wsgiref.simple_server.WSGIRequestHandler(request, client_address, server).get_stderr()
+wsgiref.simple_server.WSGIRequestHandler(request, client_address, server).handle()
+
+wsgiref.validate # WSGI conformance checker
+wsgiref.validate.validator(application)
+
+wsgiref.handlers # server/gateway base classes
+wsgiref.handlers.CGIHandler()
+wsgiref.handlers.IISCGIHandler()
+wsgiref.handlers.BaseCGIHandler(stdin, stdout, stderr ,environ, multithread=True, multiprocess=False)
+wsgiref.handlers.SimpleHandler(stdin, stdout, stderr, environ, multithread=True, miltiprocess=False)
+wsgiref.handlers.BaseHandler()
+wsgiref.handlers.BaseHandler().run(app)
+wsgiref.handlers.read_environ()
+
+wsgiref.types # WSGI Types for static type checking
+wsgiref.types.StartResponse
+wsgiref.types.WSGIEnvironment
+wsgiref.types.WSGIApplication
+wsgiref.types.InputStream
+wsgiref.types.ErrorStream
+wsgiref.types.FileWrapper

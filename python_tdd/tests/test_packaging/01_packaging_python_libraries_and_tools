@@ -1,0 +1,20 @@
+what is a python module?
+how can I write modules that only rely on the standard library?
+
+what is an import package?
+how can I distribute packages?
+
+how can I create a source distribution package?
+what is sdist?
+what is a source distribution package? a package that contains pure python code
+what is a source distribution package? .tar.gz file
+
+how can I create a source distribution?
+
+what is the wheel?
+how can I ship libraries with compiled artifacts?
+why are wheels faster with pip?
+how can I publish both source distribution and wheel archives?
+
+how can I package python projects?
+https://packaging.python.org/en/latest/tutorials/packaging-projects/

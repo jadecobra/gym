@@ -1,0 +1,4 @@
+# how can I manage packages?
+
+# how can I verify installation of a package?
+ansible group_name --module-name ansible.builtin.yum --args "name=acme state=present"

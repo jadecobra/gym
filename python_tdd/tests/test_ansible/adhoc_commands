@@ -1,0 +1,31 @@
+ansible [pattern] --module-name [module] --args "[module options]"
+
+# how to reboot servers
+ansible group_name --args "/sbin/reboot" --forks 10
+
+# how many simultaneous processes does ansible do? 5
+
+# how can I connect as a different user?
+ansible group_name --args "/sbin/reboot" --forks 10 -u username
+
+# how can I login as root
+ansible group_name --args "/sbin/reboot" --forks 10 -u username --become [--ask-become-pass]
+
+# what is the module for command line utility?
+ansible.builtin.command
+
+# how to use a different module?
+ansible group_name --module-name ansible.builtin.shell --args 'echo $TERM'
+
+# how can I transfer a file directly to many servers?
+ansible group_name --module-name ansible.builtin.copy --args "src=/etc/hosts dest=/tmp/hosts"
+
+# how can I change ownership and permissions on files?
+ansible group_name --module-name ansible.builtin.file --args "dest=/srv/foo/a.txt mode=600"
+ansible group_name --module-name ansible.builtin.file --args "dest=/src/foo/b.txt mode=600 owner=jdoe group=jdoe"
+
+# how can I create directories like mkdir -p?
+ansible group_name --module-name ansible.builtin.file --args "dest=/path/to/child mode=755 owner=jdoe group=jdoe state=directory"
+
+# how can I recursively delete directories and files?
+ansible group_name --module-name ansible.builtin.file --args "dest/path/to/child state=absent"

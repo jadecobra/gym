@@ -1,0 +1,41 @@
+# how can I list inventory
+ansible-inventory -i inventory.yaml --list
+
+# how can I ping managed nodes using inventory.yaml?
+ansible virtualmachines -m ping -i inventory.yaml
+
+# how can I ping all managed nodes?
+ansible all -m ping
+
+# how can I add variables to specific hosts?
+webservers:
+  hosts:
+    webserver01:
+      ansible_host: 192.0.2.140
+      http_port: 80
+    webserver02:
+      ansible_host: 192.0.2.150
+      http_port: 443
+
+# how can I add variables that apply to all hosts in a group?
+webservers:
+  hosts:
+    webserver01:
+      ansible_host: 192.0.2.140
+      http_port: 80
+    webserver02:
+      ansible_host: 192.0.2.150
+      http_port: 443
+  vars:
+    ansible_user: my_server_user
+
+# how can I create a playbook?
+# what is a playbook?
+# what is an automation blueprint
+# how do we define the order in which Ansible performs operations?
+# what is a play?
+# what is the ordered list of tasks that maps to managed nodes in an inventory?
+# what is a task? 1 or more modules that defines operations
+
+# how to run a playbook on inventory
+ansible-playbook -i inventory.yaml playbook.yaml

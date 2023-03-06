@@ -1,0 +1,4 @@
+cdktf~=0.13.3
+pytest
+
+cdktf-cdktf-provider-docker~=3.0.12
