@@ -1,0 +1,38 @@
+content generation
+summarization
+classification
+categorization
+sentiment analysis
+data extraction
+translation
+
+completions - core
+prompt -> completion
+
+Write a tagline for an ice cream shop.
+We serve up smiles with every scoop!
+
+advanced autocomplete -
+- process text prompt
+- predict most likely next
+
+Suggest x for y
+how do you program a model? design the prompt
+
+show and tell the model what you want?
+add examples to prompt
+communicate patterns
+communicate nuances
+
+suggest x names for y that is a z
+
+how can I design better prompts?
+
+prompt design
+temperature
+temperature = 0 - take fewer risks - more accurate - deterministic
+temperature = 1 - more diverse completions
+-
+if output well defined - temperature = 0
+if variation desired - temperature = 1
+- temperature = 0 - 1
