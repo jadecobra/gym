@@ -1,7 +1,7 @@
 """
-NameError means you are referencing something that does not exist in this file
+AttributeError means there is a reference to something that does not exist
 
-solve NameErrors by defining the reference
+you can create variables, functions, classes, attributes and methods to solve AttributeError
 """
 # from module import *
 
