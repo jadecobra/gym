@@ -1,6 +1,10 @@
-from unittest import TestCase
+import unittest
+import jadecobra.toolkit
 
-class Testtest_lambda_power_tuner(TestCase):
+class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
 
     def test_failure(self):
-        self.assertTrue(False)
+        self.assertTrue(True)
+
+    def test_z_commit(self):
+        jadecobra.toolkit.git_push()
