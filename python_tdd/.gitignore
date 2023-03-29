@@ -106,7 +106,7 @@ module_97.py
 module_98.py
 module_99.py
 
-.DS_Store
-cross_validation
-eight_queens_six_lines
+.DS_Store*
+*cross_validation*
+*eight_queens_six_lines*
 python_koans
