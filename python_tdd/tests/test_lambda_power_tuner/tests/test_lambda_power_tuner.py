@@ -8,6 +8,9 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
     region = "us-east-1"
     account = "012345678901"
     function_name = "lambda_function_name"
+    number = 50
+    payload = {}
+    memory = [128, 256, 512, 1024]
 
     def lambda_function_arn(self):
         return jadecobra.aws_lambda.get_arn(
@@ -22,26 +25,43 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
             f"arn:aws:lambda:{self.region}:{self.account}:function:{self.function_name}"
         )
 
-    def test_power_tuner_interface(self):
-        number = 50
-        payload = {}
-        memory = [128, 256, 512, 1024]
+    def lambda_power_tuner_configuration(self):
+        return lambda_power_tuner.create_configuration(
+            arn=self.lambda_function_arn(),
+            memory=self.memory,
+            number=self.number,
+            payload=self.payload
+        )
 
+    def test_power_tuner_interface(self):
         self.assertEqual(
-            lambda_power_tuner.create_configuration(
-                arn=self.lambda_function_arn(),
-                memory=memory,
-                number=number,
-                payload=payload
-            ),
+            self.lambda_power_tuner_configuration(),
             {
                 "lambdaARN": self.lambda_function_arn(),
-                "powerValues": memory,
-                "num": number,
-                "payload": payload
+                "powerValues": self.memory,
+                "num": self.number,
+                "payload": self.payload
             }
         )
-        self.assertTrue(True)
+
+    def test_power_tuner_output(self):
+        self.assertEqual(
+            lambda_power_tuner.optimize(
+                self.lambda_power_tuner_configuration()
+            ),
+            {
+                "results": {
+                    "power": "128",
+                    "cost": 0.0000002083,
+                    "duration": 2.906,
+                    "stateMachine": {
+                        "executionCost": 0.00045,
+                        "lambdaCost": 0.0005252,
+                        "visualization": "https://lambda-power-tuning.show/#<encoded_data>"
+                    }
+                }
+            }
+        )
 
     def test_z_commit(self):
         jadecobra.toolkit.git_push()
