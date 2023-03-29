@@ -8,14 +8,11 @@ def create_configuration(arn:str=None, memory: list=None, invocations: int=None,
 
 def initializer(memory: list):
     '''Return N versions and aliases for each memory configuration'''
-    for [
-        item for item in memory
-    ]
+    return [item for item in memory]
 
-    return
-
-def executor():
-    return
+def executor(invocations: int=None, arn: str=None):
+    '''Execute given lambda function N invocation times'''
+    return [f'{arn} invocation {invocation}' for invocation in range(invocations)]
 
 def cleaner():
     return

@@ -47,7 +47,18 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
     def test_initializer(self):
         self.assertEqual(
             lambda_power_tuner.initializer(self.memory),
-            {}
+            self.memory
+        )
+
+    def test_executor(self):
+        self.assertEqual(
+            lambda_power_tuner.executor(
+                invocationes=self.invocations,
+                arn=self.lambda_function_arn()
+            ),
+            [
+            
+            ]
         )
 
     def test_power_tuner_output(self):
