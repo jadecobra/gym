@@ -1,7 +1,7 @@
-def create_input(arn=None, power_values=None, num=None, payload=None):
+def create_configuration(arn=None, memory=None, number=None, payload=None):
     return {
         "lambdaARN": arn,
-        "powerValues": power_values,
-        "num": num,
+        "powerValues": memory,
+        "num": number,
         "payload": {} if not payload else payload
     }

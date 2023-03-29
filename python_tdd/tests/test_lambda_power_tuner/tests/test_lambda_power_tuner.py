@@ -5,21 +5,24 @@ import lambda_power_tuner
 class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
 
     def test_power_tuner_interface(self):
-        num = 50
+        number = 50
         payload = {}
-        power_values = [128, 256, 512, 1024]
-        arn = "your-lambda-function-arn"
+        memory = [128, 256, 512, 1024]
+        region = "us-east-1"
+        account = "012345678901"
+        function_name = "lambda_function_name"
+        lambda_function_arn = f"arn:aws:lambda:{region}:{account}:function:{lambda_function_name}"
         self.assertEqual(
-            lambda_power_tuner.create_input(
-                arn=arn,
-                power_values=power_values,
-                num=num,
+            lambda_power_tuner.create_configuration(
+                arn=lambda_function_arn,
+                memory=memory,
+                number=number,
                 payload=payload
             ),
             {
-                "lambdaARN": arn,
-                "powerValues": power_values,
-                "num": num,
+                "lambdaARN": lambda_function_arn,
+                "powerValues": memory,
+                "num": number,
                 "payload": payload
             }
         )
