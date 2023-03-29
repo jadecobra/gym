@@ -11,6 +11,9 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
     invocations = 50
     payload = {}
     memory = [128, 256, 512, 1024]
+    lambda_power_tuner = lambda_power_tuner.LambdaPowerTuner(
+        
+    )
 
     def lambda_function_arn(self):
         return jadecobra.aws_lambda.get_arn(
