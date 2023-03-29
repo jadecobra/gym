@@ -1,2 +1,8 @@
 __pycache__
 .venv
+
+.DS_Store
+cross_validation/
+eight_queens_six_lines/
+iterations/
+python_koans/
