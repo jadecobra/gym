@@ -8,7 +8,7 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
     region = "us-east-1"
     account = "012345678901"
     function_name = "lambda_function_name"
-    number = 50
+    invocations = 50
     payload = {}
     memory = [128, 256, 512, 1024]
 
@@ -29,7 +29,7 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
         return lambda_power_tuner.create_configuration(
             arn=self.lambda_function_arn(),
             memory=self.memory,
-            invocations=self.number,
+            invocations=self.invocations,
             payload=self.payload
         )
 
@@ -39,7 +39,7 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
             {
                 "lambdaARN": self.lambda_function_arn(),
                 "powerValues": self.memory,
-                "num": self.number,
+                "num": self.invocations,
                 "payload": self.payload
             }
         )
@@ -53,12 +53,19 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
     def test_executor(self):
         self.assertEqual(
             lambda_power_tuner.executor(
-                invocationes=self.invocations,
+                invocations=self.invocations,
                 arn=self.lambda_function_arn()
             ),
-            [
-            
-            ]
+            [f'{self.lambda_function_arn()} invocation {invocation}' for invocation in range(self.invocations)]
+        )
+
+    def test_invocation(self):
+        self.assertEqual(
+            lambda_power_tuner.cleaner(
+                invocations=self.invocations,
+                arn=self.lambda_function_arn()
+            ),
+            []
         )
 
     def test_power_tuner_output(self):
