@@ -29,7 +29,7 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
         return lambda_power_tuner.create_configuration(
             arn=self.lambda_function_arn(),
             memory=self.memory,
-            number=self.number,
+            invocations=self.number,
             payload=self.payload
         )
 

@@ -1,10 +1,23 @@
-def create_configuration(arn=None, memory=None, number=None, payload=None):
+def create_configuration(arn:str=None, memory: list=None, invocations: int=None, payload:dict=None):
     return {
         "lambdaARN": arn,
         "powerValues": memory,
-        "num": number,
+        "num": invocations,
         "payload": {} if not payload else payload
     }
+
+def initiator():
+    '''Return N versions and aliases for each memory'''
+    return
+
+def executor():
+    return
+
+def cleaner():
+    return
+
+def analyzer():
+    return
 
 def optimize(configuration):
     return {
