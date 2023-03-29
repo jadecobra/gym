@@ -6,8 +6,12 @@ def create_configuration(arn:str=None, memory: list=None, invocations: int=None,
         "payload": {} if not payload else payload
     }
 
-def initiator():
-    '''Return N versions and aliases for each memory'''
+def initializer(memory: list):
+    '''Return N versions and aliases for each memory configuration'''
+    for [
+        item for item in memory
+    ]
+
     return
 
 def executor():
