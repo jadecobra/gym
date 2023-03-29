@@ -1,5 +1,6 @@
 import unittest
 import jadecobra.toolkit
+import lambda_power_tuner
 
 class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
 
