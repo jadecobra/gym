@@ -56,7 +56,7 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
                 invocations=self.invocations,
                 arn=self.lambda_function_arn()
             ),
-            [f'{self.lambda_function_arn()} invocation {invocation}' for invocation in range(self.invocations)]
+            [f'invoking {self.lambda_function_arn()}/{invocation}...' for invocation in range(self.invocations)]
         )
 
     def test_invocation(self):
@@ -65,7 +65,7 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
                 invocations=self.invocations,
                 arn=self.lambda_function_arn()
             ),
-            []
+            [f'deleting {self.lambda_function_arn()}/{invocation}...' for invocation in range(self.invocations)]
         )
 
     def test_power_tuner_output(self):

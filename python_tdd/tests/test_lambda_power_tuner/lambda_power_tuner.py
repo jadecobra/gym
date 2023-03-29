@@ -12,11 +12,11 @@ def initializer(memory: list):
 
 def executor(invocations: int=None, arn: str=None):
     '''Execute given lambda function N invocation times'''
-    return [f'{arn} invocation {invocation}' for invocation in range(invocations)]
+    return [f'invoking {arn}/{invocation}...' for invocation in range(invocations)]
 
 def cleaner(invocations: int=None, arn:str=None):
     '''Delete all previous generated aliases and versions'''
-    return [f'deleting {arn} for {invocation}' for invocation in range(invocations)]
+    return [f'deleting {arn}/{invocation}...' for invocation in range(invocations)]
 
 def analyzer():
     return
