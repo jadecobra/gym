@@ -2,6 +2,7 @@ import unittest
 import jadecobra.toolkit
 import jadecobra.aws_lambda
 import lambda_power_tuner
+import random
 
 class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
 
@@ -43,6 +44,14 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
                 "num": self.invocations,
                 "payload": self.payload
             }
+        )
+
+    def test_invocations_default_to_5_for_low_numbers(self):
+        self.assertEqual(
+            lambda_power_tuner.LambdaPowerTuner(
+                invocations=random.randint(-1, 4)
+            ).invocations,
+            5
         )
 
     def test_aliases(self):

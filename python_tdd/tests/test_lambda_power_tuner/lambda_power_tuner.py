@@ -9,7 +9,7 @@ class LambdaPowerTuner(object):
     ):
         self.lambda_function_arn = lambda_function_arn
         self.memory_values = memory_values
-        self.invocations = invocations
+        self.invocations = 5 if invocations < 5 else invocations
         self.payload = payload
 
     def create_aliases(self):
