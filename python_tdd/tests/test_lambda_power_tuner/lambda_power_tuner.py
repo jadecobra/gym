@@ -16,7 +16,7 @@ class LambdaPowerTuner(object):
         '''Return N versions and aliases for each memory configuration'''
         return [item for item in self.memory_values]
 
-    def executor(self):
+    def execute(self):
         '''Execute given lambda function N invocation times'''
         return [f'invoking {self.arn}/{invocation}...' for invocation in range(self.invocations)]
 
