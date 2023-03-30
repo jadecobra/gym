@@ -20,7 +20,7 @@ class LambdaPowerTuner(object):
         '''Execute given lambda function N invocation times'''
         return [f'invoking {self.arn}/{invocation}...' for invocation in range(self.invocations)]
 
-    def cleaner(self):
+    def clean_up(self):
         '''Delete all previous generated aliases and versions'''
         return [f'deleting {self.arn}/{invocation}...' for invocation in range(self.invocations)]
 
@@ -39,10 +39,6 @@ def initializer(memory: list):
 def executor(invocations: int=None, arn: str=None):
     '''Execute given lambda function N invocation times'''
     return [f'invoking {arn}/{invocation}...' for invocation in range(invocations)]
-
-def cleaner(invocations: int=None, arn:str=None):
-    '''Delete all previous generated aliases and versions'''
-    return [f'deleting {arn}/{invocation}...' for invocation in range(invocations)]
 
 def analyzer():
     return
