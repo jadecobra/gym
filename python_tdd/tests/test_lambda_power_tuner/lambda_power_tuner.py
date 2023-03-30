@@ -23,7 +23,7 @@ class LambdaPowerTuner(object):
         '''Execute given lambda function N invocation times'''
         if in_parallel:
             return [f'invoking {self.lambda_function_arn}/{invocation} in parallel for {memory}...' for invocation in range(self.invocations) for memory in self.memory_values]
-        return [f'invoking {self.lambda_function_arn}/{invocation}...' for invocation in range(self.invocations)]
+        return [f'invoking {version}...' for version in self.create_aliases()]
 
     def clean_up(self):
         '''Delete all previous generated aliases and versions'''
