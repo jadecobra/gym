@@ -57,14 +57,13 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
 
     def test_initializer(self):
         self.assertEqual(
-            lambda_power_tuner.initializer(self.memory_values),
+            self.lambda_power_tuner.initialize(),
             self.memory_values
         )
 
     def test_executor(self):
         self.assertEqual(
-            self.lambda_power_tuner.execute(
-            ),
+            self.lambda_power_tuner.execute(),
             [f'invoking {self.lambda_function_arn()}/{invocation}...' for invocation in range(self.invocations)]
         )
 

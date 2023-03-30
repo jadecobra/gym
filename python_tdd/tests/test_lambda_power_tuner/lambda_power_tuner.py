@@ -12,7 +12,7 @@ class LambdaPowerTuner(object):
         self.invocations = invocations
         self.payload = payload
 
-    def initializer(self):
+    def initialize(self):
         '''Return N versions and aliases for each memory configuration'''
         return [item for item in self.memory_values]
 
