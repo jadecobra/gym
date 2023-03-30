@@ -17,7 +17,7 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
         account=account,
     )
     lambda_power_tuner = lambda_power_tuner.LambdaPowerTuner(
-        arn=lambda_function_arn,
+        lambda_function_arn=lambda_function_arn,
         memory_values=memory_values,
         invocations=invocations,
         payload=payload
@@ -45,6 +45,12 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
             }
         )
 
+    def test_aliases(self):
+        self.assertEqual(
+            self.lambda_power_tuner.create_aliases(),
+            [f'{self.lambda_function_arn}/{invocation}' for invocation in range(self.invocations)]
+        )
+
     def test_initialization(self):
         self.assertEqual(
             self.lambda_power_tuner.initialize(),
@@ -60,7 +66,7 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
     def test_parallel_execution(self):
         self.assertEqual(
             self.lambda_power_tuner.execute(in_parallel=True),
-            [f'invoking {self.lambda_function_arn}/{invocation}...' for invocation in range(self.invocations)]
+            [f'invoking {self.lambda_function_arn}/{invocation} in parallel for {memory}...' for invocation in range(self.invocations) for memory in self.memory_values]
         )
 
     def test_cleanup(self):

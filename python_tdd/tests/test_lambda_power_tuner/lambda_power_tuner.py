@@ -2,15 +2,18 @@ class LambdaPowerTuner(object):
 
     def __init__(
         self,
-        arn: str=None,
+        lambda_function_arn: str=None,
         memory_values: list=None,
         invocations: int=None,
         payload: dict=None,
     ):
-        self.arn = arn
+        self.lambda_function_arn = lambda_function_arn
         self.memory_values = memory_values
         self.invocations = invocations
         self.payload = payload
+
+    def create_aliases(self):
+        return [f'{self.lambda_function_arn}/{invocation}' for invocation in range(self.invocations)]
 
     def initialize(self):
         '''Return N versions and aliases for each memory configuration'''
@@ -18,14 +21,13 @@ class LambdaPowerTuner(object):
 
     def execute(self, in_parallel:bool=False):
         '''Execute given lambda function N invocation times'''
-        message =
         if in_parallel:
-            return [f'invoking {self.arn}/{invocation} in parallel for {memory}...' for invocation in range(self.invocations) for memory in len(self.memory_values)]
-        return [f'invoking {self.arn}/{invocation}...' for invocation in range(self.invocations)]
+            return [f'invoking {self.lambda_function_arn}/{invocation} in parallel for {memory}...' for invocation in range(self.invocations) for memory in self.memory_values]
+        return [f'invoking {self.lambda_function_arn}/{invocation}...' for invocation in range(self.invocations)]
 
     def clean_up(self):
         '''Delete all previous generated aliases and versions'''
-        return [f'deleting {self.arn}/{invocation}...' for invocation in range(self.invocations)]
+        return [f'deleting {self.lambda_function_arn}/{invocation}...' for invocation in range(self.invocations)]
 
     def analyze(self):
         return f'lowest_average_cost_per_invocation is ...{(self.invocations)}'
