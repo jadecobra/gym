@@ -34,15 +34,13 @@ class LambdaPowerTuner(object):
 
     def optimize(self, auto_optimize=False):
         return {
-            "results": {
-                "power": "128",
-                "cost": 0.0000002083,
-                "duration": 2.906,
-                "stateMachine": {
-                    "executionCost": 0.00045,
-                    "lambdaCost": 0.0005252,
-                    "visualization": "https://lambda-power-tuning.show/#<encoded_data>"
-                }
+            "optimal_memory": 128,
+            "average_cost_per_invocation": 0.0000002083,
+            "average_duration_per_invocation": 2.906,
+            "lambda_power_tuner": {
+                "cost_of_power_tuner_execution": 0.00045,
+                "cost_of_power_tuner_lambdas": 0.0005252,
+                "visualization": "https://lambda-power-tuning.show/#<encoded_data>"
             }
         }
 
