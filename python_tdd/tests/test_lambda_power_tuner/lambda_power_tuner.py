@@ -22,12 +22,12 @@ class LambdaPowerTuner(object):
     def execute(self, in_parallel:bool=False):
         '''Execute given lambda function N invocation times'''
         if in_parallel:
-            return [f'invoking {self.lambda_function_arn}/{invocation} in parallel for {memory}...' for invocation in range(self.invocations) for memory in self.memory_values]
+            return [f'invoking {version} in parallel for {memory}...' for version in self.create_aliases() for memory in self.memory_values]
         return [f'invoking {version}...' for version in self.create_aliases()]
 
     def clean_up(self):
         '''Delete all previous generated aliases and versions'''
-        return [f'deleting {self.lambda_function_arn}/{invocation}...' for invocation in range(self.invocations)]
+        return [f'deleting {version}...' for version in self.create_aliases()]
 
     def analyze(self):
         return f'lowest_average_cost_per_invocation is ...{(self.invocations)}'
