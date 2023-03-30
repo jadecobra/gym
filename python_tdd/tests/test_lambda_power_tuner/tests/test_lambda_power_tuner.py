@@ -11,7 +11,7 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
     invocations:int = 50
     payload:dict = {}
     memory_values:list = [128, 256, 512, 1024]
-    lambda_function_arn:dict = jadecobra.aws_lambda.get_arn(
+    lambda_function_arn:str = jadecobra.aws_lambda.get_arn(
         name=function_name,
         region=region,
         account=account,
@@ -23,61 +23,61 @@ class TestLambdaPoweTuner(jadecobra.toolkit.TestCase):
         payload=payload
     )
 
-    def lambda_function_arn(self):
-        return jadecobra.aws_lambda.get_arn(
-            name=self.function_name,
-            region=self.region,
-            account=self.account,
-        )
-
     def test_arn(self):
         self.assertEqual(
-            self.lambda_function_arn(),
+            self.lambda_function_arn,
             f"arn:aws:lambda:{self.region}:{self.account}:function:{self.function_name}"
-        )
-
-    def lambda_power_tuner_configuration(self):
-        return lambda_power_tuner.create_configuration(
-            arn=self.lambda_function_arn(),
-            memory=self.memory_values,
-            invocations=self.invocations,
-            payload=self.payload
         )
 
     def test_power_tuner_interface(self):
         self.assertEqual(
-            self.lambda_power_tuner_configuration(),
+            lambda_power_tuner.create_configuration(
+                arn=self.lambda_function_arn,
+                memory=self.memory_values,
+                invocations=self.invocations,
+                payload=self.payload
+            ),
             {
-                "lambdaARN": self.lambda_function_arn(),
+                "lambdaARN": self.lambda_function_arn,
                 "powerValues": self.memory_values,
                 "num": self.invocations,
                 "payload": self.payload
             }
         )
 
-    def test_initializer(self):
+    def test_initialization(self):
         self.assertEqual(
             self.lambda_power_tuner.initialize(),
             self.memory_values
         )
 
-    def test_executor(self):
+    def test_execution(self):
         self.assertEqual(
             self.lambda_power_tuner.execute(),
-            [f'invoking {self.lambda_function_arn()}/{invocation}...' for invocation in range(self.invocations)]
+            [f'invoking {self.lambda_function_arn}/{invocation}...' for invocation in range(self.invocations)]
         )
 
-    def test_invocation(self):
+    def test_parallel_execution(self):
+        self.assertEqual(
+            self.lambda_power_tuner.execute(in_parallel=True),
+            [f'invoking {self.lambda_function_arn}/{invocation}...' for invocation in range(self.invocations)]
+        )
+
+    def test_cleanup(self):
         self.assertEqual(
             self.lambda_power_tuner.clean_up(),
-            [f'deleting {self.lambda_function_arn()}/{invocation}...' for invocation in range(self.invocations)]
+            [f'deleting {self.lambda_function_arn}/{invocation}...' for invocation in range(self.invocations)]
         )
 
-    def test_power_tuner_output(self):
+    def test_analysis(self):
         self.assertEqual(
-            lambda_power_tuner.optimize(
-                self.lambda_power_tuner_configuration()
-            ),
+            self.lambda_power_tuner.analyze(),
+            f'lowest_average_cost_per_invocation is ...{self.invocations}'
+        )
+
+    def test_optimization(self):
+        self.assertEqual(
+            self.lambda_power_tuner.optimize(),
             {
                 "results": {
                     "power": "128",
