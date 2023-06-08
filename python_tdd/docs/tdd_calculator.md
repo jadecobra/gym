@@ -1,11 +1,11 @@
 # How to create a calculator using Test Driven Development
 
-In this tutorial we will create a calculator using Test Driven Development. Let's begin
+This tutorial will step through creating a calculator using Test Driven Development
 
 ## Prerequisites
 
 - [python](https://www.python.org/downloads/)
-- an IDE - I use VSCode, there are other options
+- an Interactive Development Environment(IDE) - using VSCode, there are other options
     - [VSCode in a Browser](http://vscode.dev)
     - [Download VSCode](https://code.visualstudio.com/download)
 
@@ -49,6 +49,9 @@ class TestCalculator(unittest.TestCase):
 - what is the `TestCalculator` class? it is a container for the tests we are about to write
 - what is `unittest.TestCase`? a class defined in the `unitest` library which contains a bunch of `methods|functions` for testing code that `TestCalculator` inherits so I do not have to rewrite them
 - what is inheritance? a simple way to think of it is that `TestCalculator` is a child of `unittest.TestCase`
+- what is `def test_failure`? it is the definition of a test function to test the system being built?
+- what is `self`? self refers to the `TestCalculator` class. To access things within the class `self` is used, it avoids having to say `TestCalculator.assertFalse(True)`
+- what is `self.assertFalse(True)`? an assert statement that is a substitute for `assert False == True` which is like asking the question `is False equal to True?`
 
 to test the code, write the following in the terminal
 
@@ -57,3 +60,42 @@ python -m unittest -f
 ```
 
 you should get the following result
+```python
+F
+======================================================================
+FAIL: test_failure (tests.TestCalculator.test_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/<PATH_TO_CALCULATOR>/calculator/tests/test_calculator.py", line 7, in test_failure
+    self.assertFalse(True)
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (failures=1)
+```
+
+CONGRATULATIONS! You have written your first test.
+Test Driven Development follows the following mantra
+    <span style="color:red">**RED**</span> <span style="color:green">**GREEN**</span> <span style="color:orange">**REFACTOR**</span>
+- <span style="color:red">**RED**</span> - write a failing test
+- <span style="color:green">**GREEN**</span> - make it pass
+- <span style="color:orange">**REFACTOR**</span> - rewrite the solution to make it better
+
+This iterative process is what we are following. We are currently <span style="color:red">**RED**</span>
+The error provides important information about the code. Reading from the bottom
+- `FAILED (failures=1)` The test failed - <span style="color:red">**RED**</span>
+- `Ran 1 test in 0.000s` python ran the 1 test written in 0.000s
+- `AssertionError: True is not false` The error is an `AssertionError`. This errors are raised by python when an assert statement is false. It further gives the False Assertion `True is not false`. It is good practice to keep track of error types aka Exceptions, they will help you be a better troubleshooter.
+- `self.assertFalse(True)` the line of code that caused the failure
+- `File "/<PATH_TO_CALCULATOR>/calculator/tests/test_calculator.py", line 7, in test_failure` where in the file the error occurred - line 7 in the `test_failure` function in the `test_calculator.py` file. Clicking on this line will place your cursor at the position in the IDE
+- `Traceback (most recent call last):` all the information returned by python is the traceback, showing the most recent call python made last.
+- `F
+======================================================================
+FAIL: test_failure (tests.TestCalculator.test_failure)
+----------------------------------------------------------------------` a header giving information about the test
+    - `tests.TestCalculator.test_failure` is the address of the failing test
+      - `tests` - tests folder
+      - `TestCalculator` - the class defined on line 4
+      - `test_failure` - the function defined on line 6
