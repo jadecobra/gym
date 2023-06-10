@@ -2,6 +2,12 @@
 
 This tutorial will step through creating a calculator using Test Driven Development
 
+Here's the Test Driven Development mantra -
+    <span style="color:red">**RED**</span> <span style="color:green">**GREEN**</span> <span style="color:orange">**REFACTOR**</span>
+- <span style="color:red">**RED**</span> - write a failing test
+- <span style="color:green">**GREEN**</span> - make it pass
+- <span style="color:orange">**REFACTOR**</span> - rewrite the solution to make it better
+
 ## Prerequisites
 
 - [python](https://www.python.org/downloads/)
@@ -31,7 +37,7 @@ code .
 - The actual test file is called `test_calculator.py`
 - The module we are creating is called `calculator.py`. A python module is any file that ends in `.py`
 
-### Write a failing test
+### <span style="color:red">**RED**</span>: Write a failing test
 
 Open up `calculator/tests/test_calculator.py` in your IDE and type the following
 
@@ -56,7 +62,7 @@ class TestCalculator(unittest.TestCase):
 to test the code, write the following in the terminal
 
 ```shell
-python -m unittest -f
+python3 -m unittest -f
 ```
 
 you should get the following result
@@ -76,12 +82,7 @@ Ran 1 test in 0.000s
 FAILED (failures=1)
 ```
 
-CONGRATULATIONS! You have written your first test.
-Test Driven Development follows the following mantra
-    <span style="color:red">**RED**</span> <span style="color:green">**GREEN**</span> <span style="color:orange">**REFACTOR**</span>
-- <span style="color:red">**RED**</span> - write a failing test
-- <span style="color:green">**GREEN**</span> - make it pass
-- <span style="color:orange">**REFACTOR**</span> - rewrite the solution to make it better
+<span style="color:red">*CONGRATULATIONS!*</span> You have written your first test.
 
 This iterative process is what we are following. We are currently <span style="color:red">**RED**</span>
 The error provides important information about the code. Reading from the bottom
@@ -91,11 +92,30 @@ The error provides important information about the code. Reading from the bottom
 - `self.assertFalse(True)` the line of code that caused the failure
 - `File "/<PATH_TO_CALCULATOR>/calculator/tests/test_calculator.py", line 7, in test_failure` where in the file the error occurred - line 7 in the `test_failure` function in the `test_calculator.py` file. Clicking on this line will place your cursor at the position in the IDE
 - `Traceback (most recent call last):` all the information returned by python is the traceback, showing the most recent call python made last.
-- `F
-======================================================================
-FAIL: test_failure (tests.TestCalculator.test_failure)
-----------------------------------------------------------------------` a header giving information about the test
-    - `tests.TestCalculator.test_failure` is the address of the failing test
+- `FAIL: test_failure (tests.TestCalculator.test_failure)` a header giving information about the test
+    - `tests.TestCalculator.test_failure` is the location of the failing test
       - `tests` - tests folder
       - `TestCalculator` - the class defined on line 4
       - `test_failure` - the function defined on line 6
+- `F` indicating a failure
+
+### <span style="color:green">**GREEN**</span>: Make it Pass
+
+change line 7 to make the test pass. Which do you think is a better solution?
+- `self.assertTrue(True)` or
+- `self.assertFalse(True)`
+
+run the test again from the terminal
+```shell
+python3 -m unittest
+```
+response
+```shell
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK
+```
+
+<span style="color:green">*CONGRATULATIONS!*</span> You have a passing test. <span style="color:green">**GREEN**</span>
