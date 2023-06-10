@@ -149,9 +149,10 @@ One way to make code better is to use the
 - [Do Not Repeat Yourself (DRY)](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
 
 So far there's not much to improve on what has been written but there has been duplication.
-After the failing test we ran `python3 -m unittest` to see it fail,
-After we corrected the test we ran `python3 -m unittest` to see if pass,
-If we make an improvement we have to run `python3 -m unittest` to make sure the change does not break functionality.
+- we ran `python3 -m unittest` to see the test fail
+- we ran `python3 -m unittest` to see the test pass
+- we run `python3 -m unittest` to make sure our improvements do not break previous tests
+
 This means for every test we introduce we have to run that command 3 times.
 How can we avoid this repetition and focus on tests and solutions?
 
