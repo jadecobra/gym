@@ -493,6 +493,7 @@ Can we make it better?
     FAILED tests/test_calculator.py::TestCalculator::test_addition - AssertionError: 1 != 0
     ================= 1 failed, 1 passed in 0.02s ========================
     ```
+    Another AssertionError
 - <span style="color:green">**GREEN**</span>: Make it Pass - update the `add` function in `calculator.py`
     ```python
     def add(x, y):
@@ -505,3 +506,42 @@ Can we make it better?
     ====================== 2 passed in 0.01s ==============
     ```
 - <span style="color:orange">**REFACTOR**</span>: Make it Better
+
+    let's randomize the inputs to make sure the function behaves the way we expect for any integers.
+    update `test_calculator.py` to use the [random](https://docs.python.org/3/library/random.html?highlight=random#module-random) library
+    ```python
+    import unittest
+    import calculator
+    import random
+
+
+    class TestCalculator(unittest.TestCase):
+
+        def test_failure(self):
+            self.assertTrue(True)
+
+        def test_addition(self):
+            x = random.randint(-1, 1)
+            y = random.randint(-1, 1)
+            self.assertEqual(
+                calculator.add(x, y),
+                x+y
+            )
+
+    # TODO
+    # test importing
+    # test addition
+    # test subtraction
+    # test multiplication
+    # test division
+
+    # Exceptions Encountered
+    # AssertionError
+    # AttributeError
+    # TypeError
+    ```
+    - set a variable x to a random integer between -1 and 1
+    - set a variable y to a random integer between -1 and 1
+    - test that when you give these two variables to the `add` function you get a sum of the 2 variables back
+    - we no longer need the previous 2 tests because this new test covers those cases
+
