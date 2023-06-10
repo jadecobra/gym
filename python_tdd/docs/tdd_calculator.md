@@ -17,11 +17,14 @@ Here's the Test Driven Development mantra -
 
 ## Setup
 
+**NOTE** Are you on a Windows machine,
+- replace `touch` in the example below with `New-Item`
+- replace `python3` in the examples with `python`
+
 ### Setup File Structure
 
 in a terminal type the following to setup the directory structure
 
-**NOTE** If you are on a Windows machine, replace `touch` in the example below with `New-Item`
 ```shell
 mkdir -p calculator/tests
 cd calculator
