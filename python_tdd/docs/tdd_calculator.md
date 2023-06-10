@@ -37,7 +37,7 @@ touch tests/test_calculator.py
 code .
 ```
 
-- What is the name of the project is `calculator`
+- the name of the project is `calculator`
 - Tests are stored in the `tests` folder to separate them from the actual source code
 - The `tests` folder contains `__init__.py` to tell python that this is a module
 - The actual test file is called `test_calculator.py`
@@ -48,8 +48,7 @@ code .
 
 ### <span style="color:red">**RED**</span>: Write a failing test
 
-Open up `calculator/tests/test_calculator.py` in your IDE and type the following
-
+- Open up `calculator/tests/test_calculator.py` in your IDE and type the following
     ```python
     import unittest
 
@@ -59,7 +58,6 @@ Open up `calculator/tests/test_calculator.py` in your IDE and type the following
         def test_failure(self):
             self.assertFalse(True)
     ```
-
 - `import unittest` imports an existing module from the python standard library that is used for testing. [read more](https://docs.python.org/3/library/unittest.html?highlight=unittest#module-unittest)
 - what is `unittest`? it is a module|library that comes with python for testing code
 - what is the `TestCalculator` class? it is a container for the tests we are about to write
@@ -68,33 +66,30 @@ Open up `calculator/tests/test_calculator.py` in your IDE and type the following
 - what is `def test_failure`? it is the definition of a test function to test the system being built?
 - what is `self`? self refers to the `TestCalculator` class. To access things within the `TestCalculator` class `self` is used. It avoids having to say `TestCalculator.assertFalse(True)`
 - what is `self.assertFalse(True)`? an assert statement that is a substitute for `assert False == True` which is similar to asking the question `is False equal to True?`
+- to test the code, write the following in the terminal
+    ```shell
+    python3 -m unittest
+    ```
+    you should get the following result
+    ```python
+    F
+    ======================================================
+    FAIL: test_failure (tests.TestCalculator.test_failure)
+    ------------------------------------------------------
+    Traceback (most recent call last):
+    File "/<PATH_TO_CALCULATOR>/calculator/tests/test_calculator.py", line 7, in test_failure
+        self.assertFalse(True)
+    AssertionError: True is not false
 
-to test the code, write the following in the terminal
+    ------------------------------------------------------
+    Ran 1 test in 0.000s
 
-```shell
-python3 -m unittest
-```
-
-you should get the following result
-```python
-F
-======================================================
-FAIL: test_failure (tests.TestCalculator.test_failure)
-------------------------------------------------------
-Traceback (most recent call last):
-  File "/<PATH_TO_CALCULATOR>/calculator/tests/test_calculator.py", line 7, in test_failure
-    self.assertFalse(True)
-AssertionError: True is not false
-
-------------------------------------------------------
-Ran 1 test in 0.000s
-
-FAILED (failures=1)
-```
+    FAILED (failures=1)
+    ```
 
 <span style="color:red">*CONGRATULATIONS!*</span> You have written your first test.
 
-This iterative process is what we are following. We are currently <span style="color:red">**RED**</span>
+We follow the iterative process of <span style="color:red">**RED**</span> <span style="color:green">**GREEN**</span> <span style="color:orange">**REFACTOR**</span>. We are currently <span style="color:red">**RED**</span>
 The error provides important information about the code. Reading from the bottom
 - `FAILED (failures=1)` The test failed - <span style="color:red">**RED**</span>
 - `Ran 1 test in 0.000s` python ran the 1 test written in 0.000s
@@ -121,21 +116,20 @@ The error provides important information about the code. Reading from the bottom
       - `tests` - tests folder
       - `TestCalculator` - the class defined on line 4
       - `test_failure` - the function defined on line 6
-- `F` indicating a failure
+- `F` indicates a failure
 
 ---
 
 ### <span style="color:green">**GREEN**</span>: Make it Pass
 
 change line 7 to make the test pass. Which do you think is a better solution?
-- `self.assertTrue(True)` or
-- `self.assertFalse(True)`
+`self.assertTrue(True)` or `self.assertFalse(True)`
 
 run the test again from the terminal
 ```shell
 python3 -m unittest
 ```
-response
+terminal response
 ```shell
 .
 ------------------------------------------------------
@@ -144,7 +138,7 @@ Ran 1 test in 0.000s
 OK
 ```
 
-<span style="color:green">*CONGRATULATIONS!*</span> You have a passing test. <span style="color:green">**GREEN**</span>
+<span style="color:green">*CONGRATULATIONS!*</span> You have a passing test. We are <span style="color:green">**GREEN**</span>
 
 ---
 
@@ -189,14 +183,14 @@ You just created a [virtual environment](https://docs.python.org/3/library/venv.
 run the tests by typing `pytest-watch` in the terminal, you should see something similar to
 ```shell
 [TODAYS_DATE] Running: py.test
-=========================== test session starts==============================
+======================= test session starts==========================
 platform <YOUR_OPERATING_SYSTEM> -- Python <YOUR_PYTHON_VERSION>, pytest-<VERSION>, pluggy-<VERSION>
 rootdir: <YOUR_PATH>/calculator
 collected 1 item
 
 tests/test_calculator.py .                                                                                                    [100%]
 
-========================== 1 passed in 0.00s ================================
+======================= 1 passed in 0.00s ============================
 ```
 
 ---
@@ -227,7 +221,7 @@ class TestCalculator(unittest.TestCase):
 the terminal should respond since a change was made
 
 ```shell
-========================== 1 passed in 0.01s =================================
+=============== 1 passed in 0.01s ===========================
 
 Change detected: tests/test_calculator.py
 
