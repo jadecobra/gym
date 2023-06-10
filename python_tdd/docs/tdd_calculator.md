@@ -10,10 +10,13 @@ Here's the Test Driven Development mantra -
 
 ## Prerequisites
 
-- [python](https://www.python.org/downloads/)
-- an Interactive Development Environment(IDE) - using VSCode, there are other options
+- [download and install python](https://www.python.org/downloads/)
+- an Interactive Development Environment(IDE) - Here are a few options
     - [VSCode in a Browser](http://vscode.dev)
     - [Download VSCode](https://code.visualstudio.com/download)
+    - [Download PyCharm](https://www.jetbrains.com/pycharm/download/#section=mac)
+    - [Download Sublime](https://www.sublimetext.com)
+    - [Other IDE options](https://wiki.python.org/moin/IntegratedDevelopmentEnvironments)
 
 ## Setup
 
