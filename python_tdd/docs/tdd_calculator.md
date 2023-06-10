@@ -20,9 +20,9 @@ Here's the Test Driven Development mantra -
 
 ## Setup
 
-**NOTE** Are you on a Windows machine,
-- replace `touch` in the example below with `New-Item`
-- replace `python3` in the examples with `python`
+> ***Are you on a Windows machine?***
+> - replace `touch` in the example below with `New-Item`
+> - replace `python3` in the examples with `python`
 
 ### Setup File Structure
 
@@ -42,6 +42,8 @@ code .
 - The `tests` folder contains `__init__.py` to tell python that this is a module
 - The actual test file is called `test_calculator.py`
 - The module we are creating is called `calculator.py`. A python module is any file that ends in `.py`
+
+---
 
 ### <span style="color:red">**RED**</span>: Write a failing test
 
@@ -105,6 +107,8 @@ The error provides important information about the code. Reading from the bottom
       - `test_failure` - the function defined on line 6
 - `F` indicating a failure
 
+---
+
 ### <span style="color:green">**GREEN**</span>: Make it Pass
 
 change line 7 to make the test pass. Which do you think is a better solution?
@@ -125,3 +129,7 @@ OK
 ```
 
 <span style="color:green">*CONGRATULATIONS!*</span> You have a passing test. <span style="color:green">**GREEN**</span>
+
+---
+
+- <span style="color:orange">**REFACTOR**</span> - rewrite the solution to make it better
