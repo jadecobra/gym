@@ -267,7 +267,7 @@ class TestCalculator(unittest.TestCase):
 
 - `import calculator` - imports the calculator module we are writing/testing
 
-### Add the addition test
+### Test Addition
 
 #### <span style="color:red">**RED**</span>: Write a failing test
 
@@ -344,7 +344,7 @@ class TestCalculator(unittest.TestCase):
     add = None
     ```
 
-    the terminal will update to a new Error
+    the terminal will update to show a new Error
 
     ```python
     ================== FAILURES =============================
@@ -458,7 +458,6 @@ Can we make it better?
             )
 
     # TODO
-    # test importing
     # test addition
     # test subtraction
     # test multiplication
@@ -529,7 +528,6 @@ Can we make it better?
             )
 
     # TODO
-    # test importing
     # test addition
     # test subtraction
     # test multiplication
@@ -543,5 +541,304 @@ Can we make it better?
     - set a variable x to a random integer between -1 and 1
     - set a variable y to a random integer between -1 and 1
     - test that when you give these two variables to the `add` function you get a sum of the 2 variables back
-    - we no longer need the previous 2 tests because this new test covers those cases
 
+    terminal response
+    ```
+    tests/test_calculator.py ..           [100%]
+
+    ================ 2 passed in 0.01s ===========================
+    ```
+    - we no longer need the previous 2 tests because this new test covers those cases and more
+    - remove `test addition` from the TODO list since it passed and the task is completed
+
+That's the pattern <span style="color:red">**RED**</span> <span style="color:green">**GREEN**</span> <span style="color:orange">**REFACTOR**</span>
+
+---
+
+
+### Test Subtraction
+
+Let's add the other tests
+#### <span style="color:red">**RED**</span> - write a failing test
+
+- update `test_calculator.py` with `test_subtraction`
+    ```python
+    import unittest
+    import calculator
+    import random
+
+
+    class TestCalculator(unittest.TestCase):
+
+        def test_failure(self):
+            self.assertTrue(True)
+
+        def test_addition(self):
+            x = random.randint(-1, 1)
+            y = random.randint(-1, 1)
+            self.assertEqual(
+                calculator.add(x, y),
+                x+y
+            )
+
+        def test_subtraction(self):
+            x = random.randint(-1, 1)
+            y = random.randint(-1, 1)
+            self.assertEqual(
+                calculator.subtract(x, y),
+                x-y
+            )
+
+    # TODO
+    # test subtraction
+    # test multiplication
+    # test division
+
+    # Exceptions Encountered
+    # AssertionError
+    # AttributeError
+    # TypeError
+    ```
+    terminal response - AttributeError
+    ```python
+
+    self = <tests.test_calculator.TestCalculator testMethod=test_subtraction>
+
+        def test_subtraction(self):
+            x = random.randint(-1, 1)
+            y = random.randint(-1, 1)
+            self.assertEqual(
+    >           calculator.subtract(x, y),
+                x-y
+            )
+    E       AttributeError: module 'calculator' has no attribute 'subtract'
+
+    tests/test_calculator.py:23: AttributeError
+    =============== short test summary info ======================
+    FAILED tests/test_calculator.py::TestCalculator::test_subtraction - AttributeError: module 'calculator' has no attribute 'subtract'
+    ============== 1 failed, 2 passed in 0.03s ==================
+    ```
+    update `calculator.py`
+    ```python
+    def add(x, y):
+        return x + y
+
+    subtract = None
+    ```
+    terminal response - TypeError
+    ```python
+    self = <tests.test_calculator.TestCalculator testMethod=test_subtraction>
+
+        def test_subtraction(self):
+            x = random.randint(-1, 1)
+            y = random.randint(-1, 1)
+            self.assertEqual(
+    >           calculator.subtract(x, y),
+                x-y
+            )
+    E       TypeError: 'NoneType' object is not callable
+
+    tests/test_calculator.py:23: TypeError
+    =================== short test summary info =============
+    FAILED tests/test_calculator.py::TestCalculator::test_subtraction - TypeError: 'NoneType' object is not callable
+    =============== 1 failed, 2 passed in 0.02s ============
+    ```
+    update `calculator.py`
+    ```python
+    def add(x, y):
+        return x + y
+
+    def subtract():
+        return None
+    ```
+    terminal response - TypeError
+    ```python
+    self = <tests.test_calculator.TestCalculator testMethod=test_subtraction>
+
+        def test_subtraction(self):
+            x = random.randint(-1, 1)
+            y = random.randint(-1, 1)
+            self.assertEqual(
+    >           calculator.subtract(x, y),
+                x-y
+            )
+    E       TypeError: subtract() takes 0 positional arguments but 2 were given
+
+    tests/test_calculator.py:23: TypeError
+    =================== short test summary info ============================
+    FAILED tests/test_calculator.py::TestCalculator::test_subtraction - TypeError: subtract() takes 0 positional arguments but 2 were given
+    =================== 1 failed, 2 passed in 0.02s =========================
+    ```
+
+#### <span style="color:green">**GREEN**</span> - make it pass
+
+- update `calculator.py`
+    ```python
+    def add(x, y):
+        return x + y
+
+    def subtract(x, y):
+        return None
+    ```
+    terminal response - AssertionError
+    ```python
+    self = <tests.test_calculator.TestCalculator testMethod=test_subtraction>
+
+        def test_subtraction(self):
+            x = random.randint(-1, 1)
+            y = random.randint(-1, 1)
+    >       self.assertEqual(
+                calculator.subtract(x, y),
+                x-y
+            )
+    E       AssertionError: None != 0
+
+    tests/test_calculator.py:22: AssertionError
+    ================= short test summary info ===================
+    FAILED tests/test_calculator.py::TestCalculator::test_subtraction - AssertionError: None != 0
+    ================ 1 failed, 2 passed in 0.02s ================
+    ```
+    update `calculator.py`
+    ```python
+    def add(x, y):
+        return x + y
+
+    def subtract(x, y):
+        return x - y
+    ```
+    terminal response - SUCCESS!
+    ```shell
+    collected 3 items
+
+    tests/test_calculator.py ...                          [100%]
+
+    ======================= 3 passed in 0.01s ==================
+    ```
+- remove `test subtraction` from the TODO list
+
+#### <span style="color:orange">**REFACTOR**</span> - make it better
+
+- How can we make this better?
+- Is there any duplication that could be removed? Yes
+    - `x = random.randint(-1, 1)` happens 2 times
+    - `y = random.randint(-1, 1)` happens 2 times
+
+
+- update `test_calculator.py`
+    ```python
+    import unittest
+    import calculator
+    import random
+
+
+    class TestCalculator(unittest.TestCase):
+
+        x = random.randint(-1, 1)
+        y = random.randint(-1, 1)
+
+        def test_failure(self):
+            self.assertTrue(True)
+
+        def test_addition(self):
+            self.assertEqual(
+                calculator.add(self.x, self.y),
+                self.x+self.y
+            )
+
+        def test_subtraction(self):
+            self.assertEqual(
+                calculator.subtract(self.x, self.y),
+                self.x-self.y
+            )
+
+    # TODO
+    # test multiplication
+    # test division
+
+    # Exceptions Encountered
+    # AssertionError
+    # AttributeError
+    # TypeError
+    ```
+    terminal response stays the same
+    the x and y variables are now initialized as class variables that can be referenced later using `self.x` and `self.y`
+
+---
+
+### Test Multiplication
+
+#### <span style="color:red">**RED**</span> - write a failing test
+
+update `test_calculator.py` with `test_multiplication`
+```python
+import unittest
+import calculator
+import random
+
+
+class TestCalculator(unittest.TestCase):
+
+    x = random.randint(-1, 1)
+    y = random.randint(-1, 1)
+
+    def test_failure(self):
+        self.assertTrue(True)
+
+    def test_addition(self):
+        self.assertEqual(
+            calculator.add(self.x, self.y),
+            self.x+self.y
+        )
+
+    def test_subtraction(self):
+        self.assertEqual(
+            calculator.subtract(self.x, self.y),
+            self.x-self.y
+        )
+
+    def test_multiplication(self):
+        self.assertEqual(
+            calculator.multiply(self.x, self.y),
+            self.x*self.y
+        )
+
+# TODO
+# test multiplication
+# test division
+
+# Exceptions Encountered
+# AssertionError
+# AttributeError
+# TypeError
+```
+terminal response - AttributeError
+
+#### <span style="color:green">**GREEN**</span> - make it pass
+update `calculator.py`
+```python
+def add(x, y):
+    return x + y
+
+def subtract(x, y):
+    return x - y
+
+def multiply(x, y):
+    return x * y
+```
+terminal response - SUCCESS
+#### <span style="color:orange">**REFACTOR**</span> - make it better
+
+- remove `test_multiplication` from the TODO list
+- Can't think of an improvement here
+
+---
+
+### Test Division
+
+update `test_calculator.py` with `test_division`
+```python
+```
+
+#### <span style="color:red">**RED**</span> - write a failing test
+#### <span style="color:green">**GREEN**</span> - make it pass
+#### <span style="color:orange">**REFACTOR**</span> - make it better
