@@ -34,7 +34,6 @@ cd calculator
 touch calculator.py
 touch tests/__init__.py
 touch tests/test_calculator.py
-code .
 ```
 
 - the name of the project is `calculator`
