@@ -16,7 +16,7 @@ Here's the Test Driven Development mantra -
     - [Download VSCode](https://code.visualstudio.com/download)
     - [Download PyCharm](https://www.jetbrains.com/pycharm/download/#section=mac)
     - [Download Sublime](https://www.sublimetext.com)
-    - [Other IDE options](https://wiki.python.org/moin/IntegratedDevelopmentEnvironments)
+    - [Other Interactive Development Environment(IDE) options](https://wiki.python.org/moin/IntegratedDevelopmentEnvironments)
 
 ## Setup
 
@@ -47,7 +47,7 @@ touch tests/test_calculator.py
 
 ### <span style="color:red">**RED**</span>: Write a failing test
 
-- Open up `calculator/tests/test_calculator.py` in your IDE and type the following
+- Open up `calculator/tests/test_calculator.py` in your Interactive Development Environment(IDE) and type the following
     ```python
     import unittest
 
@@ -76,7 +76,7 @@ touch tests/test_calculator.py
     FAIL: test_failure (tests.TestCalculator.test_failure)
     ------------------------------------------------------
     Traceback (most recent call last):
-    File "/<PATH_TO_CALCULATOR>/calculator/tests/test_calculator.py", line 7, in test_failure
+    File "/<PATH_TO_PROJECT>/calculator/tests/test_calculator.py", line 7, in test_failure
         self.assertFalse(True)
     AssertionError: True is not false
 
@@ -108,7 +108,7 @@ The error provides important information about the code. Reading from the bottom
     # AssertionError
     ```
 - `self.assertFalse(True)` the line of code that caused the failure
-- `File "/<PATH_TO_CALCULATOR>/calculator/tests/test_calculator.py", line 7, in test_failure` where in the file the error occurred - line 7 in the `test_failure` function in the `test_calculator.py` file. Clicking on this line will place your cursor at the position in the IDE
+- `File "/<PATH_TO_CALCULATOR>/calculator/tests/test_calculator.py", line 7, in test_failure` where in the file the error occurred - line 7 in the `test_failure` function in the `test_calculator.py` file. Clicking on this line will place your cursor at the position in the Interactive Development Environment(IDE)
 - `Traceback (most recent call last):` all the information returned by python is the traceback, showing the most recent call python made last.
 - `FAIL: test_failure (tests.TestCalculator.test_failure)` a header giving information about the test
     - `tests.TestCalculator.test_failure` is the location of the failing test
@@ -333,7 +333,7 @@ class TestCalculator(unittest.TestCase):
 
 #### <span style="color:green">**GREEN**</span>: Make it Pass
 
-- open `calculator.py` in your IDE and add this
+- open `calculator.py` in your Interactive Development Environment(IDE) and add this
     ```python
     add = None
     ```
