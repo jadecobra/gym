@@ -193,4 +193,4 @@ tests/test_project_name.py .                                                    
 ======================= 1 passed in 0.00s ============================
 ```
 
-***CONGRATULATIONS*** You now have a Python Test Driven Environment setup and can build anything you want
+***CONGRATULATIONS*** You have successfully setup a Python Test Driven Environment and can build anything you want
