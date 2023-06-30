@@ -1,6 +1,6 @@
 # How to solve the AttributeError in Python
 
-This tutorial will step through solving a ModuleNotFoundError in Python using Test Driven Development
+This tutorial will step through solving a `ModuleNotFoundError` in Python using Test Driven Development
 
 ## Prerequisites
 
@@ -17,10 +17,6 @@ We can package, distribute and publish programs for other people to use.
 To use these packages in python we have to import them.
 
 ### <span style="color:red">**RED**</span>: Write a failing test
-
-> ***Are you on a Windows machine?***
-> - replace `touch` in the example below with `New-Item`
-> - replace `python3` in the examples with `python`
 
 Open a new file in your editor and save it as `test_module_not_found_error.py` in the `tests` folder you created in [Setup Test Driven Development Project](./TDD_SETUP.md)
 Type the following in the file
