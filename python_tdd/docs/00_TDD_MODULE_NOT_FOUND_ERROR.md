@@ -137,7 +137,7 @@ tests/test_module_not_found_error.py:1: in <module>
 E   ModuleNotFoundError: No module named 'module_0'
 ```
 
-Let's look at that traceback from the bottom
+Looking at the traceback starting from the bottom
 
 - `ModuleNotFoundError` - this error is raised when an import statement fails because python cannot find a module/package with the given name in this case `module_0`
 - `import module_0` - the piece of code that caused the failure
