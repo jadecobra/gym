@@ -156,7 +156,7 @@ For more information about imports you can read [The Import Statement](https://d
 ### <span style="color:green">**GREEN**</span>: Make it Pass
 
 - create `module_0.py` in the `project_name` folder
-- your terminal will update to show the following
+- the terminal will update to show the following
 
 ```shell
     import module_1
@@ -164,7 +164,7 @@ E   ModuleNotFoundError: No module named 'module_1'
 ```
 
 - create `module_1.py` in the `project_name` folder
-- your terminal will update to show the following
+- the terminal will update to show the following
 
 ```shell
     import module_2
@@ -172,14 +172,14 @@ E   ModuleNotFoundError: No module named 'module_2'
 ```
 
 - create `module_2.py` in the `project_name` folder
-- your terminal will update to show the following
+- the terminal will update to show the following
 
 ```shell
     import module_3
 E   ModuleNotFoundError: No module named 'module_3'
 ```
 
-this is the pattern, repeat it until you have created `module_99.py` and your terminal will update to
+this is the pattern, repeat it until you have created `module_99.py` and the terminal will update to
 
 ```shell
 ============== test session starts ==========================

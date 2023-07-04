@@ -13,7 +13,7 @@ This tutorial will step through solving an `AttributeError`` in Python using Tes
 Attributes are properties/variables/names that belong to an object.
 An `AttributeError` is raised when there is a reference an attribute/property/name/variable that does not exist in the object called
 
-### <span style="color:red">**RED**</span>: Write a failing test
+## <span style="color:red">**RED**</span>: Write a failing test
 
 - Open a new file in the editor and save it as `test_attribute_error.py` in the `tests` folder you created in [Setup Test Driven Development Project](./TDD_SETUP.md) and type the following in the file
 
@@ -49,7 +49,7 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
 
     This error was encountered in [00_TDD_MODULE_NOT_FOUND_ERROR](./00_TDD_MODULE_NOT_FOUND_ERROR.md). We know how to solve it.
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+## <span style="color:green">**GREEN**</span>: Make it Pass
 
 - create `module.py` in the `project_name` folder and the terminal will update to show the following
     ```shell
@@ -98,7 +98,7 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
     ```python
     attribute_0 = None
     ```
-    this explicity defines `attribute_0` with a value of `None` and the terminal updates to show a passing test
+    this explicity defines `attribute_0` with a value of `None` and the terminal updates to show a passing test. YES!!!
     ```shell
     collected 2 items
 
@@ -111,3 +111,257 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
 > ***What is the difference between `=` and `==` in python?***
 > - `=` is used to assign names to objects e.g. `five = 5` means we can later refer to the number `5` with the name `five`
 > - `==` is used to check if two things are equal e.g. `5 == 4` means we want to know if `5` is equal to `4`
+
+## <span style="color:orange">**REFACTOR**</span> - make it better
+
+There's not much to do here, we could repeat the above as a drill to make sure we remember the solution
+
+### <span style="color:red">**RED**</span>: Write a failing test
+- Update `test_attribute_error.py`
+    ```python
+    import unittest
+    import module
+
+
+    class TestAttributeError(unittest.TestCase):
+        def test_defining_variables_to_solve_attribute_errors(self):
+            self.assertIsNone(module.attribute_0)
+            self.assertIsNone(module.attribute_1)
+    ```
+    the terminal will update to show an `AttributeError`
+    ```shell
+    >       self.assertIsNone(module.attribute_1)
+    E       AttributeError: module 'module' has no attribute 'attribute_1'
+    ```
+### <span style="color:green">**GREEN**</span>: Make it Pass
+- <span style="color:red">**RED**</span>: Write a failing test - Update `module.py`
+    ```python
+    attribute_0 = None
+    attribute_1
+    ```
+    the terminal will update to show a `NameError`
+    ```shell
+    module.py:2: in <module>
+        attribute_1
+    E   NameError: name 'attribute_1' is not defined
+    ```
+- <span style="color:green">**GREEN**</span>: Make it Pass - Update `module.py`
+    ```python
+    attribute_0 = None
+    attribute_1 = None
+    ```
+    The terminal will update to show passing tests
+
+### <span style="color:red">**RED**</span>: Write a failing test
+- Update `test_attribute_error.py`
+    ```python
+    import unittest
+    import module
+
+
+    class TestAttributeError(unittest.TestCase):
+        def test_defining_variables_to_solve_attribute_errors(self):
+            self.assertIsNone(module.attribute_0)
+            self.assertIsNone(module.attribute_1)
+            self.assertIsNone(module.attribute_2)
+    ```
+    the terminal will update to show an `AttributeError`
+    ```shell
+    >       self.assertIsNone(module.attribute_2)
+    E       AttributeError: module 'module' has no attribute 'attribute_2'
+    ```
+### <span style="color:green">**GREEN**</span>: Make it Pass
+- <span style="color:red">**RED**</span>: Write a failing test - Update `module.py`
+    ```python
+    attribute_0 = None
+    attribute_1 = None
+    attribute_2
+    ```
+    the terminal will update to show a `NameError`
+    ```shell
+    module.py:3: in <module>
+        attribute_2
+    E   NameError: name 'attribute_2' is not defined
+    ```
+- <span style="color:green">**GREEN**</span>: Make it Pass - Update `module.py`
+    ```python
+    attribute_0 = None
+    attribute_1 = None
+    attribute_2 = None
+    ```
+    The tests pass
+
+### <span style="color:red">**RED**</span>: Write a failing test
+- Update `test_attribute_error.py`
+    ```python
+    import unittest
+    import module
+
+
+    class TestAttributeError(unittest.TestCase):
+        def test_defining_variables_to_solve_attribute_errors(self):
+            self.assertIsNone(module.attribute_0)
+            self.assertIsNone(module.attribute_1)
+            self.assertIsNone(module.attribute_2)
+            self.assertIsNone(module.attribute_3)
+    ```
+    the terminal will update to show an `AttributeError`
+    ```shell
+    >       self.assertIsNone(module.attribute_3)
+    E       AttributeError: module 'module' has no attribute 'attribute_3'
+    ```
+### <span style="color:green">**GREEN**</span>: Make it Pass
+- <span style="color:red">**RED**</span>: Write a failing test - Update `module.py`
+    ```python
+    attribute_0 = None
+    attribute_1 = None
+    attribute_2 = None
+    attribute_3
+    ```
+    the terminal will update to show a `NameError`
+    ```shell
+    module.py:4: in <module>
+        attribute_3
+    E   NameError: name 'attribute_3' is not defined
+    ```
+- <span style="color:green">**GREEN**</span>: Make it Pass - Update `module.py`
+    ```python
+    attribute_0 = None
+    attribute_1 = None
+    attribute_2 = None
+    attribute_3 = None
+    ```
+
+This is the pattern. Update `test_attribute_error.py` to
+```python
+def test_defining_variables_to_solve_attribute_errors(self):
+        self.assertIsNone(module.attribute_0)
+        self.assertIsNone(module.attribute_1)
+        self.assertIsNone(module.attribute_2)
+        self.assertIsNone(module.attribute_3)
+        self.assertIsNone(module.attribute_4)
+        self.assertIsNone(module.attribute_5)
+        self.assertIsNone(module.attribute_6)
+        self.assertIsNone(module.attribute_7)
+        self.assertIsNone(module.attribute_8)
+        self.assertIsNone(module.attribute_9)
+        self.assertIsNone(module.attribute_10)
+        self.assertIsNone(module.attribute_11)
+        self.assertIsNone(module.attribute_12)
+        self.assertIsNone(module.attribute_13)
+        self.assertIsNone(module.attribute_14)
+        self.assertIsNone(module.attribute_15)
+        self.assertIsNone(module.attribute_16)
+        self.assertIsNone(module.attribute_17)
+        self.assertIsNone(module.attribute_18)
+        self.assertIsNone(module.attribute_19)
+        self.assertIsNone(module.attribute_20)
+        self.assertIsNone(module.attribute_21)
+        self.assertIsNone(module.attribute_22)
+        self.assertIsNone(module.attribute_23)
+        self.assertIsNone(module.attribute_24)
+        self.assertIsNone(module.attribute_25)
+        self.assertIsNone(module.attribute_26)
+        self.assertIsNone(module.attribute_27)
+        self.assertIsNone(module.attribute_28)
+        self.assertIsNone(module.attribute_29)
+        self.assertIsNone(module.attribute_30)
+        self.assertIsNone(module.attribute_34)
+        self.assertIsNone(module.attribute_32)
+        self.assertIsNone(module.attribute_33)
+        self.assertIsNone(module.attribute_34)
+        self.assertIsNone(module.attribute_35)
+        self.assertIsNone(module.attribute_36)
+        self.assertIsNone(module.attribute_37)
+        self.assertIsNone(module.attribute_38)
+        self.assertIsNone(module.attribute_39)
+        self.assertIsNone(module.attribute_40)
+        self.assertIsNone(module.attribute_41)
+        self.assertIsNone(module.attribute_42)
+        self.assertIsNone(module.attribute_43)
+        self.assertIsNone(module.attribute_44)
+        self.assertIsNone(module.attribute_45)
+        self.assertIsNone(module.attribute_46)
+        self.assertIsNone(module.attribute_47)
+        self.assertIsNone(module.attribute_48)
+        self.assertIsNone(module.attribute_49)
+        self.assertIsNone(module.attribute_50)
+        self.assertIsNone(module.attribute_51)
+        self.assertIsNone(module.attribute_52)
+        self.assertIsNone(module.attribute_53)
+        self.assertIsNone(module.attribute_54)
+        self.assertIsNone(module.attribute_55)
+        self.assertIsNone(module.attribute_56)
+        self.assertIsNone(module.attribute_57)
+        self.assertIsNone(module.attribute_58)
+        self.assertIsNone(module.attribute_59)
+        self.assertIsNone(module.attribute_60)
+        self.assertIsNone(module.attribute_61)
+        self.assertIsNone(module.attribute_62)
+        self.assertIsNone(module.attribute_63)
+        self.assertIsNone(module.attribute_64)
+        self.assertIsNone(module.attribute_65)
+        self.assertIsNone(module.attribute_66)
+        self.assertIsNone(module.attribute_67)
+        self.assertIsNone(module.attribute_68)
+        self.assertIsNone(module.attribute_69)
+        self.assertIsNone(module.attribute_70)
+        self.assertIsNone(module.attribute_71)
+        self.assertIsNone(module.attribute_72)
+        self.assertIsNone(module.attribute_73)
+        self.assertIsNone(module.attribute_74)
+        self.assertIsNone(module.attribute_75)
+        self.assertIsNone(module.attribute_76)
+        self.assertIsNone(module.attribute_77)
+        self.assertIsNone(module.attribute_78)
+        self.assertIsNone(module.attribute_79)
+        self.assertIsNone(module.attribute_80)
+        self.assertIsNone(module.attribute_81)
+        self.assertIsNone(module.attribute_82)
+        self.assertIsNone(module.attribute_83)
+        self.assertIsNone(module.attribute_84)
+        self.assertIsNone(module.attribute_85)
+        self.assertIsNone(module.attribute_86)
+        self.assertIsNone(module.attribute_87)
+        self.assertIsNone(module.attribute_88)
+        self.assertIsNone(module.attribute_89)
+        self.assertIsNone(module.attribute_90)
+        self.assertIsNone(module.attribute_91)
+        self.assertIsNone(module.attribute_92)
+        self.assertIsNone(module.attribute_93)
+        self.assertIsNone(module.attribute_94)
+        self.assertIsNone(module.attribute_95)
+        self.assertIsNone(module.attribute_96)
+        self.assertIsNone(module.attribute_97)
+        self.assertIsNone(module.attribute_98)
+        self.assertIsNone(module.attribute_99)
+        self.assertFalse(module.false)
+        self.assertTrue(module.true)
+```
+
+Repeat the pattern until all tests pass.
+- What's your solution to the last two tests? They are similar to the test for failure in [Setup Test Driven Development Project](./TDD_SETUP.md)
+- did you update `module.py` this way?
+    ```
+    true = True
+    false = False
+    ```
+
+***WELL DONE!!!***
+You now know how to solve
+- `AssertionError`
+- `ModuleNotFoundError`
+- `NameError` using variables
+- `AttributeError` using variables
+
+Let us take a look at solving `AttributeError` for functions
+
+## <span style="color:red">**RED**</span>: Write a failing test
+
+- Update the `TestAttributeError` class in `test_attribute_error.py` with
+```python
+    def test_defining_functions_to_solve_attribute_errors(self):
+        self.assertIsNone(module.function_0())
+```
+
+## <span style="color:green">**GREEN**</span>: Make it Pass
