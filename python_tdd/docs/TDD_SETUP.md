@@ -57,7 +57,7 @@ touch tests/test_project_name.py
         def test_failure(self):
             self.assertFalse(True)
     ```
-- `import unittest` imports an existing module from the python standard library that is used for testing. [read more](https://docs.python.org/3/library/unittest.html?highlight=unittest#module-unittest)
+- `import unittest` imports an existing module from the python standard library that is used for testing.
 - what is `unittest`? it is a module|library that comes with python for testing code
 - what is the `TestProjectName` class? it is a "container" for the tests we are about to write
 - what is `unittest.TestCase`? a class defined in the `unitest` library which contains a bunch of `methods|functions` for testing code that `TestProjectName` inherits so I do not have to rewrite them
