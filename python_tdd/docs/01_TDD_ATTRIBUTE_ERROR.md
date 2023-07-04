@@ -15,7 +15,7 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
 
 ## <span style="color:red">**RED**</span>: Write a failing test
 
-- Open a new file in the editor and save it as `test_attribute_error.py` in the `tests` folder you created in [Setup Test Driven Development Project](./TDD_SETUP.md) and type the following in the file
+- Open a new file in the editor and save it as `tests/test_attribute_error.py` in the `tests` folder you created in [Setup Test Driven Development Project](./TDD_SETUP.md) and type the following in the file
 
     ```python
     import unittest
@@ -117,7 +117,7 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
 There's not much to do here, we could repeat the above as a drill to make sure we remember the solution
 
 ### <span style="color:red">**RED**</span>: Write a failing test
-- Update `test_attribute_error.py`
+- Update `tests/test_attribute_error.py`
     ```python
     import unittest
     import module
@@ -153,7 +153,7 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     The terminal will update to show passing tests
 
 ### <span style="color:red">**RED**</span>: Write a failing test
-- Update `test_attribute_error.py`
+- Update `tests/test_attribute_error.py`
     ```python
     import unittest
     import module
@@ -192,7 +192,7 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     The tests pass
 
 ### <span style="color:red">**RED**</span>: Write a failing test
-- Update `test_attribute_error.py`
+- Update `tests/test_attribute_error.py`
     ```python
     import unittest
     import module
@@ -232,7 +232,7 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     attribute_3 = None
     ```
 
-This is the pattern. Update `test_attribute_error.py` to
+This is the pattern. Update `tests/test_attribute_error.py` to
 ```python
 def test_defining_variables_to_solve_attribute_errors(self):
         self.assertIsNone(module.attribute_0)
@@ -358,7 +358,7 @@ Let us take a look at solving `AttributeError` for functions
 
 ## <span style="color:red">**RED**</span>: Write a failing test
 
-- Update the `TestAttributeError` class in `test_attribute_error.py` with
+- Update the `TestAttributeError` class in `tests/test_attribute_error.py` with
 ```python
     def test_defining_functions_to_solve_attribute_errors(self):
         self.assertIsNone(module.function_0())
