@@ -13,7 +13,9 @@ This tutorial will step through solving an `AttributeError`` in Python using Tes
 Attributes are properties/variables/names that belong to an object.
 An `AttributeError` is raised when there is a reference an attribute/property/name/variable that does not exist in the object called
 
-## <span style="color:red">**RED**</span>: Write a failing test
+## How to solve the AttributeError by defining a Variable
+
+### <span style="color:red">**RED**</span>: Write a failing test
 
 - Open a new file in the editor and save it as `tests/test_attribute_error.py` in the `tests` folder you created in [Setup Test Driven Development Project](./TDD_SETUP.md) and type the following in the file
 
@@ -49,7 +51,7 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
 
     This error was encountered in [00_TDD_MODULE_NOT_FOUND_ERROR](./00_TDD_MODULE_NOT_FOUND_ERROR.md). We know how to solve it.
 
-## <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: Make it Pass
 
 - create `module.py` in the `project_name` folder and the terminal will update to show the following
     ```shell
@@ -112,11 +114,11 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
 > - `=` is used to assign names to objects e.g. `five = 5` means we can later refer to the number `5` with the name `five`
 > - `==` is used to check if two things are equal e.g. `5 == 4` means we want to know if `5` is equal to `4`
 
-## <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span> - make it better
 
 There's not much to do here, we could repeat the above as a drill to make sure we remember the solution
 
-### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: Write a failing test
 - Update `tests/test_attribute_error.py`
     ```python
     import unittest
@@ -133,7 +135,7 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     >       self.assertIsNone(module.attribute_1)
     E       AttributeError: module 'module' has no attribute 'attribute_1'
     ```
-### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: Make it Pass
 - <span style="color:red">**RED**</span>: Write a failing test - Update `module.py`
     ```python
     attribute_0 = None
@@ -152,7 +154,7 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     ```
     The terminal will update to show passing tests
 
-### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: Write a failing test
 - Update `tests/test_attribute_error.py`
     ```python
     import unittest
@@ -170,7 +172,7 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     >       self.assertIsNone(module.attribute_2)
     E       AttributeError: module 'module' has no attribute 'attribute_2'
     ```
-### <span style="color:green">**GREEN**</span>: Make it Pass
+##### <span style="color:green">**GREEN**</span>: Make it Pass
 - <span style="color:red">**RED**</span>: Write a failing test - Update `module.py`
     ```python
     attribute_0 = None
@@ -191,7 +193,7 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     ```
     The tests pass
 
-### <span style="color:red">**RED**</span>: Write a failing test
+##### <span style="color:red">**RED**</span>: Write a failing test
 - Update `tests/test_attribute_error.py`
     ```python
     import unittest
@@ -210,7 +212,7 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     >       self.assertIsNone(module.attribute_3)
     E       AttributeError: module 'module' has no attribute 'attribute_3'
     ```
-### <span style="color:green">**GREEN**</span>: Make it Pass
+##### <span style="color:green">**GREEN**</span>: Make it Pass
 - <span style="color:red">**RED**</span>: Write a failing test - Update `module.py`
     ```python
     attribute_0 = None
@@ -354,9 +356,9 @@ You now know how to solve
 - `NameError` using variables
 - `AttributeError` using variables
 
+## How to solve the AttributeError by defining a Function
 Let us take a look at solving `AttributeError` for functions
-
-## <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: Write a failing test
 
 - Update the `TestAttributeError` class in `tests/test_attribute_error.py` with
     ```python
@@ -395,7 +397,7 @@ Let us take a look at solving `AttributeError` for functions
     # TypeError
     ```
 
-## <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: Make it Pass
 
 - change `function_0` in `module.py` to a function by updating `module.py` to
     ```python
@@ -410,7 +412,7 @@ Let us take a look at solving `AttributeError` for functions
 > - the default return value of a function is `None`
 > - the line with `return` is the last executable line of code in a function
 
-## <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span> - make it better
 
 - Let's make it a drill, update the `TestAttributeError` class in`tests/test_attribute_error.py` to include
     ```python
@@ -532,3 +534,60 @@ You now know how to solve
 - `AttributeError` by defining
     - variables
     - functions
+
+## How to solve the AttributeError by defining a Class
+
+### <span style="color:red">**RED**</span>: Write a failing test
+
+### <span style="color:green">**GREEN**</span>: Make it Pass
+
+### <span style="color:orange">**REFACTOR**</span> - make it better
+
+***WELL DONE!!!***
+You now know how to solve
+- `AssertionError`
+- `ModuleNotFoundError`
+- `NameError`
+- `AttributeError` by defining
+    - variables
+    - functions
+    - classes
+
+## How to solve the AttributeError by defining an Attribute in a Class
+
+### <span style="color:red">**RED**</span>: Write a failing test
+
+### <span style="color:green">**GREEN**</span>: Make it Pass
+
+### <span style="color:orange">**REFACTOR**</span> - make it better
+
+***WELL DONE!!!***
+You now know how to solve
+- `AssertionError`
+- `ModuleNotFoundError`
+- `NameError`
+- `AttributeError` by defining
+    - variables
+    - functions
+    - classes
+    - attributes in classes
+
+## How to solve the AttributeError by defining a Method(Function) in a Class
+
+### <span style="color:red">**RED**</span>: Write a failing test
+
+### <span style="color:green">**GREEN**</span>: Make it Pass
+
+### <span style="color:orange">**REFACTOR**</span> - make it better
+
+***WELL DONE!!!***
+You now know how to solve
+- `AssertionError`
+- `ModuleNotFoundError`
+- `NameError`
+- `AttributeError` by defining
+    - variables
+    - functions
+    - classes
+    - attributes in classes
+    - functions/methods in classes
