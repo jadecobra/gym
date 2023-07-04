@@ -144,13 +144,13 @@ Looking at the traceback starting from the bottom
 - `tests/test_module_not_found_error.py:1: in <module>` - the file that caused the failure and the line in the file where the failure occurs
 - `Hint: make sure your test modules/packages have valid Python names.` depending on your Python version you might not see this. A suggestion to help solve the problem
 - `ImportError while importing test module '/Users/johnnyblase/gym/gym/python_tdd/project_name/tests/test_module_not_found_error.py'.` - A description of the error encountered and when in the execution it occurred
-- Add the errors to your running list of Exceptions encountered
-```
-Exceptions Encountered
-# AssertionError
-# ImportError
-# ModuleNotFoundError
-```
+- Add the errors to the running list of Exceptions encountered
+    ```
+    # Exceptions Encountered
+    # AssertionError
+    # ImportError
+    # ModuleNotFoundError
+    ```
 For more information about imports you can read [The Import Statement](https://docs.python.org/3/reference/simple_stmts.html#import)
 
 ### <span style="color:green">**GREEN**</span>: Make it Pass

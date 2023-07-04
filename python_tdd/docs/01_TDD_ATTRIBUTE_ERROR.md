@@ -359,9 +359,39 @@ Let us take a look at solving `AttributeError` for functions
 ## <span style="color:red">**RED**</span>: Write a failing test
 
 - Update the `TestAttributeError` class in `tests/test_attribute_error.py` with
-```python
-    def test_defining_functions_to_solve_attribute_errors(self):
-        self.assertIsNone(module.function_0())
-```
+    ```python
+        def test_defining_functions_to_solve_attribute_errors(self):
+            self.assertIsNone(module.function_0())
+    ```
+    the terminal updates to show
+    ```shell
+        E       AttributeError: module 'module' has no attribute 'function_0'
 
+    tests/test_attribute_error.py:11: AttributeError
+    ```
+    solving it the same way as the previous `AttributeError` we update `module.py`
+    ```python
+    ...
+    function_0 = None
+    ```
+    the terminal updates to show
+    ```shell
+    >       self.assertIsNone(module.function_0())
+    E       TypeError: 'NoneType' object is not callable
+
+    tests/test_attribute_error.py:11: TypeError
+    ```
+    - we have encountered a new exception `TypeError`
+    - a `TypeError` occurs in this case because we `called` an object that was not `callable`
+    - What is a callable object? In python, it is any object you can reference that does something other than return a value. You can define a callable as a `class` or a `function`
+    - When an object is defined as a callable, we call it by adding parentheses at the end e.g. `function_0()` will call the `function_0`
+    - Adding `TypeError` to our list of exceptions encountered
+    ```
+    # Exceptions Encountered
+        # AssertionError
+        # ModuleNotFoundError
+        # AttributeError
+        # NameError
+        # TypeError
+    ```
 ## <span style="color:green">**GREEN**</span>: Make it Pass
