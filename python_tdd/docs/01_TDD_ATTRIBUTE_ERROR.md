@@ -232,7 +232,7 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     attribute_3 = None
     ```
 
-This is the pattern. Update `tests/test_attribute_error.py` to add more tests
+This is the pattern. Update the `TestAttributeError` class in `tests/test_attribute_error.py` to add more tests
 ```python
 def test_defining_variables_to_solve_attribute_errors(self):
     self.assertIsNone(module.attribute_0)
@@ -385,7 +385,7 @@ Let us take a look at solving `AttributeError` for functions
     - a `TypeError` occurs in this case because we `called` an object that was not `callable`
     - What is a callable object? In python, it is any object you can reference that does something other than return a value. You can define a callable as a `class` or a `function`
     - When an object is defined as a callable, we call it by adding parentheses at the end e.g. `function_0()` will call the `function_0`
-    - Adding `TypeError` to our list of exceptions encountered
+    - Add `TypeError` to our list of exceptions encountered
     ```python
     # Exceptions Encountered
     # AssertionError
@@ -412,7 +412,7 @@ Let us take a look at solving `AttributeError` for functions
 
 ## <span style="color:orange">**REFACTOR**</span> - make it better
 
-- Let's make it a drill, update `tests/test_attribute_error.py` to include
+- Let's make it a drill, update the `TestAttributeError` class in`tests/test_attribute_error.py` to include
     ```python
     def test_defining_functions_to_solve_attribute_errors(self):
         self.assertIsNone(module.function_0())
@@ -523,3 +523,12 @@ Let us take a look at solving `AttributeError` for functions
     tests/test_attribute_error.py:12: AttributeError
     ```
     update `module.py` with the solution until all tests pass
+
+***WELL DONE!!!***
+You now know how to solve
+- `AssertionError`
+- `ModuleNotFoundError`
+- `NameError`
+- `AttributeError` by defining
+    - variables
+    - functions
