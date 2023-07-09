@@ -60,8 +60,6 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
         def test_defining_variables_to_solve_attribute_errors(self):
     >       self.assertIsNone(module.attribute_0)
     E       AttributeError: module 'module' has no attribute 'attribute_0'
-
-    tests/test_attribute_error.py:7: AttributeError
     ```
     Looking at the traceback starting from the bottom
     - `tests/test_attribute_error.py:7: AttributeError` the location and name of the Error that causes the failure
@@ -132,7 +130,6 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     ```
     the terminal will update to show an `AttributeError`
     ```shell
-    >       self.assertIsNone(module.attribute_1)
     E       AttributeError: module 'module' has no attribute 'attribute_1'
     ```
 #### <span style="color:green">**GREEN**</span>: Make it Pass
@@ -143,8 +140,6 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     ```
     the terminal will update to show a `NameError`
     ```shell
-    module.py:2: in <module>
-        attribute_1
     E   NameError: name 'attribute_1' is not defined
     ```
 - <span style="color:green">**GREEN**</span>: Make it Pass - Update `module.py`
@@ -181,8 +176,6 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     ```
     the terminal will update to show a `NameError`
     ```shell
-    module.py:3: in <module>
-        attribute_2
     E   NameError: name 'attribute_2' is not defined
     ```
 - <span style="color:green">**GREEN**</span>: Make it Pass - Update `module.py`
@@ -209,7 +202,6 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     ```
     the terminal will update to show an `AttributeError`
     ```shell
-    >       self.assertIsNone(module.attribute_3)
     E       AttributeError: module 'module' has no attribute 'attribute_3'
     ```
 ##### <span style="color:green">**GREEN**</span>: Make it Pass
@@ -222,8 +214,6 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     ```
     the terminal will update to show a `NameError`
     ```shell
-    module.py:4: in <module>
-        attribute_3
     E   NameError: name 'attribute_3' is not defined
     ```
 - <span style="color:green">**GREEN**</span>: Make it Pass - Update `module.py`
@@ -367,9 +357,7 @@ Let us take a look at solving `AttributeError` for functions
     ```
     the terminal updates to show
     ```shell
-        E       AttributeError: module 'module' has no attribute 'function_0'
-
-    tests/test_attribute_error.py:11: AttributeError
+    E       AttributeError: module 'module' has no attribute 'function_0'
     ```
     solving it the same way as the previous `AttributeError` we update `module.py`
     ```python
@@ -378,10 +366,7 @@ Let us take a look at solving `AttributeError` for functions
     ```
     the terminal updates to show
     ```shell
-    >       self.assertIsNone(module.function_0())
     E       TypeError: 'NoneType' object is not callable
-
-    tests/test_attribute_error.py:11: TypeError
     ```
     - we have encountered a new exception `TypeError`
     - a `TypeError` occurs in this case because we `called` an object that was not `callable`
@@ -520,9 +505,7 @@ Let us take a look at solving `AttributeError` for functions
     ```
     the terminal updates to show an error
     ```shell
-        E       AttributeError: module 'module' has no attribute 'function_1'
-
-    tests/test_attribute_error.py:12: AttributeError
+    E       AttributeError: module 'module' has no attribute 'function_1'
     ```
     update `module.py` with the solution until all tests pass
 
@@ -559,9 +542,7 @@ Classes
     ```
     the terminal updates to show
     ```shell
-        E       AttributeError: module 'module' has no attribute 'Class0'
-
-    tests/test_attribute_error.py:15: AttributeError
+    E       AttributeError: module 'module' has no attribute 'Class0'
     ```
     Looking at the traceback we see it's the line we added that caused the failure
     - We are familiar with an `AttributeError`
@@ -575,9 +556,7 @@ Classes
     ```
     the terminal updates to show a `TypeError`
     ```shell
-        E       TypeError: 'NoneType' object is not callable
-
-    tests/test_attribute_error.py:15: TypeError
+    E       TypeError: 'NoneType' object is not callable
     ```
     We dealt with a similar issue earlier, let's make `Class0` callable the way we know how. update `module.py`
     ```python
@@ -695,8 +674,6 @@ Classes
     the terminal updates to show
     ```shell
         E       AttributeError: module 'module' has no attribute 'Class1'
-
-        tests/test_attribute_error.py:16: AttributeError
     ```
     update `module.py` with the solution until all tests pass
 
@@ -709,15 +686,197 @@ You now know how to solve
     - variables
     - functions
     - classes?
-        - do we know how to define classes? so far our solution looks the same as defining functions
+        - do we know how to define classes? so far our solution looks the same as defining functions. What's the difference between functions and classes?
 
 ## How to solve the AttributeError by defining an Attribute in a Class
 
 ### <span style="color:red">**RED**</span>: Write a failing test
 
+- update the `TestAttributeError` class in `test_attribute_error.py`
+    ```python
+    def test_defining_attributes_in_classes_to_solve_attribute_errors(self):
+        self.assertIsNone(module.Class.attribute_0)
+    ```
+    the terminal updates to show an `AttributeError`
+    ```python
+    >       self.assertIsNone(module.Class.attribute_0)
+    E       AttributeError: module 'module' has no attribute 'Class'
+    ```
+
 ### <span style="color:green">**GREEN**</span>: Make it Pass
 
+- update `module.py`
+    ```python
+    Class = None
+    ```
+    the terminal updates to show
+    ```shell
+    E       AttributeError: 'NoneType' object has no attribute 'attribute_0'
+    ```
+    update `module.py`
+    ```python
+    def Class():
+        return None
+    ```
+    the terminal updates to show
+    ```shell
+    E       AttributeError: 'function' object has no attribute 'attribute_0'
+    ```
+    how do we define an attribute in a function?
+    update `module.py`
+    ```python
+    def Class():
+        attribute_0 = None
+        return None
+    ```
+    the terminal still shows the same error
+- update `module.py` to change the definition of `Class` using the `class` keyword instead of `def`
+    ```python
+    class Class():
+        attribute_0 = None
+        return None
+    ```
+
+    the terminal will update to show a `SyntaxError`
+    ```shell
+    E       return None
+    E       ^^^^^^^^^^^
+    E   SyntaxError: 'return' outside function
+    ```
+    We have a new error `SyntaxError` add this to the running list of Exceptions
+    ```python
+    # Exceptions Encountered
+    # AssertionError
+    # ModuleNotFoundError
+    # AttributeError
+    # NameError
+    # TypeError
+    # SyntaxError
+    ```
+- remove the troublesome line from `module.py`
+    ```python
+    class Class():
+        attribute_0 = None
+    ```
+    Eureka! The Tests pass!!
+
 ### <span style="color:orange">**REFACTOR**</span> - make it better
+
+- The current solution for `test_defining_classes_to_solve_attribute_errors` was done by defining functions but the test says `definining_classes`. Let's update those to use the proper way to define classes. Update `module.py` to use `class` instead of `def` e.g.
+    ```python
+    class Class0():
+        pass
+    ```
+    `pass` is a keyword used as a placeholder that does nothing
+- We now know how to properly define a class and define an attribute. To practice defining an attribute, let's make a drill. Update `test_defining_attributes_in_classes_to_solve_attribute_errors` in `TestAttributeError` in `test_attribute_error.py`
+    ```python
+    def test_defining_attributes_in_classes_to_solve_attribute_errors(self):
+        self.assertIsNone(module.Class.attribute_0)
+        self.assertIsNone(module.Class.attribute_1)
+        self.assertIsNone(module.Class.attribute_2)
+        self.assertIsNone(module.Class.attribute_3)
+        self.assertIsNone(module.Class.attribute_4)
+        self.assertIsNone(module.Class.attribute_5)
+        self.assertIsNone(module.Class.attribute_6)
+        self.assertIsNone(module.Class.attribute_7)
+        self.assertIsNone(module.Class.attribute_8)
+        self.assertIsNone(module.Class.attribute_9)
+        self.assertIsNone(module.Class.attribute_10)
+        self.assertIsNone(module.Class.attribute_11)
+        self.assertIsNone(module.Class.attribute_12)
+        self.assertIsNone(module.Class.attribute_13)
+        self.assertIsNone(module.Class.attribute_14)
+        self.assertIsNone(module.Class.attribute_15)
+        self.assertIsNone(module.Class.attribute_16)
+        self.assertIsNone(module.Class.attribute_17)
+        self.assertIsNone(module.Class.attribute_18)
+        self.assertIsNone(module.Class.attribute_19)
+        self.assertIsNone(module.Class.attribute_20)
+        self.assertIsNone(module.Class.attribute_21)
+        self.assertIsNone(module.Class.attribute_22)
+        self.assertIsNone(module.Class.attribute_23)
+        self.assertIsNone(module.Class.attribute_24)
+        self.assertIsNone(module.Class.attribute_25)
+        self.assertIsNone(module.Class.attribute_26)
+        self.assertIsNone(module.Class.attribute_27)
+        self.assertIsNone(module.Class.attribute_28)
+        self.assertIsNone(module.Class.attribute_29)
+        self.assertIsNone(module.Class.attribute_30)
+        self.assertIsNone(module.Class.attribute_34)
+        self.assertIsNone(module.Class.attribute_32)
+        self.assertIsNone(module.Class.attribute_33)
+        self.assertIsNone(module.Class.attribute_34)
+        self.assertIsNone(module.Class.attribute_35)
+        self.assertIsNone(module.Class.attribute_36)
+        self.assertIsNone(module.Class.attribute_37)
+        self.assertIsNone(module.Class.attribute_38)
+        self.assertIsNone(module.Class.attribute_39)
+        self.assertIsNone(module.Class.attribute_40)
+        self.assertIsNone(module.Class.attribute_41)
+        self.assertIsNone(module.Class.attribute_42)
+        self.assertIsNone(module.Class.attribute_43)
+        self.assertIsNone(module.Class.attribute_44)
+        self.assertIsNone(module.Class.attribute_45)
+        self.assertIsNone(module.Class.attribute_46)
+        self.assertIsNone(module.Class.attribute_47)
+        self.assertIsNone(module.Class.attribute_48)
+        self.assertIsNone(module.Class.attribute_49)
+        self.assertIsNone(module.Class.attribute_50)
+        self.assertIsNone(module.Class.attribute_51)
+        self.assertIsNone(module.Class.attribute_52)
+        self.assertIsNone(module.Class.attribute_53)
+        self.assertIsNone(module.Class.attribute_54)
+        self.assertIsNone(module.Class.attribute_55)
+        self.assertIsNone(module.Class.attribute_56)
+        self.assertIsNone(module.Class.attribute_57)
+        self.assertIsNone(module.Class.attribute_58)
+        self.assertIsNone(module.Class.attribute_59)
+        self.assertIsNone(module.Class.attribute_60)
+        self.assertIsNone(module.Class.attribute_61)
+        self.assertIsNone(module.Class.attribute_62)
+        self.assertIsNone(module.Class.attribute_63)
+        self.assertIsNone(module.Class.attribute_64)
+        self.assertIsNone(module.Class.attribute_65)
+        self.assertIsNone(module.Class.attribute_66)
+        self.assertIsNone(module.Class.attribute_67)
+        self.assertIsNone(module.Class.attribute_68)
+        self.assertIsNone(module.Class.attribute_69)
+        self.assertIsNone(module.Class.attribute_70)
+        self.assertIsNone(module.Class.attribute_71)
+        self.assertIsNone(module.Class.attribute_72)
+        self.assertIsNone(module.Class.attribute_73)
+        self.assertIsNone(module.Class.attribute_74)
+        self.assertIsNone(module.Class.attribute_75)
+        self.assertIsNone(module.Class.attribute_76)
+        self.assertIsNone(module.Class.attribute_77)
+        self.assertIsNone(module.Class.attribute_78)
+        self.assertIsNone(module.Class.attribute_79)
+        self.assertIsNone(module.Class.attribute_80)
+        self.assertIsNone(module.Class.attribute_81)
+        self.assertIsNone(module.Class.attribute_82)
+        self.assertIsNone(module.Class.attribute_83)
+        self.assertIsNone(module.Class.attribute_84)
+        self.assertIsNone(module.Class.attribute_85)
+        self.assertIsNone(module.Class.attribute_86)
+        self.assertIsNone(module.Class.attribute_87)
+        self.assertIsNone(module.Class.attribute_88)
+        self.assertIsNone(module.Class.attribute_89)
+        self.assertIsNone(module.Class.attribute_90)
+        self.assertIsNone(module.Class.attribute_91)
+        self.assertIsNone(module.Class.attribute_92)
+        self.assertIsNone(module.Class.attribute_93)
+        self.assertIsNone(module.Class.attribute_94)
+        self.assertIsNone(module.Class.attribute_95)
+        self.assertIsNone(module.Class.attribute_96)
+        self.assertIsNone(module.Class.attribute_97)
+        self.assertIsNone(module.Class.attribute_98)
+        self.assertIsNone(module.Class.attribute_99)
+    ```
+    the terminal updates to show
+    ```shell
+    E       AttributeError: type object 'Class' has no attribute 'attribute_1'
+    ```
+    update `module.py` with the solution until all tests pass
 
 ***WELL DONE!!!***
 You now know how to solve
@@ -749,3 +908,8 @@ You now know how to solve
     - classes
     - attributes in classes
     - functions/methods in classes
+
+***WHAT'S THE DIFFERENCE BETWEEN CLASSES AND FUNCTIONS?***
+- we cannot access attributes we define in a function outside the function
+- `def` vs `class`
+- `snake_case` vs `CamelCase` names
