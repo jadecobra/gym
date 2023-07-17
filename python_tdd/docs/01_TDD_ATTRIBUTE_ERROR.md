@@ -743,7 +743,8 @@ You now know how to solve
     E       ^^^^^^^^^^^
     E   SyntaxError: 'return' outside function
     ```
-    We have a new error `SyntaxError` add this to the running list of Exceptions
+    - We have a new error `SyntaxError` add this to the running list of Exceptions
+    - The error is caused by the `return` statement being outside of a function
     ```python
     # Exceptions Encountered
     # AssertionError
