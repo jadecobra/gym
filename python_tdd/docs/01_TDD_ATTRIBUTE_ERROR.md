@@ -26,14 +26,14 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
 
     class TestAttributeError(unittest.TestCase):
         def test_defining_variables_to_solve_attribute_errors(self):
-            self.assertIsNone(module.attribute_0)
+            self.assertIsNone(module.variable_0)
     ```
     What is the code above doing?
     - `import unittest` imports the unittest module from the python standard library
     - `import module` import module from somewhere - this is going to hold the solution we write
     - `class TestAttributeError(unittest.TestCase):` - a class definition that inherits from `unittest.TestCase` and will hold our tests
     - `def test_defining_variables_to_solve_attribute_errors(self):` the definition of our first test function. we try to test one thing with our test function. In this case we are testing if definining variables can solve an `AttributeError`
-    - `self.assertIsNone(module.attribute_0)` - the actual test. This is equivalent to asking the question `is module.attribute_0 equal to None`
+    - `self.assertIsNone(module.variable_0)` - the actual test. This is equivalent to asking the question `is module.variable_0 equal to None`
     - `assertIsNone` is one of the helper functions inherited from `unittest.TestCase`
     - `self` refers to the `TestAttributeError` class
 
@@ -58,28 +58,28 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
     self = <tests.test_attribute_error.TestAttributeError testMethod=test_defining_variables_to_solve_attribute_errors>
 
         def test_defining_variables_to_solve_attribute_errors(self):
-    >       self.assertIsNone(module.attribute_0)
-    E       AttributeError: module 'module' has no attribute 'attribute_0'
+    >       self.assertIsNone(module.variable_0)
+    E       AttributeError: module 'module' has no attribute 'variable_0'
     ```
     Looking at the traceback starting from the bottom
     - `tests/test_attribute_error.py:7: AttributeError` the location and name of the Error that causes the failure
-    - `E       AttributeError: module 'module' has no attribute 'attribute_0'` the module we imported has no definitions named `attribute_0`
-    - `>       self.assertIsNone(module.attribute_0)` the line of code that errored out during execution
+    - `E       AttributeError: module 'module' has no attribute 'variable_0'` the module we imported has no definitions named `variable_0`
+    - `>       self.assertIsNone(module.variable_0)` the line of code that errored out during execution
     - `def test_defining_variables_to_solve_attribute_errors(self):` the function definition where the error occurs
     - `self = <tests.test_attribute_error.TestAttributeError testMethod=test_defining_variables_to_solve_attribute_errors>` - A reference to the class and method(function) that caused the failure
 - Open `module.py` in the Interactive Development Environment(IDE) and add the following
     ```python
-    attribute_0
+    variable_0
     ```
     The terminal will update to show the following
     ```shell
     tests/test_attribute_error.py:2: in <module>
         import module
     module.py:1: in <module>
-        attribute_0
-    E   NameError: name 'attribute_0' is not defined
+        variable_0
+    E   NameError: name 'variable_0' is not defined
     ```
-    - `E   NameError: name 'attribute_0' is not defined` this is a new error so we add it to our running list of errors encountered. The running list now looks like this
+    - `E   NameError: name 'variable_0' is not defined` this is a new error so we add it to our running list of errors encountered. The running list now looks like this
         ```
         # Exceptions Encountered
         # AssertionError
@@ -90,15 +90,15 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
         A `NameError` is raised when there is a reference in an object with no definition
         - What is the difference between a `NameError` and an `AttributeError`?
             - An `AttributeError` occurs when there is a reference to a name in an object and the name does not exist e.g. `object.name`
-            - A `NameError` occurs when there is a reference to name with no prior definition
+            - A `NameError` occurs when there is a reference to a name with no prior definition
         - What is similar between `ModuleNotFoundError`, `AttributeError` and `NameError`?
-    - `attribute_0` the offending line
+    - `variable_0` the offending line
     - `module.py:1: in <module>` the location of the offending line
 - Update `module.py` in the Interactive Development Environment(IDE) to
     ```python
-    attribute_0 = None
+    variable_0 = None
     ```
-    this explicity defines `attribute_0` with a value of `None` and the terminal updates to show a passing test. YES!!!
+    this explicity defines `variable_0` with a value of `None` and the terminal updates to show a passing test. YES!!!
     ```shell
     collected 2 items
 
@@ -125,27 +125,27 @@ There's not much to do here, we could repeat the above as a drill to make sure w
 
     class TestAttributeError(unittest.TestCase):
         def test_defining_variables_to_solve_attribute_errors(self):
-            self.assertIsNone(module.attribute_0)
-            self.assertIsNone(module.attribute_1)
+            self.assertIsNone(module.variable_0)
+            self.assertIsNone(module.variable_1)
     ```
     the terminal will update to show an `AttributeError`
     ```shell
-    E       AttributeError: module 'module' has no attribute 'attribute_1'
+    E       AttributeError: module 'module' has no attribute 'variable_1'
     ```
 #### <span style="color:green">**GREEN**</span>: Make it Pass
 - <span style="color:red">**RED**</span>: Write a failing test - Update `module.py`
     ```python
-    attribute_0 = None
-    attribute_1
+    variable_0 = None
+    variable_1
     ```
     the terminal will update to show a `NameError`
     ```shell
-    E   NameError: name 'attribute_1' is not defined
+    E   NameError: name 'variable_1' is not defined
     ```
 - <span style="color:green">**GREEN**</span>: Make it Pass - Update `module.py`
     ```python
-    attribute_0 = None
-    attribute_1 = None
+    variable_0 = None
+    variable_1 = None
     ```
     The terminal will update to show passing tests
 
@@ -158,31 +158,31 @@ There's not much to do here, we could repeat the above as a drill to make sure w
 
     class TestAttributeError(unittest.TestCase):
         def test_defining_variables_to_solve_attribute_errors(self):
-            self.assertIsNone(module.attribute_0)
-            self.assertIsNone(module.attribute_1)
-            self.assertIsNone(module.attribute_2)
+            self.assertIsNone(module.variable_0)
+            self.assertIsNone(module.variable_1)
+            self.assertIsNone(module.variable_2)
     ```
     the terminal will update to show an `AttributeError`
     ```shell
-    >       self.assertIsNone(module.attribute_2)
-    E       AttributeError: module 'module' has no attribute 'attribute_2'
+    >       self.assertIsNone(module.variable_2)
+    E       AttributeError: module 'module' has no attribute 'variable_2'
     ```
 ##### <span style="color:green">**GREEN**</span>: Make it Pass
 - <span style="color:red">**RED**</span>: Write a failing test - Update `module.py`
     ```python
-    attribute_0 = None
-    attribute_1 = None
-    attribute_2
+    variable_0 = None
+    variable_1 = None
+    variable_2
     ```
     the terminal will update to show a `NameError`
     ```shell
-    E   NameError: name 'attribute_2' is not defined
+    E   NameError: name 'variable_2' is not defined
     ```
 - <span style="color:green">**GREEN**</span>: Make it Pass - Update `module.py`
     ```python
-    attribute_0 = None
-    attribute_1 = None
-    attribute_2 = None
+    variable_0 = None
+    variable_1 = None
+    variable_2 = None
     ```
     The tests pass
 
@@ -195,138 +195,138 @@ There's not much to do here, we could repeat the above as a drill to make sure w
 
     class TestAttributeError(unittest.TestCase):
         def test_defining_variables_to_solve_attribute_errors(self):
-            self.assertIsNone(module.attribute_0)
-            self.assertIsNone(module.attribute_1)
-            self.assertIsNone(module.attribute_2)
-            self.assertIsNone(module.attribute_3)
+            self.assertIsNone(module.variable_0)
+            self.assertIsNone(module.variable_1)
+            self.assertIsNone(module.variable_2)
+            self.assertIsNone(module.variable_3)
     ```
     the terminal will update to show an `AttributeError`
     ```shell
-    E       AttributeError: module 'module' has no attribute 'attribute_3'
+    E       AttributeError: module 'module' has no attribute 'variable_3'
     ```
 ##### <span style="color:green">**GREEN**</span>: Make it Pass
 - <span style="color:red">**RED**</span>: Write a failing test - Update `module.py`
     ```python
-    attribute_0 = None
-    attribute_1 = None
-    attribute_2 = None
-    attribute_3
+    variable_0 = None
+    variable_1 = None
+    variable_2 = None
+    variable_3
     ```
     the terminal will update to show a `NameError`
     ```shell
-    E   NameError: name 'attribute_3' is not defined
+    E   NameError: name 'variable_3' is not defined
     ```
 - <span style="color:green">**GREEN**</span>: Make it Pass - Update `module.py`
     ```python
-    attribute_0 = None
-    attribute_1 = None
-    attribute_2 = None
-    attribute_3 = None
+    variable_0 = None
+    variable_1 = None
+    variable_2 = None
+    variable_3 = None
     ```
 
 This is the pattern. Update the `TestAttributeError` class in `tests/test_attribute_error.py` to add more tests
 ```python
 def test_defining_variables_to_solve_attribute_errors(self):
-    self.assertIsNone(module.attribute_0)
-    self.assertIsNone(module.attribute_1)
-    self.assertIsNone(module.attribute_2)
-    self.assertIsNone(module.attribute_3)
-    self.assertIsNone(module.attribute_4)
-    self.assertIsNone(module.attribute_5)
-    self.assertIsNone(module.attribute_6)
-    self.assertIsNone(module.attribute_7)
-    self.assertIsNone(module.attribute_8)
-    self.assertIsNone(module.attribute_9)
-    self.assertIsNone(module.attribute_10)
-    self.assertIsNone(module.attribute_11)
-    self.assertIsNone(module.attribute_12)
-    self.assertIsNone(module.attribute_13)
-    self.assertIsNone(module.attribute_14)
-    self.assertIsNone(module.attribute_15)
-    self.assertIsNone(module.attribute_16)
-    self.assertIsNone(module.attribute_17)
-    self.assertIsNone(module.attribute_18)
-    self.assertIsNone(module.attribute_19)
-    self.assertIsNone(module.attribute_20)
-    self.assertIsNone(module.attribute_21)
-    self.assertIsNone(module.attribute_22)
-    self.assertIsNone(module.attribute_23)
-    self.assertIsNone(module.attribute_24)
-    self.assertIsNone(module.attribute_25)
-    self.assertIsNone(module.attribute_26)
-    self.assertIsNone(module.attribute_27)
-    self.assertIsNone(module.attribute_28)
-    self.assertIsNone(module.attribute_29)
-    self.assertIsNone(module.attribute_30)
-    self.assertIsNone(module.attribute_34)
-    self.assertIsNone(module.attribute_32)
-    self.assertIsNone(module.attribute_33)
-    self.assertIsNone(module.attribute_34)
-    self.assertIsNone(module.attribute_35)
-    self.assertIsNone(module.attribute_36)
-    self.assertIsNone(module.attribute_37)
-    self.assertIsNone(module.attribute_38)
-    self.assertIsNone(module.attribute_39)
-    self.assertIsNone(module.attribute_40)
-    self.assertIsNone(module.attribute_41)
-    self.assertIsNone(module.attribute_42)
-    self.assertIsNone(module.attribute_43)
-    self.assertIsNone(module.attribute_44)
-    self.assertIsNone(module.attribute_45)
-    self.assertIsNone(module.attribute_46)
-    self.assertIsNone(module.attribute_47)
-    self.assertIsNone(module.attribute_48)
-    self.assertIsNone(module.attribute_49)
-    self.assertIsNone(module.attribute_50)
-    self.assertIsNone(module.attribute_51)
-    self.assertIsNone(module.attribute_52)
-    self.assertIsNone(module.attribute_53)
-    self.assertIsNone(module.attribute_54)
-    self.assertIsNone(module.attribute_55)
-    self.assertIsNone(module.attribute_56)
-    self.assertIsNone(module.attribute_57)
-    self.assertIsNone(module.attribute_58)
-    self.assertIsNone(module.attribute_59)
-    self.assertIsNone(module.attribute_60)
-    self.assertIsNone(module.attribute_61)
-    self.assertIsNone(module.attribute_62)
-    self.assertIsNone(module.attribute_63)
-    self.assertIsNone(module.attribute_64)
-    self.assertIsNone(module.attribute_65)
-    self.assertIsNone(module.attribute_66)
-    self.assertIsNone(module.attribute_67)
-    self.assertIsNone(module.attribute_68)
-    self.assertIsNone(module.attribute_69)
-    self.assertIsNone(module.attribute_70)
-    self.assertIsNone(module.attribute_71)
-    self.assertIsNone(module.attribute_72)
-    self.assertIsNone(module.attribute_73)
-    self.assertIsNone(module.attribute_74)
-    self.assertIsNone(module.attribute_75)
-    self.assertIsNone(module.attribute_76)
-    self.assertIsNone(module.attribute_77)
-    self.assertIsNone(module.attribute_78)
-    self.assertIsNone(module.attribute_79)
-    self.assertIsNone(module.attribute_80)
-    self.assertIsNone(module.attribute_81)
-    self.assertIsNone(module.attribute_82)
-    self.assertIsNone(module.attribute_83)
-    self.assertIsNone(module.attribute_84)
-    self.assertIsNone(module.attribute_85)
-    self.assertIsNone(module.attribute_86)
-    self.assertIsNone(module.attribute_87)
-    self.assertIsNone(module.attribute_88)
-    self.assertIsNone(module.attribute_89)
-    self.assertIsNone(module.attribute_90)
-    self.assertIsNone(module.attribute_91)
-    self.assertIsNone(module.attribute_92)
-    self.assertIsNone(module.attribute_93)
-    self.assertIsNone(module.attribute_94)
-    self.assertIsNone(module.attribute_95)
-    self.assertIsNone(module.attribute_96)
-    self.assertIsNone(module.attribute_97)
-    self.assertIsNone(module.attribute_98)
-    self.assertIsNone(module.attribute_99)
+    self.assertIsNone(module.variable_0)
+    self.assertIsNone(module.variable_1)
+    self.assertIsNone(module.variable_2)
+    self.assertIsNone(module.variable_3)
+    self.assertIsNone(module.variable_4)
+    self.assertIsNone(module.variable_5)
+    self.assertIsNone(module.variable_6)
+    self.assertIsNone(module.variable_7)
+    self.assertIsNone(module.variable_8)
+    self.assertIsNone(module.variable_9)
+    self.assertIsNone(module.variable_10)
+    self.assertIsNone(module.variable_11)
+    self.assertIsNone(module.variable_12)
+    self.assertIsNone(module.variable_13)
+    self.assertIsNone(module.variable_14)
+    self.assertIsNone(module.variable_15)
+    self.assertIsNone(module.variable_16)
+    self.assertIsNone(module.variable_17)
+    self.assertIsNone(module.variable_18)
+    self.assertIsNone(module.variable_19)
+    self.assertIsNone(module.variable_20)
+    self.assertIsNone(module.variable_21)
+    self.assertIsNone(module.variable_22)
+    self.assertIsNone(module.variable_23)
+    self.assertIsNone(module.variable_24)
+    self.assertIsNone(module.variable_25)
+    self.assertIsNone(module.variable_26)
+    self.assertIsNone(module.variable_27)
+    self.assertIsNone(module.variable_28)
+    self.assertIsNone(module.variable_29)
+    self.assertIsNone(module.variable_30)
+    self.assertIsNone(module.variable_34)
+    self.assertIsNone(module.variable_32)
+    self.assertIsNone(module.variable_33)
+    self.assertIsNone(module.variable_34)
+    self.assertIsNone(module.variable_35)
+    self.assertIsNone(module.variable_36)
+    self.assertIsNone(module.variable_37)
+    self.assertIsNone(module.variable_38)
+    self.assertIsNone(module.variable_39)
+    self.assertIsNone(module.variable_40)
+    self.assertIsNone(module.variable_41)
+    self.assertIsNone(module.variable_42)
+    self.assertIsNone(module.variable_43)
+    self.assertIsNone(module.variable_44)
+    self.assertIsNone(module.variable_45)
+    self.assertIsNone(module.variable_46)
+    self.assertIsNone(module.variable_47)
+    self.assertIsNone(module.variable_48)
+    self.assertIsNone(module.variable_49)
+    self.assertIsNone(module.variable_50)
+    self.assertIsNone(module.variable_51)
+    self.assertIsNone(module.variable_52)
+    self.assertIsNone(module.variable_53)
+    self.assertIsNone(module.variable_54)
+    self.assertIsNone(module.variable_55)
+    self.assertIsNone(module.variable_56)
+    self.assertIsNone(module.variable_57)
+    self.assertIsNone(module.variable_58)
+    self.assertIsNone(module.variable_59)
+    self.assertIsNone(module.variable_60)
+    self.assertIsNone(module.variable_61)
+    self.assertIsNone(module.variable_62)
+    self.assertIsNone(module.variable_63)
+    self.assertIsNone(module.variable_64)
+    self.assertIsNone(module.variable_65)
+    self.assertIsNone(module.variable_66)
+    self.assertIsNone(module.variable_67)
+    self.assertIsNone(module.variable_68)
+    self.assertIsNone(module.variable_69)
+    self.assertIsNone(module.variable_70)
+    self.assertIsNone(module.variable_71)
+    self.assertIsNone(module.variable_72)
+    self.assertIsNone(module.variable_73)
+    self.assertIsNone(module.variable_74)
+    self.assertIsNone(module.variable_75)
+    self.assertIsNone(module.variable_76)
+    self.assertIsNone(module.variable_77)
+    self.assertIsNone(module.variable_78)
+    self.assertIsNone(module.variable_79)
+    self.assertIsNone(module.variable_80)
+    self.assertIsNone(module.variable_81)
+    self.assertIsNone(module.variable_82)
+    self.assertIsNone(module.variable_83)
+    self.assertIsNone(module.variable_84)
+    self.assertIsNone(module.variable_85)
+    self.assertIsNone(module.variable_86)
+    self.assertIsNone(module.variable_87)
+    self.assertIsNone(module.variable_88)
+    self.assertIsNone(module.variable_89)
+    self.assertIsNone(module.variable_90)
+    self.assertIsNone(module.variable_91)
+    self.assertIsNone(module.variable_92)
+    self.assertIsNone(module.variable_93)
+    self.assertIsNone(module.variable_94)
+    self.assertIsNone(module.variable_95)
+    self.assertIsNone(module.variable_96)
+    self.assertIsNone(module.variable_97)
+    self.assertIsNone(module.variable_98)
+    self.assertIsNone(module.variable_99)
     self.assertFalse(module.false)
     self.assertTrue(module.true)
 ```
