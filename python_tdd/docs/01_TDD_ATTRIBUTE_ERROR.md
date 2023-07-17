@@ -894,9 +894,147 @@ You now know how to solve
 
 ### <span style="color:red">**RED**</span>: Write a failing test
 
+- update the `TestAttributeError` class in `test_attribute_error.py`
+    ```python
+    def test_defining_functions_in_classes_to_solve_attribute_errors(self):
+        self.assertIsNone(module.Class.method_0())
+    ```
+    the terminal updates to show an `AttributeError`
+    ```python
+    >       self.assertIsNone(module.Class.method_0())
+    E       AttributeError: type object 'Class' has no attribute 'method_0'
+    ```
+
 ### <span style="color:green">**GREEN**</span>: Make it Pass
 
+- Update the class `Class` in `module.py`
+    ```python
+    class Class():
+        ...
+        method_0 = None
+    ```
+    the terminal will update to show a `TypeError`
+    ```shell
+    >       self.assertIsNone(module.Class.method_0())
+    E       TypeError: 'NoneType' object is not callable
+    ```
+    this is in our list of errors and we have solved this before
+- change `method_0` in the class `Class` in `module.py` to a function to make it callable
+    ```python
+    class Class():
+        ...
+        def method_0():
+            return None
+    ```
+    the tests pass. Fantastic
+
 ### <span style="color:orange">**REFACTOR**</span> - make it better
+
+You know the `drill`, let's make it. Update `test_defining_functions_in_classes_to_solve_attribute_errors` in `TestAttributeError` in `test_attribute_error.py`
+```python
+def test_defining_functions_in_classes_to_solve_attribute_errors(self):
+    self.assertIsNone(module.Class.method_0())
+    self.assertIsNone(module.Class.method_1())
+    self.assertIsNone(module.Class.method_2())
+    self.assertIsNone(module.Class.method_3())
+    self.assertIsNone(module.Class.method_4())
+    self.assertIsNone(module.Class.method_5())
+    self.assertIsNone(module.Class.method_6())
+    self.assertIsNone(module.Class.method_7())
+    self.assertIsNone(module.Class.method_8())
+    self.assertIsNone(module.Class.method_9())
+    self.assertIsNone(module.Class.method_10())
+    self.assertIsNone(module.Class.method_11())
+    self.assertIsNone(module.Class.method_12())
+    self.assertIsNone(module.Class.method_13())
+    self.assertIsNone(module.Class.method_14())
+    self.assertIsNone(module.Class.method_15())
+    self.assertIsNone(module.Class.method_16())
+    self.assertIsNone(module.Class.method_17())
+    self.assertIsNone(module.Class.method_18())
+    self.assertIsNone(module.Class.method_19())
+    self.assertIsNone(module.Class.method_20())
+    self.assertIsNone(module.Class.method_21())
+    self.assertIsNone(module.Class.method_22())
+    self.assertIsNone(module.Class.method_23())
+    self.assertIsNone(module.Class.method_24())
+    self.assertIsNone(module.Class.method_25())
+    self.assertIsNone(module.Class.method_26())
+    self.assertIsNone(module.Class.method_27())
+    self.assertIsNone(module.Class.method_28())
+    self.assertIsNone(module.Class.method_29())
+    self.assertIsNone(module.Class.method_30())
+    self.assertIsNone(module.Class.method_34())
+    self.assertIsNone(module.Class.method_32())
+    self.assertIsNone(module.Class.method_33())
+    self.assertIsNone(module.Class.method_34())
+    self.assertIsNone(module.Class.method_35())
+    self.assertIsNone(module.Class.method_36())
+    self.assertIsNone(module.Class.method_37())
+    self.assertIsNone(module.Class.method_38())
+    self.assertIsNone(module.Class.method_39())
+    self.assertIsNone(module.Class.method_40())
+    self.assertIsNone(module.Class.method_41())
+    self.assertIsNone(module.Class.method_42())
+    self.assertIsNone(module.Class.method_43())
+    self.assertIsNone(module.Class.method_44())
+    self.assertIsNone(module.Class.method_45())
+    self.assertIsNone(module.Class.method_46())
+    self.assertIsNone(module.Class.method_47())
+    self.assertIsNone(module.Class.method_48())
+    self.assertIsNone(module.Class.method_49())
+    self.assertIsNone(module.Class.method_50())
+    self.assertIsNone(module.Class.method_51())
+    self.assertIsNone(module.Class.method_52())
+    self.assertIsNone(module.Class.method_53())
+    self.assertIsNone(module.Class.method_54())
+    self.assertIsNone(module.Class.method_55())
+    self.assertIsNone(module.Class.method_56())
+    self.assertIsNone(module.Class.method_57())
+    self.assertIsNone(module.Class.method_58())
+    self.assertIsNone(module.Class.method_59())
+    self.assertIsNone(module.Class.method_60())
+    self.assertIsNone(module.Class.method_61())
+    self.assertIsNone(module.Class.method_62())
+    self.assertIsNone(module.Class.method_63())
+    self.assertIsNone(module.Class.method_64())
+    self.assertIsNone(module.Class.method_65())
+    self.assertIsNone(module.Class.method_66())
+    self.assertIsNone(module.Class.method_67())
+    self.assertIsNone(module.Class.method_68())
+    self.assertIsNone(module.Class.method_69())
+    self.assertIsNone(module.Class.method_70())
+    self.assertIsNone(module.Class.method_71())
+    self.assertIsNone(module.Class.method_72())
+    self.assertIsNone(module.Class.method_73())
+    self.assertIsNone(module.Class.method_74())
+    self.assertIsNone(module.Class.method_75())
+    self.assertIsNone(module.Class.method_76())
+    self.assertIsNone(module.Class.method_77())
+    self.assertIsNone(module.Class.method_78())
+    self.assertIsNone(module.Class.method_79())
+    self.assertIsNone(module.Class.method_80())
+    self.assertIsNone(module.Class.method_81())
+    self.assertIsNone(module.Class.method_82())
+    self.assertIsNone(module.Class.method_83())
+    self.assertIsNone(module.Class.method_84())
+    self.assertIsNone(module.Class.method_85())
+    self.assertIsNone(module.Class.method_86())
+    self.assertIsNone(module.Class.method_87())
+    self.assertIsNone(module.Class.method_88())
+    self.assertIsNone(module.Class.method_89())
+    self.assertIsNone(module.Class.method_90())
+    self.assertIsNone(module.Class.method_91())
+    self.assertIsNone(module.Class.method_92())
+    self.assertIsNone(module.Class.method_93())
+    self.assertIsNone(module.Class.method_94())
+    self.assertIsNone(module.Class.method_95())
+    self.assertIsNone(module.Class.method_96())
+    self.assertIsNone(module.Class.method_97())
+    self.assertIsNone(module.Class.method_98())
+    self.assertIsNone(module.Class.method_99())
+```
+repeat the solution until all tests pass
 
 ***WELL DONE!!!***
 You now know how to solve
@@ -914,3 +1052,4 @@ You now know how to solve
 - we cannot access attributes we define in a function outside the function
 - `def` vs `class`
 - `snake_case` vs `CamelCase` names
+- accessibility of attributes and methods from outside the definitions/declarations
