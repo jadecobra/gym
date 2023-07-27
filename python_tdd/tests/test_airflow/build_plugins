@@ -1,6 +1,6 @@
 sudo apt install libpq-dev python3-dev -y
 sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev -y
-sudo apt install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev
+sudo apt install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev -y
 sudo apt install xz-utils tk-dev liblzma-dev -y
 sudo apt install krb5-config krb5-user -y
 sudo apt install libkrb5-dev -y
@@ -10,6 +10,7 @@ sudo apt install libsasl2-modules sasl2-bin -y
 sudo apt install libsasl2-dev -y
 sudo apt install libldap2-dev libssl-dev -y
 sudo apt install unixodbc-dev -y
+sudo apt-get install graphviz graphviz-dev -y
 sudo apt-get install -y --no-install-recommends \
         freetds-bin \
         krb5-user \
