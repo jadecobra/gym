@@ -165,12 +165,15 @@ How can we avoid this repetition and focus on tests and solutions?
 > - replace `python3` in the examples with `python`
 > - replace `source .venv/bin/activate` in the example below with `.venv/scripts/activate`
 
+in your editor create a file named `requirements.txt`, add the following line and save it
+`pytest-watch`
+
 type the following in the terminal
 ```shell
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -U pip
-pip install pytest-watch
+pip install -r requirements.txt
 ```
 
 You just created a [virtual environment](https://docs.python.org/3/library/venv.html)
@@ -178,7 +181,7 @@ You just created a [virtual environment](https://docs.python.org/3/library/venv.
 - `source .venv/bin/activate` or `.venv/scripts/activate` activates the virtual environment
 - `pip install -U pip` - upgrades `pip` to the latest version
 - what is pip? the [python package manager](https://pypi.org/project/pip/)
-- `pip install pytest-watch` installs a python library named `pytest-watch` that will automatically run the tests when a change is made
+- `pip install -r requirements.txt` installs a python library named `pytest-watch` listed in the `requirements.txt` that will automatically run the tests when a change is made
 
 run the tests by typing `pytest-watch` in the terminal, you should see something similar to
 ```shell
