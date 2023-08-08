@@ -87,33 +87,40 @@ the terminal updates to show passing tests
 
 There's not much to do here but add more tests for practice.
 
-- update `test_type_error.py`
+- add a new test to `test_function_signatures_solve_type_errors` in `test_type_error.py`
     ```python
     self.assertIsNone(functions.function_b("a", "b"))
-            self.assertIsNone(functions.function_c("a", "b", "c"))
-            self.assertIsNone(functions.function_d("a", "b", "c", "d"))
-            self.assertIsNone(functions.function_e(1, 2, 3, 4))
-            self.assertIsNone(functions.function_f(1, 2, 3))
-            self.assertIsNone(functions.function_g(1, 2))
-            self.assertIsNone(functions.function_h(1))
-            self.assertIsNone(functions.function_i(True))
-            self.assertIsNone(functions.function_j(True, False))
-            self.assertIsNone(functions.function_k(True, True, False))
-            self.assertIsNone(functions.function_l(True, True, False, False))
-            self.assertIsNone(functions.function_m(True, True, False))
-            self.assertIsNone(functions.function_n(True, True))
-            self.assertIsNone(functions.function_o(True))
-            self.assertIsNone(functions.function_p(a=1))
-            self.assertIsNone(functions.function_q(a=1, b=2))
-            self.assertIsNone(functions.function_r(a=1, b=2, c=3))
-            self.assertIsNone(functions.function_s(a=1, b=2, c=3, d=4))
-            self.assertIsNone(functions.function_t(a=1, b=2, c=3, d=4))
-            self.assertIsNone(functions.function_u(1, 2, a=3, b=4))
-            self.assertIsNone(functions.function_v((1, 2), ("a", "b")))
-            self.assertIsNone(functions.function_w([1, 2], ["a", "b"]))
-            self.assertIsNone(functions.function_x({1, 2}, {"a", "b"}))
-            self.assertIsNone(functions.function_y({"a": 1, "b": 2}, {1: "a", 2: "b"}))
-            self.assertIsNone(functions.function_z(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12))
     ```
+    the terminal updates to show
+    ```shell
+    E       AttributeError: module 'functions' has no attribute 'function_b'
+    ```
+    update `functions.py`
+    ```python
+    function_b = None
+    ```
+    the terminal updates to show
+    ```shell
+    E       TypeError: 'NoneType' object is not callable
+    ```
+    change `function_b` to a function, update `function.py`
+    ```python
+    def function_b():
+        return None
+    ```
+    the terminal updates to show
+    ```shell
+    >       self.assertIsNone(functions.function_b("a", "b"))
+    E       TypeError: function_b() takes 0 positional arguments but 2 were given
+    ```
+    the offending line `functions.function_b("a", "b")` called `function_b` with 2 parameters but the definition has the function taking no parameters.
+- update `function_b` in `functions.py`
+    ```python
+    def function_b(parameter_1, parameter_2):
+        return None
+    ```
+    the terminal updates to show all tests pass.
 
-- update `func`
+***EXTRA***
+- What's another solution to the above test?
+- How can we define a function that takes in any number of parameters? see [TDD_FUNCTIONS](./TDD_FUNCTIONS.md)
