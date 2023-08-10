@@ -60,7 +60,7 @@ touch tests/test_project_name.py
 - `import unittest` imports an existing module from the python standard library that is used for testing.
 - what is `unittest`? it is a module|library that comes with python for testing code
 - what is the `TestProjectName` class? it is a "container" for the tests we are about to write
-- what is `unittest.TestCase`? a class defined in the `unitest` library which contains a bunch of `methods|functions` for testing code that `TestProjectName` inherits so I do not have to rewrite them
+- what is `unittest.TestCase`? a class defined in the `unitest` library which contains a bunch of `methods|functions` for testing code that `TestProjectName` inherits so they do not have to be rewritten
 - what is inheritance? a simple way to think of it is that `TestProjectName` is a child of `unittest.TestCase`
 - what is `def test_failure`? it is the definition of a test function to test the system being built?
 - what is `self`? self refers to the `TestProjectName` class. To access things within the `TestProjectName` class `self` is used. It avoids having to say `TestProjectName.assertFalse(True)`
@@ -88,10 +88,12 @@ touch tests/test_project_name.py
 
 <span style="color:red">*CONGRATULATIONS!*</span> You have written your first test.
 
-We follow the iterative process of <span style="color:red">**RED**</span> <span style="color:green">**GREEN**</span> <span style="color:orange">**REFACTOR**</span>. We are currently <span style="color:red">**RED**</span>
-The error provides important information about the code. Reading from the bottom
+We follow the iterative process of <span style="color:red">**RED**</span> <span style="color:green">**GREEN**</span> <span style="color:orange">**REFACTOR**</span>.
+
+We are currently <span style="color:red">**RED**</span>.
+The error provides important information about the code. Looking at it from the last line
 - `FAILED (failures=1)` The test failed - <span style="color:red">**RED**</span>
-- `Ran 1 test in 0.000s` python ran the 1 test written in 0.000s
+- `Ran 1 test in 0.000s` python ran the 1 test written so far in 0.000s
 - `AssertionError: True is not false` The error is an [AssertionError](https://docs.python.org/3/library/exceptions.html?highlight=exceptions#AssertionError). This is raised by python when an assert statement fails
 - It further gives the False Assertion `True is not false`.
 - Keep a running tab of Errors aka Exceptions seen as you go through this exercise, they will help you be a better troubleshooter.
