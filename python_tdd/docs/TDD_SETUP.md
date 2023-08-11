@@ -124,7 +124,7 @@ The error provides important information about the code. Looking at it from the 
 ### <span style="color:green">**GREEN**</span>: Make it Pass
 
 change line 7 to make the test pass. Which do you think is a better solution?
-`self.assertTrue(True)` or `self.assertFalse(True)`
+`self.assertTrue(True)` or `self.assertFalse(False)`
 
 run the test again from the terminal
 ```shell
