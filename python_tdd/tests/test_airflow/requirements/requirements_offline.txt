@@ -10,10 +10,13 @@
 # We also use those constraints after "apache-airflow" is released and the constraints are tagged with
 # "constraints-X.Y.Z" tag to build the production image for that version.
 #
+pyzmq==25.1.1
+pymssql>=2.1.5
 tomlkit~=0.11.6
 Cython>=0.29.29,<3.0.0
 wheel==0.41.1
 setuptools~=65.6.0
+setuptools-scm
 APScheduler==3.6.3
 Authlib==1.2.0
 Babel==2.11.0
@@ -496,7 +499,6 @@ pytz-deprecation-shim==0.1.0.post0
 pytz==2022.7.1
 pytzdata==2020.1
 pywinrm==0.4.3
-pyzmq==25.0.0
 qds-sdk==1.16.1
 reactivex==4.0.4
 readme-renderer==37.3
@@ -641,8 +643,10 @@ cgroupspy==0.2.2
 click-default-group==1.2.2
 crcmod==1.7
 cron-descriptor==1.2.32
-bcrypt==4.0.1
 JPype1==1.4.1
-# pytest-httpx==0.23.1
 orjson==3.9.4
-pymssql==2.2.8
+
+# failed
+# bcrypt==4.0.1
+# pytest-httpx==0.23.1
+# pymssql==2.2.8

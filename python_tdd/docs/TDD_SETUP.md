@@ -21,8 +21,8 @@ Here's the Test Driven Development mantra -
 ## Setup
 
 > ***Are you on a Windows machine?***
-> - replace `touch` in the example below with `New-Item`
-> - replace `python3` in the examples with `python`
+> - [install GitBash](https://github.com/git-for-windows/git/releases/download/v2.41.0.windows.3/Git-2.41.0.3-32-bit.exe)
+> - use GitBash as your terminal instead of PowerShell
 
 ### Setup File Structure
 
