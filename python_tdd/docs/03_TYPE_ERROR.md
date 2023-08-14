@@ -262,4 +262,4 @@ You now know how to solve
     - classes
     - attributes in classes
     - functions/methods in classes
-- `TypeError` by updating function definitions
+- `TypeError` by matching function signatures and their calls
