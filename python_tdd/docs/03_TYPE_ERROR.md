@@ -1,6 +1,6 @@
-# How to solve the TypeError in Python
+# How to solve the TypeError in python
 
-This tutorial will step through solving a `TypeError` in Python using Test Driven Development
+This tutorial will step through solving a `TypeError` in python using Test Driven Development
 
 ## Prerequisites
 

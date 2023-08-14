@@ -1,6 +1,6 @@
-# How to solve the AttributeError in Python
+# How to solve the AttributeError in python
 
-This tutorial will step through solving an `AttributeError` in Python using Test Driven Development
+This tutorial will step through solving an `AttributeError` in python using Test Driven Development
 
 ## Prerequisites
 
@@ -40,9 +40,9 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
     If you left `pytest-watch` running from [Setup Test Driven Development Project](./TDD_SETUP.md) you should see the following in the terminal
     ```shell
     ImportError while importing test module '/<PATH_TO_PROJECT_NAME>/project_name/tests/test_attribute_error.py'.
-    Hint: make sure your test modules/packages have valid Python names.
+    Hint: make sure your test modules/packages have valid python names.
     Traceback:
-    /Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/importlib/__init__.py:126: in import_module
+    /Library/Frameworks/python.framework/Versions/3.11/lib/python3.11/importlib/__init__.py:126: in import_module
         return _bootstrap._gcd_import(name[level:], package, level)
     tests/test_attribute_error.py:2: in <module>
         import module

@@ -1,6 +1,6 @@
-# How to solve the IndentationError in Python
+# How to solve the IndentationError in python
 
-This tutorial will step through solving an `IndentationError` in Python using Test Driven Development
+This tutorial will step through solving an `IndentationError` in python using Test Driven Development
 
 ## Prerequisites
 
@@ -10,7 +10,7 @@ This tutorial will step through solving an `IndentationError` in Python using Te
 
 ## Indentation Matters
 
-Spacing/Indentation matters in Python. Where you place code and how you space them out have an effect on how the code is interpreted as well as how a human being comprehends your intention.
+Spacing/Indentation matters in python. Where you place code and how you space them out have an effect on how the code is interpreted as well as how a human being comprehends your intention.
 Some people indent with 2 spaces, others indent with 4. In this exercise we will indent with 4.
 
 ## How to solve the IndentationError
@@ -38,7 +38,7 @@ Some people indent with 2 spaces, others indent with 4. In this exercise we will
     # TypeError
     # SyntaxError
     ```
-    Why did line 2 create an error? Python was not expecting the indentation there. Indentation has meaning in Python and in this case it doesn't meet the predefined rules for indentation
+    Why did line 2 create an error? python was not expecting the indentation there. Indentation has meaning in python and in this case it doesn't meet the predefined rules for indentation
 
 ### <span style="color:green">**GREEN**</span>: Make it Pass
 

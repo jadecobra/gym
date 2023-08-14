@@ -1,6 +1,6 @@
 # How to Setup a Test Driven Development Environment
 
-This tutorial will step through creating a Test Driven Development Environment in Python
+This tutorial will step through creating a Test Driven Development Environment in python
 
 Here's the Test Driven Development mantra -
     <span style="color:red">**RED**</span> <span style="color:green">**GREEN**</span> <span style="color:orange">**REFACTOR**</span>
@@ -189,7 +189,7 @@ run the tests by typing `pytest-watch` in the terminal, you should see something
 ```shell
 [TODAYS_DATE] Running: py.test
 ======================= test session starts==========================
-platform <YOUR_OPERATING_SYSTEM> -- Python <YOUR_PYTHON_VERSION>, pytest-<VERSION>, pluggy-<VERSION>
+platform <YOUR_OPERATING_SYSTEM> -- python <YOUR_python_VERSION>, pytest-<VERSION>, pluggy-<VERSION>
 rootdir: <YOUR_PATH>/project_name
 collected 1 item
 
@@ -198,4 +198,4 @@ tests/test_project_name.py .                                                    
 ======================= 1 passed in 0.00s ============================
 ```
 
-***CONGRATULATIONS*** You have successfully setup a Python Test Driven Environment and can build anything you want
+***CONGRATULATIONS*** You have successfully setup a python Test Driven Environment and can build anything you want

@@ -40,7 +40,7 @@ Change detected: tests/test_calculator.py
 
 [TODAYS_DATE] Running: py.test
 ===================== test session starts ===================
-platform <YOUR_OPERATING_SYSTEM> -- Python <YOUR_PYTHON_VERSION>, pytest-<VERSION>, pluggy-<VERSION>
+platform <YOUR_OPERATING_SYSTEM> -- python <YOUR_python_VERSION>, pytest-<VERSION>, pluggy-<VERSION>
 rootdir: <YOUR_PATH>/calculator
 collected 1 item
 

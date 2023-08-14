@@ -1,6 +1,6 @@
-# How to solve the AttributeError in Python
+# How to solve the AttributeError in python
 
-This tutorial will step through solving a `ModuleNotFoundError` in Python using Test Driven Development
+This tutorial will step through solving a `ModuleNotFoundError` in python using Test Driven Development
 
 ## Prerequisites
 
@@ -128,9 +128,9 @@ If you left `pytest-watch` running from [Setup Test Driven Development Project](
 
 ```shell
 ImportError while importing test module '/<PATH_TO_PROJECT_NAME>/project_name/tests/test_module_not_found_error.py'.
-Hint: make sure your test modules/packages have valid Python names.
+Hint: make sure your test modules/packages have valid python names.
 Traceback:
-/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/importlib/__init__.py:126: in import_module
+/Library/Frameworks/python.framework/Versions/3.11/lib/python3.11/importlib/__init__.py:126: in import_module
     return _bootstrap._gcd_import(name[level:], package, level)
 tests/test_module_not_found_error.py:1: in <module>
     import module_0
@@ -142,7 +142,7 @@ Looking at the traceback starting from the bottom
 - `ModuleNotFoundError` - this error is raised when an import statement fails because python cannot find a module/package with the given name in this case `module_0`
 - `import module_0` - the piece of code that caused the failure
 - `tests/test_module_not_found_error.py:1: in <module>` - the file that caused the failure and the line in the file where the failure occurs
-- `Hint: make sure your test modules/packages have valid Python names.` depending on your Python version you might not see this. A suggestion to help solve the problem
+- `Hint: make sure your test modules/packages have valid python names.` depending on your python version you might not see this. A suggestion to help solve the problem
 - `ImportError while importing test module '/Users/johnnyblase/gym/gym/python_tdd/project_name/tests/test_module_not_found_error.py'.` - A description of the error encountered and when in the execution it occurred
 - Add the errors to the running list of Exceptions encountered
     ```
@@ -183,7 +183,7 @@ this is the pattern, repeat it until you have created `module_99.py` and the ter
 
 ```shell
 ============== test session starts ==========================
-platform darwin -- Python 3.11.0, pytest-7.4.0, pluggy-1.2.0
+platform darwin -- python 3.11.0, pytest-7.4.0, pluggy-1.2.0
 rootdir: /Users/johnnyblase/gym/gym/python_tdd/project_name
 collected 1 item
 
