@@ -1,4 +1,5 @@
 # Learn git
+# anything with a `#` is a comment, you don't have to type it
 
 # Keywords
 git help
@@ -58,7 +59,7 @@ git log --merges
 git log --graph
 
 git add README.md
-git commit -m "I made the first commit"
+git commit -m "made my first commit"
 ls
 cd .git
 tree
@@ -100,7 +101,7 @@ git add .gitignore
 git diff
 git diff --cached
 git diff HEAD
-git commit -am "I Created list of Files and Directories for git to not track"
+git commit -am "created files and directories for git to not track"
 git log
 git log --oneline
 git log --merges
@@ -123,7 +124,6 @@ ls
 tree
 mkdir Directory{1,2,3,N}
 ls
-tree
 touch Directory{1,2,3,N}/File{1,2,3,N}InThisDirectory.extension
 ls
 tree
