@@ -51,7 +51,7 @@ git status
 git diff
 git diff --cached
 git diff HEAD
-git commit -m "I cannot commit since have not told git to track anything yet"
+git commit -m "I cannot commit since I have not told git to track anything yet"
 git log
 git log --oneline
 git log --merges
@@ -84,7 +84,9 @@ clear
 # Keeping Files And Directories Private
 cat .gitignore
 ls -a
+ls
 mkdir DirectoryNotToBeShared
+ls
 echo "DirectoryNotToBeShared/" >> .gitignore
 cat .gitignore
 ls -a
