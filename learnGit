@@ -1,7 +1,9 @@
 # Learn git
 # anything with a `#` is a comment, you don't have to type it
 
-# Keywords
+##########################################################################
+#                             How to use Git                             #
+##########################################################################
 git help
 git help -a
 q
@@ -40,9 +42,12 @@ git status --help
 clear
 
 PROJECTNAME=Name of Project
-# Creating A New Repository
-# go to https://github.com > Start A Project > $PROJECTNAME
-# Click Create repository
+
+###############################################################
+#                  Create A New Repository                    #
+# go to https://github.com > Start A Project > $PROJECTNAME   #
+# Click Create repository                                     #
+###############################################################
 
 mkdir $PROJECTNAME && cd $PROJECTNAME
 echo "# $PROJECTNAME" >> README.md
@@ -72,17 +77,24 @@ cat description
 cd ..
 clear
 
-# <text> = Replace with your own text
-# x|y = you can use x or y
-# <x|y> = x or y are options but you can replace with your own text
+##########################################################################
+#  NOTE:                                                                 #
+#      <text> = Replace with your own text                               #
+#      x|y = you can use x or y                                          #
+#      <x|y> = x or y are options but you can replace with your own text #
+#                                                                        #
+##########################################################################
 
-git remote add <github|bitbucket|origin> git@<github.com|bitbucket.org>:<username>/$PROJECTNAME
+git remote add github git@github.com/$PROJECTNAME
 
 git remote -v
 git push -u github main
 clear
 
-# Keeping Files And Directories Private
+###############################################################
+#          Keeping Files And Directories Private              #
+###############################################################
+
 cat .gitignore
 ls -a
 ls
@@ -118,12 +130,27 @@ git log --merges
 git log --graph
 clear
 
+
 # Managing Files and Directories
 touch File{1,2,3,N}InThisDirectory.extension
 ls
 tree
 mkdir Directory{1,2,3,N}
 ls
+
+##########################################################################################################
+#                                                                                                        #
+#   Are you on using MacOS - install brew with this command                                              #
+#      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"   #
+#   install tree with this command                                                                       #
+#      brew install tree                                                                                 #
+#                                                                                                        #
+#   Are you on a Linux Machine or using WSL?                                                             #
+#      sudo apt install tree                                                                             #
+#                                                                                                        #
+##########################################################################################################
+
+tree
 touch Directory{1,2,3,N}/File{1,2,3,N}InThisDirectory.extension
 ls
 tree
@@ -156,7 +183,9 @@ ls
 tree
 clear
 
-# Adding Files and Directories for Tracking
+###############################################################
+#    How to add Files and Directories for Git to Track        #
+###############################################################
 
 tree
 git status
@@ -244,7 +273,9 @@ git diff
 git status
 clear
 
-# Branching
+###############################################################
+#                           Branching                         #
+###############################################################
 git status
 git branch
 git branch -a
@@ -306,7 +337,10 @@ git branch -a
 git push github branchN
 git branch -a
 
-# Merging Changes
+###############################################################
+#                       Merging Changes                       #
+###############################################################
+
 git checkout a_branch
 touch file_from_a_branch.extension
 mkdir new_directory_from_a_branch
@@ -359,7 +393,10 @@ git log graph
 git branch -D new_feature
 clear
 
-#Tagging
+###############################################################
+#                               Tagging                       #
+###############################################################
+
 git tag
 git tag -a v0.1 "Beta Test version 1"
 git tag
