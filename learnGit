@@ -109,7 +109,7 @@ git status
 git add DirectoryNotToBeShared/
 git add FileNotToBeShared.extension
 git status
-git push -u github master
+git push -u github main
 git status
 git log
 git log --oneline
@@ -167,7 +167,7 @@ y
 git add File1InThisDirectory.extension
 git status
 git commit -m "I modified File1InThisDirectory.extension in $PROJECTNAME"
-git push -u github master
+git push -u github main
 git status
 
 nano Directory1/FileInThisDirectory.extension
@@ -178,7 +178,7 @@ git add Directory1/File1InThisDirectory.extension
 git addDirectory1/FileNInThisDirectory.extension
 git commit -m "I modified File1InThisDirectory.extension in Directory1"
 git status
-git push -u github master
+git push -u github main
 git status
 
 git add Directory2/File2InThisDirectory.extension
@@ -192,7 +192,7 @@ git add Directory2/File2InThisDirectory.extension
 git status
 git commit -m "I Modified File2InThisDirectory.extension in Directory2"
 git status
-git push -u github master
+git push -u github main
 git status
 
 nano Directory3/File3InThisDirectory.extension
@@ -201,7 +201,7 @@ ctrl+x
 y
 git add Directory3/File3InThisDirectory.extension
 git commit -m "I modified File3InThisDirectory.extension in Directory3"
-git push -u github master
+git push -u github main
 git status
 git add Directory3/
 
@@ -212,7 +212,7 @@ ctrl+x
 y
 git add DirectoryN/FileNInThisDirectory.extension
 git commit -m "I modified FileNInThisDirectory.extension in DirectoryN"
-git push -u github master
+git push -u github main
 
 git status
 git add .
@@ -236,7 +236,7 @@ git log --oneline
 git log --merges
 git log --graph
 q
-git push -u github master
+git push -u github main
 git log --oneline
 git log --merges
 git log --graph
@@ -266,7 +266,7 @@ git branch -a
 git checkout a_branch
 git branch -a
 git status
-git checkout master
+git checkout main
 git status
 git branch -a
 git checkout a_new_branch_name
@@ -275,11 +275,11 @@ git status
 git checkout -b a_new_branch
 git branch -a
 git status
-git checkout master
+git checkout main
 git checkout -b a_dead_branch
 git branch -a
 git status
-git checkout master
+git checkout main
 git branch -D a_dead_branch
 git branch -a
 git status
@@ -317,22 +317,22 @@ git commit -a "I added a new File and Directory in a_branch"
 git diff github/a_branch
 git push github a_branch
 git diff
-git diff master
-git checkout master
-git diff github/master
+git diff main
+git checkout main
+git diff github/main
 git diff a_branch
 git merge a_branch
 git diff
 git diff a_branch
-git diff github/master
+git diff github/main
 git status
-git push github master
+git push github main
 git status
 
 git checkout -b new_feature
 git branch -a
-git diff master
-git merge master
+git diff main
+git merge main
 nano FileInThisDirectory.extension
 I had a Genius Idea and tested it in new_feature
 ctrl+X
@@ -340,18 +340,18 @@ y
 git status
 git add .
 git commit -am "I had a Genius Idea and tested it in new_feature"
-git diff master
+git diff main
 git diff remotes/github/new_feature
 git push github new_feature
-git checkout master
+git checkout main
 git merge --no-ff new_feature
-I Had a Genius idea, tested it in new_feature and merged it into master
+I Had a Genius idea, tested it in new_feature and merged it into main
 # save and exit
 git diff
 git diff new_feature
-git diff remotes/github/master
+git diff remotes/github/main
 git status
-git push github master
+git push github main
 git log
 git log --oneline
 git log --merges
