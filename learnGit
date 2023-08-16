@@ -78,7 +78,7 @@ clear
 git remote add <github|bitbucket|origin> git@<github.com|bitbucket.org>:<username>/$PROJECTNAME
 
 git remote -v
-git push -u github master
+git push -u github main
 clear
 
 # Keeping Files And Directories Private
