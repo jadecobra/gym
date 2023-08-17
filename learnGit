@@ -77,14 +77,6 @@ cat description
 cd ..
 clear
 
-##########################################################################
-#  NOTE:                                                                 #
-#      <text> = Replace with your own text                               #
-#      x|y = you can use x or y                                          #
-#      <x|y> = x or y are options but you can replace with your own text #
-#                                                                        #
-##########################################################################
-
 git remote add github git@github.com/$PROJECTNAME
 
 git remote -v
