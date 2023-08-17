@@ -78,10 +78,10 @@ cat description
 cd ..
 clear
 
-git remote add github git@github.com/$PROJECTNAME
+git remote add github git@github.com/$GITHUB_USERNAME/$PROJECTNAME.git
 
-git remote -v
-git push -u github main
+git remote --verbose
+git push --set-upstream github main
 clear
 
 ###############################################################
@@ -115,7 +115,7 @@ git status
 git add DirectoryNotToBeShared/
 git add FileNotToBeShared.extension
 git status
-git push -u github main
+git push
 git status
 git log
 git log --oneline
@@ -188,7 +188,7 @@ y
 git add File1InThisDirectory.extension
 git status
 git commit -m "I modified File1InThisDirectory.extension in $PROJECTNAME"
-git push -u github main
+git push
 git status
 
 nano Directory1/FileInThisDirectory.extension
@@ -199,7 +199,7 @@ git add Directory1/File1InThisDirectory.extension
 git addDirectory1/FileNInThisDirectory.extension
 git commit -m "I modified File1InThisDirectory.extension in Directory1"
 git status
-git push -u github main
+git push
 git status
 
 git add Directory2/File2InThisDirectory.extension
@@ -213,7 +213,7 @@ git add Directory2/File2InThisDirectory.extension
 git status
 git commit -m "I Modified File2InThisDirectory.extension in Directory2"
 git status
-git push -u github main
+git push
 git status
 
 nano Directory3/File3InThisDirectory.extension
@@ -222,7 +222,7 @@ I Always add after modifying a file and commit
 y
 git add Directory3/File3InThisDirectory.extension
 git commit -m "I modified File3InThisDirectory.extension in Directory3"
-git push -u github main
+git push
 git status
 git add Directory3/
 
@@ -233,7 +233,7 @@ I will ALWAYS BE COMMITTING
 y
 git add DirectoryN/FileNInThisDirectory.extension
 git commit -m "I modified FileNInThisDirectory.extension in DirectoryN"
-git push -u github main
+git push
 
 git status
 git add .
@@ -257,7 +257,7 @@ git log --oneline
 git log --merges
 git log --graph
 q
-git push -u github main
+git push
 git log --oneline
 git log --merges
 git log --graph
