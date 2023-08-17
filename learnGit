@@ -106,7 +106,7 @@ git add .gitignore
 git diff
 git diff --cached
 git diff HEAD
-git commit -am "created files and directories for git to not track"
+git commit --all --message "created files and directories for git to not track"
 git log
 git log --oneline
 git log --merges
@@ -150,7 +150,7 @@ touch Directory2/python_file.py
 touch Directory2/java_file.java
 touch Directory2/java_file.war
 touch Directory3/html_file.html
-touch Directory3/javscript_file.js
+touch Directory3/javscriptFile.js
 touch DirectoryN/compressed_file.zip
 touch DirectoryN/compressed_file.bz2
 touch DirectoryN/compressed_file.xz
@@ -211,7 +211,7 @@ git commit --all --message "I modified File2InThisDirectory.extension in Directo
 git status
 git add Directory2/File2InThisDirectory.extension
 git status
-git commit --all --message "I Modified File2InThisDirectory.extension in Directory2"
+git commit -am "I Modified File2InThisDirectory.extension in Directory2"
 git status
 git push
 git status
@@ -244,13 +244,13 @@ git diff --cached
 q
 git diff HEAD
 q
-git commit --all --message "I added new Ffives to be tracked by git"
+git commit -am "I added new Ffives to be tracked by git"
 git log
 q
 git log --oneline
 git log --graph
 q
-git commit --amend --message "I Added new Files and Directories in $PROJECTNAME for git to track"
+git commit -amend --message "I Added new Files and Directories in $PROJECTNAME for git to track"
 git log
 q
 git log --oneline
@@ -270,64 +270,64 @@ clear
 ###############################################################
 git status
 git branch
-git branch -a
-git branch -v
+git branch --all
+git branch --verbose
 git branch -vv
 git branch a_new_branch
 git branch
-git branch -d a_new_branch
+git branch --delete a_new_branch
 git branch
 git branch an_old_branch_name
-git branch -a
-git branch -m an_old_branch_name a_new_branch_name
-git branch -a
-git branch -v
+git branch --all
+git branch --merge an_old_branch_name a_new_branch_name
+git branch --all
+git branch --verbose
 git branch -vv
 
 git branch a_branch
-git branch -a
+git branch --all
 git checkout a_branch
-git branch -a
+git branch --all
 git status
 git checkout main
 git status
-git branch -a
+git branch --all
 git checkout a_new_branch_name
-git branch -a
+git branch --all
 git status
 git checkout -b a_new_branch
-git branch -a
+git branch --all
 git status
 git checkout main
 git checkout -b a_dead_branch
-git branch -a
+git branch --all
 git status
 git checkout main
-git branch -D a_dead_branch
-git branch -a
+git branch --delete --force a_dead_branch
+git branch --all
 git status
 ls
 tree
 
-git branch -a
+git branch --all
 git branch branch1
 git branch branch2
 git branch branch3
 git branch branchN
-git branch -a
+git branch --all
 
 git push github a_branch
-git branch -a
+git branch --all
 git push github a_new_branch
-git branch -a
+git branch --all
 git push github branch1
-git branch -a
+git branch --all
 git push github branch2
-git branch -a
+git branch --all
 git push github branch3
-git branch -a
+git branch --all
 git push github branchN
-git branch -a
+git branch --all
 
 ###############################################################
 #                       Merging Changes                       #
@@ -339,7 +339,7 @@ mkdir new_directory_from_a_branch
 touch new_directory_from_a_branch/File{1,2,3,N}InThisDirectory.extension
 git status
 git add .
-git commit -a "I added a new File and Directory in a_branch"
+git commit --all --message "I added a new File and Directory in a_branch"
 git diff github/a_branch
 git push github a_branch
 git diff
@@ -356,7 +356,7 @@ git push github main
 git status
 
 git checkout -b new_feature
-git branch -a
+git branch --all
 git diff main
 git merge main
 nano FileInThisDirectory.extension
@@ -382,7 +382,7 @@ git log
 git log --oneline
 git log --merges
 git log graph
-git branch -D new_feature
+git branch --delete --force new_feature
 clear
 
 ###############################################################
@@ -390,17 +390,17 @@ clear
 ###############################################################
 
 git tag
-git tag -a v0.1 "Beta Test version 1"
+git tag --annotate v0.1 "Beta Test version 1"
 git tag
-git tag -a v0.1 -m "Beta Test version 1"
+git tag --annotate v0.1 -m "Beta Test version 1"
 git tag
-git tag -a v1.1 -m "Version 1.0 revision 1"
+git tag --annotate v1.1 -m "Version 1.0 revision 1"
 git tag
-git tag v2.0 -m "Version 2.0"
+git tag v2.0 --message "Version 2.0"
 git tag
-git tag vN.M -m "Version N revision M"
+git tag vN.M --message "Version N revision M"
 git tag
-git tag any_tag -m "Description/Comment for the Tag"
+git tag any_tag --message "Description/Comment for the Tag"
 git status
 clear
 
