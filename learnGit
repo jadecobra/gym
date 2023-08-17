@@ -4,6 +4,7 @@
 ##########################################################################
 #                             How to use Git                             #
 ##########################################################################
+
 git help
 git help -a
 q
@@ -71,19 +72,11 @@ tree
 cat description
 nano description
 $PROJECTNAME; a Git Repository
-Ctrl+X
+# hit ctrl+x on the keyboard
 Y
 cat description
 cd ..
 clear
-
-##########################################################################
-#  NOTE:                                                                 #
-#      <text> = Replace with your own text                               #
-#      x|y = you can use x or y                                          #
-#      <x|y> = x or y are options but you can replace with your own text #
-#                                                                        #
-##########################################################################
 
 git remote add github git@github.com/$PROJECTNAME
 
@@ -129,7 +122,6 @@ git log --oneline
 git log --merges
 git log --graph
 clear
-
 
 # Managing Files and Directories
 touch File{1,2,3,N}InThisDirectory.extension
@@ -191,7 +183,7 @@ tree
 git status
 nano File1InThisDirectory.extension
 I am modifying File1InThisDirectory.extension in $PROJECTNAME
-ctrl+x
+# hit ctrl+x on the keyboard
 y
 git add File1InThisDirectory.extension
 git status
@@ -201,7 +193,7 @@ git status
 
 nano Directory1/FileInThisDirectory.extension
 I am modifying File1InThisDirectory.extension in Directory1
-ctrl+x
+# hit ctrl+x on the keyboard
 y
 git add Directory1/File1InThisDirectory.extension
 git addDirectory1/FileNInThisDirectory.extension
@@ -213,7 +205,7 @@ git status
 git add Directory2/File2InThisDirectory.extension
 nano Directory2/File2InThisDirectory.extension
 What happens if I modify a file after adding it to tracking?
-ctrl+x
+# hit ctrl+x on the keyboard
 y
 git commit -m "I modified File2InThisDirectory.extension in Directory2"
 git status
@@ -226,7 +218,7 @@ git status
 
 nano Directory3/File3InThisDirectory.extension
 I Always add after modifying a file and commit
-ctrl+x
+# hit ctrl+x on the keyboard
 y
 git add Directory3/File3InThisDirectory.extension
 git commit -m "I modified File3InThisDirectory.extension in Directory3"
@@ -237,7 +229,7 @@ git add Directory3/
 git status
 nano DirectoryN/FileNInThisDirectory.extension
 I will ALWAYS BE COMMITTING
-ctrl+x
+# hit ctrl+x on the keyboard
 y
 git add DirectoryN/FileNInThisDirectory.extension
 git commit -m "I modified FileNInThisDirectory.extension in DirectoryN"
@@ -369,7 +361,7 @@ git diff main
 git merge main
 nano FileInThisDirectory.extension
 I had a Genius Idea and tested it in new_feature
-ctrl+X
+# hit ctrl+x on the keyboard
 y
 git status
 git add .
