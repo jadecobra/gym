@@ -1,0 +1,13 @@
+fastparquet
+macfsevents
+matplotlib
+mplfinance
+nasdaq-data-link
+notebook
+openpyxl
+pandas
+pandas-datareader
+sniffer
+quandl
+seaborn
+requests
