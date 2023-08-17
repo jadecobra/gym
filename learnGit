@@ -6,9 +6,9 @@
 ##########################################################################
 
 git help
-git help -a
+git help --all
 q
-git help -g
+git help --guides
 git help attributes
 q
 git help everyday
@@ -58,14 +58,14 @@ git status
 git diff
 git diff --cached
 git diff HEAD
-git commit -m "I cannot commit since I have not told git to track anything yet"
+git commit --all --message "I cannot commit since I have not told git to track anything yet"
 git log
 git log --oneline
 git log --merges
 git log --graph
 
 git add README.md
-git commit -m "made my first commit"
+git commit --all --message "made my first commit"
 ls
 cd .git
 tree
@@ -78,7 +78,7 @@ cat description
 cd ..
 clear
 
-git remote add github git@github.com/$GITHUB_USERNAME/$PROJECTNAME.git
+git remote add github git@github.com:$GITHUB_USERNAME/$PROJECTNAME.git
 
 git remote --verbose
 git push --set-upstream github main
@@ -89,18 +89,18 @@ clear
 ###############################################################
 
 cat .gitignore
-ls -a
+ls --all
 ls
 mkdir DirectoryNotToBeShared
 ls
 echo "DirectoryNotToBeShared/" >> .gitignore
 cat .gitignore
-ls -a
+ls --all
 touch FileNotToBeShared.extension
 echo "FileNotToBeShared.extension" >> .gitignore
 cat .gitignore
 ls
-ls -a
+ls --all
 git status
 git add .gitignore
 git diff
@@ -187,7 +187,7 @@ I am modifying File1InThisDirectory.extension in $PROJECTNAME
 y
 git add File1InThisDirectory.extension
 git status
-git commit -m "I modified File1InThisDirectory.extension in $PROJECTNAME"
+git commit --all --message "I modified File1InThisDirectory.extension in $PROJECTNAME"
 git push
 git status
 
@@ -197,7 +197,7 @@ I am modifying File1InThisDirectory.extension in Directory1
 y
 git add Directory1/File1InThisDirectory.extension
 git addDirectory1/FileNInThisDirectory.extension
-git commit -m "I modified File1InThisDirectory.extension in Directory1"
+git commit --all --message "I modified File1InThisDirectory.extension in Directory1"
 git status
 git push
 git status
@@ -207,11 +207,11 @@ nano Directory2/File2InThisDirectory.extension
 What happens if I modify a file after adding it to tracking?
 # hit ctrl+x on the keyboard
 y
-git commit -m "I modified File2InThisDirectory.extension in Directory2"
+git commit --all --message "I modified File2InThisDirectory.extension in Directory2"
 git status
 git add Directory2/File2InThisDirectory.extension
 git status
-git commit -m "I Modified File2InThisDirectory.extension in Directory2"
+git commit --all --message "I Modified File2InThisDirectory.extension in Directory2"
 git status
 git push
 git status
@@ -221,7 +221,7 @@ I Always add after modifying a file and commit
 # hit ctrl+x on the keyboard
 y
 git add Directory3/File3InThisDirectory.extension
-git commit -m "I modified File3InThisDirectory.extension in Directory3"
+git commit --all --message "I modified File3InThisDirectory.extension in Directory3"
 git push
 git status
 git add Directory3/
@@ -232,7 +232,7 @@ I will ALWAYS BE COMMITTING
 # hit ctrl+x on the keyboard
 y
 git add DirectoryN/FileNInThisDirectory.extension
-git commit -m "I modified FileNInThisDirectory.extension in DirectoryN"
+git commit --all --message "I modified FileNInThisDirectory.extension in DirectoryN"
 git push
 
 git status
@@ -244,13 +244,13 @@ git diff --cached
 q
 git diff HEAD
 q
-git commit -m "I added new Ffives to be tracked by git"
+git commit --all --message "I added new Ffives to be tracked by git"
 git log
 q
 git log --oneline
 git log --graph
 q
-git commit --amend -m "I Added new Files and Directories in $PROJECTNAME for git to track"
+git commit --amend --message "I Added new Files and Directories in $PROJECTNAME for git to track"
 git log
 q
 git log --oneline
