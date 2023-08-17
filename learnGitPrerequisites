@@ -1,5 +1,5 @@
 emailAddress=$1
-filename=id_rsa
+filename=github
 cd ~/.ssh
 ssh-keygen -t rsa -C "$emailAddress" -f $filename
 cat "$filename.pub"
