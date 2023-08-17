@@ -2,7 +2,7 @@ emailAddress=$1
 filename=id_rsa
 cd ~/.ssh
 ssh-keygen -t rsa -C "$emailAddress" -f $filename
-cat id_rsa.pub
+cat "$filename.pub"
 pbcopy < $filename.pub
 
 # add SSH Key to Version Control Profile
