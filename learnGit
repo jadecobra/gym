@@ -89,18 +89,18 @@ clear
 ###############################################################
 
 cat .gitignore
-ls --all
+ls -a
 ls
 mkdir DirectoryNotToBeShared
 ls
 echo "DirectoryNotToBeShared/" >> .gitignore
 cat .gitignore
-ls --all
+ls -a
 touch FileNotToBeShared.extension
 echo "FileNotToBeShared.extension" >> .gitignore
 cat .gitignore
 ls
-ls --all
+ls -a
 git status
 git add .gitignore
 git diff
