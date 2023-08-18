@@ -1,9 +1,9 @@
 emailAddress=$1
-filename=id_rsa
+filename=github
 cd ~/.ssh
 ssh-keygen -t rsa -C "$emailAddress" -f $filename
 cat "$filename.pub"
-pbcopy < $filename.pub
+pbcopy < "$filename.pub"
 
 # add SSH Key to Version Control Profile
 python3 -m webbrowser https://github.com/
