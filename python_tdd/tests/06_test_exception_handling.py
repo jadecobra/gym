@@ -6,8 +6,8 @@ How can we design for failure?
 '''
 
 import unittest
-import exceptions
 import module
+import exceptions
 
 
 class TestExceptionHandling(unittest.TestCase):
