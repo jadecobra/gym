@@ -26,7 +26,7 @@ f(input_data) -> output_data # where f is the program|procress
 - `float` - floats - floating point numbers e.g. -1.1, 0.1, 1.1
 - `str` - string - any text in strings"
 - `tuple` - tuples - an immutable sequence of values
-- `list` - lists - a mutable sequence of values
+- `list` - lists | arrays - a mutable sequence of values
 - `set` - sets - a sequence of values with no duplicates
 - `dict` - dictionaries - a mapping of key, values
 
@@ -209,7 +209,7 @@ Updating our knowledge of `None`, we know that
 
 ### <span style="color:orange">**REFACTOR**</span> - make it better
 
-Is `None` a tuple?
+Is `None` a `tuple`?
 
 ### <span style="color:red">**RED**</span>: Write a failing test
 
@@ -224,12 +224,141 @@ the terminal updates to show an `AssertionError`
 ```python
 AssertionError: () is not None
 ```
-`()` is one way `tuples` are represented in python. Read more about tuples in [DATA_STRUCTURES_TUPLES](.DATA_STRUCTURES_TUPLES.md)
+- `()` is how `tuples` are represented in python
+- There are more tests on `tuples` in [DATA_STRUCTURES_TUPLES](.DATA_STRUCTURES_TUPLES.md)
+- Do you want to [read more about tuples](https://docs.python.org/3/library/stdtypes.html?highlight=tuple#tuple)
+
 ### <span style="color:green">**GREEN**</span>: Make it Pass
 
 - update `test_is_none_a_tuple`
     ```python
         self.assertIsNotNone(())
     ```
+    the terminal updates to show
+    ```python
+    AssertionError: (1, 2, 3, 'n') is not None
+    ```
+    because the `tuple` that contains the four elements `1, 2, 3, 'n'` is not `None`
+- update `test_is_none_a_tuple`
+    ```python
+        self.assertIsNotNone((1, 2, 3, 'n'))
+    ```
+    the terminal updates to show
+    ```python
+    AssertionError: None is not an instance of <class 'tuple'>
+    ```
+- update the test to make it pass
+    ```python
+        self.assertNotIsInstance(None, tuple)
+    ```
+- we now know that in python
+    - `None` is `None`
+    - `None` is not a `boolean`
+    - `None` is not an `integer`
+    - `None` is not a `string`
+    - `None` is not a `tuple`
 
 ### <span style="color:orange">**REFACTOR**</span> - make it better
+
+Based on what we have seen so far, is it safe to assume that `None` is only `None` and is not any other data structure?
+Let's find out if this assumption is true.
+
+Is `None` a list | array?
+
+### <span style="color:red">**RED**</span>: Write a failing test
+
+add a new test
+```python
+    def test_is_none_a_list(self):
+        self.assertIsNone([])
+        self.assertIsNone([1, 2, 3, "n"])
+        self.assertIsInstance(None, list)
+```
+the terminal updates to show an `AssertionError`
+```python
+AssertionError: [] is not None
+```
+- `[]` is how `lists` are represented in python
+- what is the difference between a `list` and a `tuple` other than `[]` vs `()`?
+- There are more tests on `lists` in [DATA_STRUCTURES_LISTS](.DATA_STRUCTURES_LISTS.md)
+- Do you want to [read more about lists](https://docs.python.org/3/library/stdtypes.html?highlight=tuple#list)
+
+### <span style="color:green">**GREEN**</span>: Make it Pass
+
+We've done this dance a few times now so we can update `test_is_none_a_list` to make it pass. With the passing tests our knowledge of `None` is updated to
+- `None` is `None`
+- `None` is not a `boolean`
+- `None` is not an `integer`
+- `None` is not a `string`
+- `None` is not a `tuple`
+- `None` is not a `list`
+
+### <span style="color:orange">**REFACTOR**</span> - make it better
+
+Is `None` a `set`?
+
+### <span style="color:red">**RED**</span>: Write a failing test
+
+add a new test
+```python
+    def test_is_none_a_set(self):
+        self.assertIsNone({})
+        self.assertIsNone({1, 2, 3, "n"})
+        self.assertIsInstance(None, set)
+```
+the terminal updates to show an `AssertionError`
+```python
+AssertionError: {} is not None
+```
+- `{}` is how `sets` are represented in python
+- There are more tests on `sets` in [DATA_STRUCTURES_SETS](.DATA_STRUCTURES_SETS.md)
+- Do you want to [read more about sets](https://docs.python.org/3/tutorial/datastructures.html?highlight=sets#sets)
+
+### <span style="color:green">**GREEN**</span>: Make it Pass
+
+update the tests to make them pass and we can update our knowledge of `None` to state that
+- `None` is `None`
+- `None` is not a `boolean`
+- `None` is not an `integer`
+- `None` is not a `string`
+- `None` is not a `tuple`
+- `None` is not a `list`
+- `None` is not a `set`
+
+### <span style="color:orange">**REFACTOR**</span> - make it better
+
+Is `None` a `dictionary | mapping`?
+
+### <span style="color:red">**RED**</span>: Write a failing test
+
+add a new test
+```python
+    def test_is_none_a_dictionary(self):
+        self.assertIsNone(dict())
+        self.assertIsNone({
+            "a": 1,
+            "b": 2,
+            "c":  3,
+            "n": "n"
+        })
+        self.assertIsInstance(None, dict)
+```
+the terminal updates to show an `AssertionError`
+```python
+AssertionError: {} is not None
+```
+- `dict()` is how we create an empty `dictionary`
+- `{}` is how `dictionaries` are represented in python. Wait a minute? What's the difference between a `set` and a `dictionary`?
+- There are more tests on `sets` in [DATA_STRUCTURES_DICTIONARIES](.DATA_STRUCTURES_DICTIONARIES.md)
+- Do you want to [read more about dictionaries](https://docs.python.org/3/tutorial/datastructures.html?highlight=sets#dictionaries)
+
+### <span style="color:green">**GREEN**</span>: Make it Pass
+
+update the tests to make them pass and we can update our knowledge of `None` to state that
+- `None` is `None`
+- `None` is not a `boolean`
+- `None` is not an `integer`
+- `None` is not a `string`
+- `None` is not a `tuple`
+- `None` is not a `list`
+- `None` is not a `set`
