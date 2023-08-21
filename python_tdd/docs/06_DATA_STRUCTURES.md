@@ -1,6 +1,6 @@
-# Data Structures in python
+# None
 
-This tutorial will cover data structures in python using Test Driven Development
+This tutorial will cover `None` in python using Test Driven Development
 
 ## Prerequisites
 
@@ -32,9 +32,11 @@ f(input_data) -> output_data # where f is the program|procress
 
 ## What is None?
 
+`None` is an object used to represent the absence of a value
+
 ### <span style="color:red">**RED**</span>: Write a failing test
 
-create a file named `test_data_structures.py` in the `tests` folder
+create a file named `test_none.py` in the `tests` folder
 ```python
 import unittest
 
@@ -154,5 +156,55 @@ update `test_is_none_an_integer` to make the test pass
 ```python
         self.assertNotIsInstance(None, int)
 ```
+So far we know that in python
+- `None` is `None`
+- `None` is not a boolean
+- `None` is not an integer
+
+### <span style="color:orange">**REFACTOR**</span> - make it better
+
+Let's add a test for `strings`
+
+### <span style="color:red">**RED**</span>: Write a failing test
+
+update `test_none.py`
+```python
+    def test_is_none_a_string(self):
+        self.assertIsNone('')
+        self.assertIsNone("text")
+```
+the terminal updates to show an `AssertionError`
+
+### <span style="color:green">**GREEN**</span>: Make it Pass
+
+update `test_is_none_a_string` to make it pass
+
+```python
+        self.assertIsNotNone('')
+        self.assertIsNotNone("text")
+```
+
+### <span style="color:orange">**REFACTOR**</span> - make it better
+
+`strings` are represented by the `str` class keyword in python. Let's add a test that checks if `None` is an instance of the `string` class
+
+### <span style="color:red">**RED**</span>: Write a failing test
+
+update `test_is_none_a_string` and the terminal updates to show a failing test
+```python
+        self.assertIsInstance(None, str)
+```
+
+### <span style="color:green">**GREEN**</span>: Make it Pass
+
+update the test to make it pass
+```python
+        self.assertNotIsInstance(None, str)
+```
+Updating our knowledge of `None`, we know that
+- `None` is `None`
+- `None` is not a boolean
+- `None` is not an integer
+- `None` is not a string
 
 ### <span style="color:orange">**REFACTOR**</span> - make it better
