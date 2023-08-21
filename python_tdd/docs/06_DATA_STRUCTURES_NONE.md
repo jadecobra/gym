@@ -208,3 +208,28 @@ Updating our knowledge of `None`, we know that
 - `None` is not a string
 
 ### <span style="color:orange">**REFACTOR**</span> - make it better
+
+Is `None` a tuple?
+
+### <span style="color:red">**RED**</span>: Write a failing test
+
+add a new test to `test_none.py`
+```python
+    def test_is_none_a_tuple(self):
+        self.assertIsNone(())
+        self.assertIsNone((1, 2, 3, 'n'))
+        self.assertIsInstance(None, tuple)
+```
+the terminal updates to show an `AssertionError`
+```python
+AssertionError: () is not None
+```
+`()` is one way `tuples` are represented in python. Read more about tuples in [DATA_STRUCTURES_TUPLES](.DATA_STRUCTURES_TUPLES.md)
+### <span style="color:green">**GREEN**</span>: Make it Pass
+
+- update `test_is_none_a_tuple`
+    ```python
+        self.assertIsNotNone(())
+    ```
+
+### <span style="color:orange">**REFACTOR**</span> - make it better
