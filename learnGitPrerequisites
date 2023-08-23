@@ -26,4 +26,4 @@ EOF
 
 # Verify SSH Key
 ssh -T git@github.com
-# ssh -T git@bitbucket.com@
+# ssh -T git@bitbucket.com # if you are using BitBucket

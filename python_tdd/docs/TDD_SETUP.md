@@ -21,8 +21,9 @@ Here's the Test Driven Development mantra -
 ## Setup
 
 > ***Are you on a Windows machine?***
-> - [install GitBash](https://github.com/git-for-windows/git/releases/download/v2.41.0.windows.3/Git-2.41.0.3-32-bit.exe)
-> - use GitBash as your terminal instead of PowerShell
+> - [install Git](https://github.com/git-for-windows/git/releases/download/v2.41.0.windows.3/Git-2.41.0.3-32-bit.exe)
+> - install WSLv2 by running the following in a terminal - `wsl --install`
+> - run subsequent commands in WSL
 
 ### Setup File Structure
 
