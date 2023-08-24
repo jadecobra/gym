@@ -183,16 +183,16 @@ How can we avoid this repetition and focus on tests and solutions?
     ```shell
     python3 -m venv .venv
     source .venv/bin/activate
-    pip install -U pip
-    pip install -r requirements.txt
+    pip install --upgrade pip
+    pip install --requirement requirements.txt
     ```
 
 You just created a [virtual environment](https://docs.python.org/3/library/venv.html)
-- `python3 -m venv .venv` creates a virtual environment named `.venv` you can use any name you want
+- `python3 -m venv .venv` creates a virtual environment named `.venv` - you can use any name you want
 - `source .venv/bin/activate` or `.venv/scripts/activate` activates the virtual environment
-- `pip install -U pip` - upgrades `pip` to the latest version
+- `pip install --upgrade pip` - upgrades `pip` to the latest version
 - what is pip? the [python package manager](https://pypi.org/project/pip/)
-- `pip install -r requirements.txt` installs a python library named `pytest-watch` listed in the `requirements.txt` that will automatically run the tests when a change is made
+- `pip install --requirement requirements.txt` installs a python library named `pytest-watch` listed in the `requirements.txt` that will automatically run the tests when a change is made
 
 run the tests by typing `pytest-watch` in the terminal, you should see something similar to
 ```shell
