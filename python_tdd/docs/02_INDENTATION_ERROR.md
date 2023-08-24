@@ -15,7 +15,7 @@ Some people indent with 2 spaces, others indent with 4. In this exercise we will
 
 ## How to solve the IndentationError
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 - Open a new file in the editor and save it as `tests/test_indentation_error.py` in the `tests` folder you created in [Setup Test Driven Development Project](./TDD_SETUP.md) and type the following in the file. ***NOTE THE SPACING***
 
@@ -40,7 +40,7 @@ Some people indent with 2 spaces, others indent with 4. In this exercise we will
     ```
     Why did line 2 create an error? python was not expecting the indentation there. Indentation has meaning in python and in this case it doesn't meet the predefined rules for indentation
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - update `test_indentation_error.py`
     ```python
@@ -49,7 +49,7 @@ Some people indent with 2 spaces, others indent with 4. In this exercise we will
     ```
     the terminal updates to show passing tests
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 Let's add more indentation errors to `test_indentation_error.py`
 ```python
@@ -69,7 +69,7 @@ fix the offending lines until all tests are green.
 
 Let's add more tests, this time indentation errors with functions, what's the difference in the spacing?
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 - update `test_indentation_error.py`
     ```python
@@ -86,7 +86,7 @@ Let's add more tests, this time indentation errors with functions, what's the di
         pass
     ```
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - update `test_indentation_error.py` to make the spacing/indentation match
     ```python
@@ -108,7 +108,7 @@ Let's add more tests, this time indentation errors with functions, what's the di
 
 Let's add more tests, this time indentation errors in Classes, what's the difference in the spacing?
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 - update `test_indentation_error.py`
     ```python
@@ -126,7 +126,7 @@ Let's add more tests, this time indentation errors in Classes, what's the differ
     E    IndentationError: expected an indented block after class definition on line 18
     ```
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - update `test_indentation_error.py` to make the spacing/indentation match
     ```python
@@ -142,7 +142,7 @@ Let's add more tests, this time indentation errors in Classes, what's the differ
 
 ## How to solve the IndentationError in Classes with Methods
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 - update `test_indentation_error.py`
     ```python
@@ -163,7 +163,7 @@ Let's add more tests, this time indentation errors in Classes, what's the differ
     E    IndentationError: expected an indented block after function definition on line 28
     ```
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - update `test_indentation_error.py` to make the spacing/indentation match
     ```python
@@ -182,7 +182,7 @@ Let's add more tests, this time indentation errors in Classes, what's the differ
 
 ## How to solve the IndentationError in Classes with Attributes
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 - update `test_indentation_error.py`
     ```python
@@ -197,7 +197,7 @@ Let's add more tests, this time indentation errors in Classes, what's the differ
     E    IndentationError: unexpected indent
     ```
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - update `test_indentation_error.py` to make the spacing/indentation match
     ```python
@@ -208,7 +208,7 @@ Let's add more tests, this time indentation errors in Classes, what's the differ
         attribute = None
     ```
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 Is there anything we can do to make this better?
 What was the point of this exercise?

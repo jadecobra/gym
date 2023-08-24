@@ -16,7 +16,7 @@ Programming allows us to gain from our previous efforts as well as the efforts o
 We can package, distribute and publish programs for other people to use.
 To use these packages in python we have to import them.
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 Open a new file in your editor and save it as `test_module_not_found_error.py` in the `tests` folder you created in [Setup Test Driven Development Project](./TDD_SETUP.md)
 Type the following in the file
@@ -153,7 +153,7 @@ Looking at the traceback starting from the bottom
     ```
 For more information about imports you can read [The Import Statement](https://docs.python.org/3/reference/simple_stmts.html#import)
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - create `module_0.py` in the `project_name` folder
 - the terminal will update to show the following

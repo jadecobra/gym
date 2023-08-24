@@ -31,7 +31,7 @@ When building a program we have certain expectations based on given inputs. One 
 
 ## How to solve the AssertionError
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 create a file named `test_assertion_error.py` in the `tests` folder and add the following
 
@@ -57,7 +57,7 @@ tests/test_assertion_error.py:7: AssertionError
 - The difference here is that the `assert` of the beginning of the line makes the statement more like "Make sure `None` is the same as `False`"
 - Since In python `None` is not `False`, python raises an `AssertionError`
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 update `test_assertion_errors_with_none` in `test_assertion_error.py` to make it pass
 
@@ -67,11 +67,11 @@ update `test_assertion_errors_with_none` in `test_assertion_error.py` to make it
 
 the terminal updates to show passing tests
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 What is another way we can write `assert` statements?
 
-##### <span style="color:red">**RED**</span>: Write a failing test
+##### <span style="color:red">**RED**</span>: make a failing test
 
 add the following line to `test_assertion_errors_with_none`
 
@@ -89,7 +89,7 @@ tests/test_assertion_error.py:8: AssertionError
 
 - since `False is not None` we get an AssertionError
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 update the assert statement to make it pass
 
@@ -106,7 +106,7 @@ From our test we now know that In python
 If `False` is not `None`, what is its relation to `True`?
 Let's add a test to find out
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 update `test_assertion_errors_with_none`
 ```python
@@ -117,7 +117,7 @@ the terminal updates to show
 E       assert None is True
 ```
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 update `test_assertion_errors_with_none` to make it pass
 ```python
@@ -125,7 +125,7 @@ update `test_assertion_errors_with_none` to make it pass
 ```
 the terminal shows passing tests
 
-##### <span style="color:red">**RED**</span>: Write a failing test
+##### <span style="color:red">**RED**</span>: make a failing test
 
 let's try with the `unittest` equivalent method. update `test_assertion_errors_with_none`
 ```python
@@ -136,7 +136,7 @@ the terminal updates to show
 E       AssertionError: True is not None
 ```
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 update `test_assertion_errors_with_none` to make it pass
 ```python
@@ -148,7 +148,7 @@ the terminal shows passing tests and We now know that in python
 
 What else can we discover? How can we use this fundamental information to build programs?
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 Let's add another test. Update `test_assertion_errors_with_none`
 ```python
@@ -159,14 +159,14 @@ The terminal updates to show
 E       assert None is not None
 ```
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 update `test_assertion_errors_with_none` to make it pass
 ```python
         assert None is None
 ```
 the terminal updates to show passing tests. Let's add more
 
-##### <span style="color:red">**RED**</span>: Write a failing test
+##### <span style="color:red">**RED**</span>: make a failing test
 update `test_assertion_errors_with_none`
 ```python
         self.assertIsNotNone(None)
@@ -177,7 +177,7 @@ the terminal updates to show
 E       AssertionError: unexpectedly None
 ```
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 update `test_assertion_errors_with_none` to make it pass
 ```python
         self.assertIsNone(None)
@@ -197,7 +197,7 @@ What else can we learn with what we know?
 
 Let's test it
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 update `TestAssertionError` in `test_assertion_error.py` with the following test
 ```python
@@ -209,14 +209,14 @@ the terminal updates to show
 E       assert False is True
 ```
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 update `test_assertion_errors_with_false` to make it pass
 ```python
         assert False is False
 ```
 the terminal updates to show passing tests
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 let's try with the `unittest` equivalent method. update `test_assertion_errors_with_false`
 
 ```python
@@ -228,7 +228,7 @@ E       AssertionError: True is not false
 ```
 a familiar test, this was the test that started us on the journey of test driven development in python.
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 update `test_assertion_error_with_false` to make it pass
 ```python
         self.assertFalse(False)
@@ -240,7 +240,7 @@ the terminal updates to show passing tests and we now know that in python
 - `False` is not `True`
 - `False` is `False`
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 update `TestAssertionError` in `test_assertion_error.py` with the following test
 ```python
@@ -252,14 +252,14 @@ the terminal updates to show
 E       assert True is False
 ```
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 update `test_assertion_errors_with_true` to make it pass
 ```python
         assert True is True
 ```
 the terminal updates to show passing tests
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 let's try with the `unittest` equivalent method. update `test_assertion_errors_with_true`
 
 ```python
@@ -270,7 +270,7 @@ the terminal updates to show
 E       AssertionError: False is not true
 ```
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 update `test_assertion_error_with_false` to make it pass
 ```python
         self.assertTrue(True)
@@ -294,7 +294,7 @@ Well, they come in handy when we are learning how a system behaves, they are als
 
 We can also make assertions of equality. Let us test this
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 update `TestAssertionError` in `test_assertion_errors.py` with a new test
 
@@ -308,7 +308,7 @@ E       assert False == None
 ```
 this test could be translated in english as `ensure False is equal to None`
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 update `test_assertion_errors_with_equality` to make it pass
 
@@ -317,9 +317,9 @@ update `test_assertion_errors_with_equality` to make it pass
 ```
 the terminal updates to show passing tests.
 
-#### <span style="color:orange">**REFACTOR**</span> - make it better
+#### <span style="color:orange">**REFACTOR**</span>: make it better
 
-##### <span style="color:red">**RED**</span>: Write a failing test
+##### <span style="color:red">**RED**</span>: make a failing test
 update `test_assertion_errors_with_equality` with the `unittest` equivalent method
 
 ```python
@@ -338,7 +338,7 @@ the terminal updates to show
 E       AssertionError: False != None
 ```
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 update `test_assertion_errors_with_equality` to make it pass
 
@@ -355,7 +355,7 @@ the terminal updates to show passing tests and we now know that in python
 - `True` is not `False`
 - `True` is `True`
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 update `test_assertion_errors_with_equality`
 ```python
@@ -366,7 +366,7 @@ the terminal updates to show
 E       assert True == None
 ```
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 update `test_assertion_errors_with_equality` to make it pass
 
@@ -375,7 +375,7 @@ update `test_assertion_errors_with_equality` to make it pass
 ```
 the terminal updates to show passing tests
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 update `test_assertion_errors_with_equality` using the equivalent `unittest` method
 
@@ -387,7 +387,7 @@ the terminal updates to show
 E       AssertionError: True != None
 ```
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 update `test_assertion_errors_with_equality` to make it pass
 
@@ -403,11 +403,11 @@ the terminal updates to show passing tests and we now know that in python
 - `True` is not `False`
 - `True` is `True`
 
-#### <span style="color:orange">**REFACTOR**</span> - make it better
+#### <span style="color:orange">**REFACTOR**</span>: make it better
 
 There is a pattern here, let's update the test for the other cases we have
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 update `test_assertion_errors_with_equality`
 
@@ -428,7 +428,7 @@ update `test_assertion_errors_with_equality`
         self.assertNotEqual(True, True)
 ```
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 update `test_assertion_errors_with_equality` to make it pass. Once all the tests pass we can conclude that in python
 - `False` is not `None` and `False` is not equal to `None`

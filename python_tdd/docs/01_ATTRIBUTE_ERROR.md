@@ -15,7 +15,7 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
 
 ## How to solve the AttributeError by defining a Variable
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 - Open a new file in the editor and save it as `tests/test_attribute_error.py` in the `tests` folder you created in [Setup Test Driven Development Project](./TDD_SETUP.md) and type the following in the file
 
@@ -51,7 +51,7 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
 
     This error was encountered in [00_TDD_MODULE_NOT_FOUND_ERROR](./00_TDD_MODULE_NOT_FOUND_ERROR.md). We know how to solve it.
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - create `module.py` in the `project_name` folder and the terminal will update to show the following
     ```shell
@@ -112,11 +112,11 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
 > - `=` is used to assign names to objects e.g. `five = 5` means we can later refer to the number `5` with the name `five`
 > - `==` is used to check if two things are equal e.g. `5 == 4` means we want to know if `5` is equal to `4`
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 There's not much to do here, we could repeat the above as a drill to make sure we remember the solution
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 - Update `tests/test_attribute_error.py`
     ```python
     import unittest
@@ -132,8 +132,8 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     ```shell
     E       AttributeError: module 'module' has no attribute 'variable_1'
     ```
-#### <span style="color:green">**GREEN**</span>: Make it Pass
-- <span style="color:red">**RED**</span>: Write a failing test - Update `module.py`
+#### <span style="color:green">**GREEN**</span>: make it pass
+- <span style="color:red">**RED**</span>: make a failing test - Update `module.py`
     ```python
     variable_0 = None
     variable_1
@@ -142,14 +142,14 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     ```shell
     E   NameError: name 'variable_1' is not defined
     ```
-- <span style="color:green">**GREEN**</span>: Make it Pass - Update `module.py`
+- <span style="color:green">**GREEN**</span>: make it pass - Update `module.py`
     ```python
     variable_0 = None
     variable_1 = None
     ```
     The terminal will update to show passing tests
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 - Update `tests/test_attribute_error.py`
     ```python
     import unittest
@@ -167,8 +167,8 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     >       self.assertIsNone(module.variable_2)
     E       AttributeError: module 'module' has no attribute 'variable_2'
     ```
-##### <span style="color:green">**GREEN**</span>: Make it Pass
-- <span style="color:red">**RED**</span>: Write a failing test - Update `module.py`
+##### <span style="color:green">**GREEN**</span>: make it pass
+- <span style="color:red">**RED**</span>: make a failing test - Update `module.py`
     ```python
     variable_0 = None
     variable_1 = None
@@ -178,7 +178,7 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     ```shell
     E   NameError: name 'variable_2' is not defined
     ```
-- <span style="color:green">**GREEN**</span>: Make it Pass - Update `module.py`
+- <span style="color:green">**GREEN**</span>: make it pass - Update `module.py`
     ```python
     variable_0 = None
     variable_1 = None
@@ -186,7 +186,7 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     ```
     The tests pass
 
-##### <span style="color:red">**RED**</span>: Write a failing test
+##### <span style="color:red">**RED**</span>: make a failing test
 - Update `tests/test_attribute_error.py`
     ```python
     import unittest
@@ -204,8 +204,8 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     ```shell
     E       AttributeError: module 'module' has no attribute 'variable_3'
     ```
-##### <span style="color:green">**GREEN**</span>: Make it Pass
-- <span style="color:red">**RED**</span>: Write a failing test - Update `module.py`
+##### <span style="color:green">**GREEN**</span>: make it pass
+- <span style="color:red">**RED**</span>: make a failing test - Update `module.py`
     ```python
     variable_0 = None
     variable_1 = None
@@ -216,7 +216,7 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     ```shell
     E   NameError: name 'variable_3' is not defined
     ```
-- <span style="color:green">**GREEN**</span>: Make it Pass - Update `module.py`
+- <span style="color:green">**GREEN**</span>: make it pass - Update `module.py`
     ```python
     variable_0 = None
     variable_1 = None
@@ -255,7 +255,7 @@ You now know how to solve
 
 ## How to solve the AttributeError by defining a Function
 Let us take a look at solving `AttributeError` for functions
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 - Update the `TestAttributeError` class in `tests/test_attribute_error.py` with
     ```python
@@ -289,7 +289,7 @@ Let us take a look at solving `AttributeError` for functions
     # TypeError
     ```
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - change `function_0` in `module.py` to a function by updating `module.py` to
     ```python
@@ -304,7 +304,7 @@ Let us take a look at solving `AttributeError` for functions
 > - the default return value of a function is `None`
 > - the line with `return` is the last executable line of code in a function
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - Let's make it a drill, update `test_defining_functions_to_solve_attribute_errors` in the `TestAttributeError` class in`tests/test_attribute_error.py` to include
     ```python
@@ -346,7 +346,7 @@ Classes
         - age - return age based on date of birth
         - speak - return words
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 - Update the `TestAttributeError` class in `tests/test_attribute_error.py` with
     ```python
@@ -362,7 +362,7 @@ Classes
     - This also looks exactly like the tests in `test_defining_functions_to_solve_attribute_errors`
     - What's the difference?
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 - Update `module.py`
     ```python
     Class0 = None
@@ -378,7 +378,7 @@ Classes
     ```
     The tests pass! But what is the difference between Classes and Functions? Why are we writing a different set of tests for Classes?
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - Let's make it a drill. - Update `test_defining_functions_to_solve_attribute_errors` in the `TestAttributeError` class in `tests/test_attribute_error.py`
     ```python
@@ -409,7 +409,7 @@ You now know how to solve
 
 ## How to solve the AttributeError by defining an Attribute in a Class
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 - update the `TestAttributeError` class in `test_attribute_error.py`
     ```python
@@ -422,7 +422,7 @@ You now know how to solve
     E       AttributeError: module 'module' has no attribute 'Class'
     ```
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - update `module.py`
     ```python
@@ -480,7 +480,7 @@ You now know how to solve
     ```
     Eureka! The Tests pass!!
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - The current solution for `test_defining_classes_to_solve_attribute_errors` was done by defining functions but the test says `definining_classes`. Let's update those to use the proper way to define classes. Update `module.py` to use `class` instead of `def` e.g.
     ```python
@@ -517,7 +517,7 @@ You now know how to solve
 
 ## How to solve the AttributeError by defining a Method(Function) in a Class
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 - update the `TestAttributeError` class in `test_attribute_error.py`
     ```python
@@ -530,7 +530,7 @@ You now know how to solve
     E       AttributeError: type object 'Class' has no attribute 'method_0'
     ```
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - Update the class `Class` in `module.py`
     ```python
@@ -553,7 +553,7 @@ You now know how to solve
     ```
     the tests pass. Fantastic
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 You know the `drill`, let's make it. Update `test_defining_functions_in_classes_to_solve_attribute_errors` in `TestAttributeError` in `test_attribute_error.py`
 ```python

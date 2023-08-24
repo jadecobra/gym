@@ -4,9 +4,9 @@ This tutorial will step through creating a Test Driven Development Environment i
 
 Here's the Test Driven Development mantra -
     <span style="color:red">**RED**</span> <span style="color:green">**GREEN**</span> <span style="color:orange">**REFACTOR**</span>
-- <span style="color:red">**RED**</span> - write a failing test
+- <span style="color:red">**RED**</span> - make a failing test
 - <span style="color:green">**GREEN**</span> - make it pass
-- <span style="color:orange">**REFACTOR**</span> - make it better
+- <span style="color:orange">**REFACTOR**</span>: make it better
 
 ## Prerequisites
 
@@ -21,8 +21,9 @@ Here's the Test Driven Development mantra -
 ## Setup
 
 > ***Are you on a Windows machine?***
-> - [install GitBash](https://github.com/git-for-windows/git/releases/download/v2.41.0.windows.3/Git-2.41.0.3-32-bit.exe)
-> - use GitBash as your terminal instead of PowerShell
+> - [install Git](https://github.com/git-for-windows/git/releases/download/v2.41.0.windows.3/Git-2.41.0.3-32-bit.exe)
+> - install WSLv2 by running the following in a terminal - `wsl --install`
+> - run subsequent commands in WSL
 
 ### Setup File Structure
 
@@ -43,9 +44,17 @@ touch tests/test_project_name.py
 - The module we are creating is called `project_name.py`
 - What is a module? A python module is any file that ends in `.py`
 
+Your folder structure should look like this
+```
+project_name
+|--tests
+|   |--__init__.py
+|   |--test_project_name.py
+|--project_name.py
+```
 ---
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 - Open up `project_name/tests/test_project_name.py` in your Interactive Development Environment(IDE) and type the following
     ```python
@@ -121,7 +130,7 @@ The error provides important information about the code. Looking at it from the 
 
 ---
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 change line 7 to make the test pass. Which do you think is a better solution?
 `self.assertTrue(True)` or `self.assertFalse(False)`
@@ -143,7 +152,7 @@ OK
 
 ---
 
-### <span style="color:orange">**REFACTOR**</span> - Make it Better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 One way to make code better is to use the
 - [Abstraction Principle](https://en.wikipedia.org/wiki/Abstraction_principle_(computer_programming))
@@ -163,27 +172,28 @@ How can we avoid this repetition and focus on tests and solutions?
 
 ##### Setup a Virtual Environment
 
-> ***Are you on a Windows machine?***
+> ***Are you on a Windows machine? If you are not using WSL***
 > - replace `python3` in the examples with `python`
 > - replace `source .venv/bin/activate` in the example below with `.venv/scripts/activate`
 
-in your editor create a file named `requirements.txt`, add the following line and save it
-`pytest-watch`
-
-type the following in the terminal
-```shell
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -U pip
-pip install -r requirements.txt
-```
+- in your editor create a file named `requirements.txt`
+- add this to the file `pytest-watch`
+- save the file
+- type the following in the terminal
+    ```shell
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install --upgrade pip
+    pip install --requirement requirements.txt
+    ```
 
 You just created a [virtual environment](https://docs.python.org/3/library/venv.html)
-- `python3 -m venv .venv` creates a virtual environment named `.venv` you can use any name you want
+- `python3 -m venv .venv` creates a virtual environment named `.venv` - you can use any name you want
 - `source .venv/bin/activate` or `.venv/scripts/activate` activates the virtual environment
-- `pip install -U pip` - upgrades `pip` to the latest version
+- `pip install --upgrade pip` - upgrades `pip` to the latest version
 - what is pip? the [python package manager](https://pypi.org/project/pip/)
-- `pip install -r requirements.txt` installs a python library named `pytest-watch` listed in the `requirements.txt` that will automatically run the tests when a change is made
+- `pip install --requirement requirements.txt` installs a python library named `pytest-watch` listed in the `requirements.txt`
+- what is `pytest-watch` a library that automatically runs our tests when a change is made
 
 run the tests by typing `pytest-watch` in the terminal, you should see something similar to
 ```shell

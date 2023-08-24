@@ -18,7 +18,7 @@ What does it mean to call a function?
 
 ## How to solve the TypeError in functions
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 - Open a new file in the editor and save it as `tests/test_type_error.py` in the `tests` folder you created in [Setup Test Driven Development Project](./TDD_SETUP.md) and type the following in the file
 
@@ -74,7 +74,7 @@ What does it mean to call a function?
         - the number you provide is like `"a"` and hitting dial is like `()`
         We will practice this some more in [TDD_FUNCTIONS](./TDD_FUNCTIONS.md)
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 Update `function_a` in `functions.py`
 ```python
@@ -83,7 +83,7 @@ def function_a(data):
 ```
 the terminal updates to show passing tests
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 There's not much to do here but add more tests for practice.
 
@@ -138,7 +138,7 @@ There's not much to do here but add more tests for practice.
 
 ### Let's add more tests
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 update `TestTypeErrors` in `test_type_error.py` to add more tests
 ```python
@@ -149,7 +149,7 @@ the terminal updates to show
 AttributeError: module 'functions' has no attribute 'function_c'
 ```
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 update `functions.py`
 ```python
@@ -193,7 +193,7 @@ def function_c(arg1, arg2, arg3):
 ```
 and the terminal updates to show all tests pass
 
-#### <span style="color:orange">**REFACTOR**</span> - make it better
+#### <span style="color:orange">**REFACTOR**</span>: make it better
 
 are you bored yet? let's add one more test
 

@@ -76,7 +76,7 @@ class TestCalculator(unittest.TestCase):
 
 ### Test Addition
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 ```python
 import unittest
@@ -144,7 +144,7 @@ class TestCalculator(unittest.TestCase):
     - `add` refers to something in that file that currently does not exist
 
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 - open `calculator.py` in your Interactive Development Environment(IDE) and add this
     ```python
@@ -243,7 +243,7 @@ What happens if our calculator users try to add other numbers?
 What happens if our calculator users try to add a negative number?
 Can we make it better?
 
-- <span style="color:red">**RED**</span>: Write a failing test - update `test_calculator.py` with a new test
+- <span style="color:red">**RED**</span>: make a failing test - update `test_calculator.py` with a new test
     ```python
     import unittest
     import calculator
@@ -300,7 +300,7 @@ Can we make it better?
     ================= 1 failed, 1 passed in 0.02s ========================
     ```
     Another AssertionError
-- <span style="color:green">**GREEN**</span>: Make it Pass - update the `add` function in `calculator.py`
+- <span style="color:green">**GREEN**</span>: make it pass - update the `add` function in `calculator.py`
     ```python
     def add(x, y):
     return x + y
@@ -366,7 +366,7 @@ That's the pattern <span style="color:red">**RED**</span> <span style="color:gre
 ### Test Subtraction
 
 Let's add the other tests
-#### <span style="color:red">**RED**</span> - write a failing test
+#### <span style="color:red">**RED**</span> - make a failing test
 
 - update `test_calculator.py` with `test_subtraction`
     ```python
@@ -523,7 +523,7 @@ Let's add the other tests
     ```
 - remove `test subtraction` from the TODO list
 
-#### <span style="color:orange">**REFACTOR**</span> - make it better
+#### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - How can we make this better?
 - Is there any duplication that could be removed? Yes
@@ -574,7 +574,7 @@ Let's add the other tests
 
 ### Test Multiplication
 
-#### <span style="color:red">**RED**</span> - write a failing test
+#### <span style="color:red">**RED**</span> - make a failing test
 
 update `test_calculator.py` with `test_multiplication`
 ```python
@@ -633,7 +633,7 @@ def multiply(x, y):
     return x * y
 ```
 terminal response - SUCCESS
-#### <span style="color:orange">**REFACTOR**</span> - make it better
+#### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - remove `test_multiplication` from the TODO list
 - Can you think of any way to make the code better?
@@ -642,7 +642,7 @@ terminal response - SUCCESS
 
 ### Test Division
 
-#### <span style="color:red">**RED**</span> - write a failing test
+#### <span style="color:red">**RED**</span> - make a failing test
 - update `test_calculator.py` with `test_division`
     ```python
     import unittest
@@ -721,7 +721,7 @@ terminal response - SUCCESS
     add `ZeroDivisionError` to the list of errors encountered
 
 ##### How to test for Errors
-- <span style="color:red">**RED**</span> - write a failing test
+- <span style="color:red">**RED**</span> - make a failing test
     - update `test_calculator.py` with a test for division by zero
     ```python
     import unittest
@@ -842,7 +842,7 @@ terminal response - SUCCESS
     ```
     terminal response - SUCCESS - We now have a way to `catch` Exceptions in testing, allowing tests to continue when they encounter expected failures
 
-- <span style="color:orange">**REFACTOR**</span> - make it better
+- <span style="color:orange">**REFACTOR**</span>: make it better
     - update `test_calculator.py` to test other division cases when the divisor is not 0 by adding a while condition
     ```python
     import unittest
