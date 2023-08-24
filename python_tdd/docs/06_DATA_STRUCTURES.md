@@ -48,7 +48,7 @@ class TestDataStructures(unittest.TestCase):
 ```
 the terminal updates to show an `AssertionError`
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 update `test_none_is_none` to make the test pass
 ```python
@@ -56,7 +56,7 @@ update `test_none_is_none` to make the test pass
 ```
 we assert what we learned in [04_ASSERTION_ERROR](04_ASSERTION_ERROR.md) that `None` is `None`
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 What other things can we compare with `None` to learn more about what it is or is not
 
@@ -70,7 +70,7 @@ add a new test to compare `None` with booleans
 ```
 the terminal updates to show an `AssertionError`
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 update `test_is_none_a_boolean` to make the tests pass
 ```python
@@ -82,7 +82,7 @@ we are reminded that
 - `True` is not `None`
 - `None` is `None`
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 booleans are represented by the keyword `bool` in python so we can do an instance test using another `unittest.TestCase` method that checks if an `object` is an instance of a `class`. We cover classes in [CLASSES](CLASSES.md)
 
@@ -98,7 +98,7 @@ AssertionError: None is not an instance of <class 'bool'>
 ```
 because `None` is not an instance of an integer
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 update `test_is_none_a_boolean` to make the test pass
 ```python
@@ -108,7 +108,7 @@ We can summarize what we know about `None` so far
 - `None` is not a boolean
 - `None` is `None`
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - What about other values in python?
 - Is `None` equal to any `int`, `float`, `string`, `tuple`, `list`, `set` or `dict`?
@@ -125,7 +125,7 @@ add a new test to compare `None` with `int`
 ```
 the terminal updates to show an `AssertionError`
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 update `test_is_none_an_integer` to make it pass
 ```python
@@ -134,7 +134,7 @@ update `test_is_none_an_integer` to make it pass
         self.assertIsNotNone(1)
 ```
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 integers are represented by the keyword `int` in python so we can do an instance test using another `unittest.TestCase` method that checks if an `object` is an instance of a `class`. We cover classes in [CLASSES](CLASSES.md)
 
@@ -150,7 +150,7 @@ AssertionError: None is not an instance of <class 'int'>
 ```
 because `None` is not an instance of an integer
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 update `test_is_none_an_integer` to make the test pass
 ```python
@@ -161,7 +161,7 @@ So far we know that in python
 - `None` is not a boolean
 - `None` is `None`
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 Let's add a test for `strings`
 
@@ -175,7 +175,7 @@ update `test_data_structures.py`
 ```
 the terminal updates to show an `AssertionError`
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 update `test_is_none_a_string` to make it pass
 
@@ -184,7 +184,7 @@ update `test_is_none_a_string` to make it pass
         self.assertIsNotNone("text")
 ```
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 `strings` are represented by the `str` class keyword in python. Let's add a test that checks if `None` is an instance of the `string` class
 
@@ -195,7 +195,7 @@ update `test_is_none_a_string` and the terminal updates to show a failing test
         self.assertIsInstance(None, str)
 ```
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 update the test to make it pass
 ```python
@@ -207,7 +207,7 @@ Updating our knowledge of `None`, we know that
 - `None` is not a boolean
 - `None` is `None`
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 Is `None` a `tuple`?
 
@@ -227,7 +227,7 @@ AssertionError: () is not None
 - `()` is how `tuples` are represented in python
 - Do you want to [read more about tuples](https://docs.python.org/3/library/stdtypes.html?highlight=tuple#tuple)
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - update `test_is_none_a_tuple`
     ```python
@@ -257,7 +257,7 @@ AssertionError: () is not None
     - `None` is not a `boolean`
     - `None` is `None`
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 Based on what we have seen so far, is it safe to assume that `None` is only `None` and is not any other data structure?
 Let's find out if this assumption is true.
@@ -281,7 +281,7 @@ AssertionError: [] is not None
 - what is the difference between a `list` and a `tuple` other than `[]` vs `()`?
 - Do you want to [read more about lists](https://docs.python.org/3/library/stdtypes.html?highlight=tuple#list)
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 We've done this dance a few times now so we can update `test_is_none_a_list` to make it pass. With the passing tests our knowledge of `None` is updated to
 - `None` is not a `list`
@@ -291,7 +291,7 @@ We've done this dance a few times now so we can update `test_is_none_a_list` to 
 - `None` is not a `boolean`
 - `None` is `None`
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 Is `None` a `set`?
 
@@ -311,7 +311,7 @@ AssertionError: {} is not None
 - `{}` is how `sets` are represented in python
 - Do you want to [read more about sets](https://docs.python.org/3/tutorial/datastructures.html?highlight=sets#sets)
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 update the tests to make them pass and we can update our knowledge of `None` to state that
 - `None` is not a `set`
@@ -322,7 +322,7 @@ update the tests to make them pass and we can update our knowledge of `None` to 
 - `None` is not a `boolean`
 - `None` is `None`
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 Is `None` a `dictionary | mapping`?
 
@@ -349,7 +349,7 @@ AssertionError: {} is not None
 - There are more tests on `dictionaries` in [DATA_STRUCTURES_DICTIONARIES](13_DATA_STRUCTURES_DICTIONARIES.md)
 - Do you want to [read more about dictionaries](https://docs.python.org/3/tutorial/datastructures.html?highlight=sets#dictionaries)
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 update the tests to make them pass and we can update our knowledge of `None` to state that
 - `None` is not a `dictionary`
@@ -361,7 +361,7 @@ update the tests to make them pass and we can update our knowledge of `None` to 
 - `None` is not a `boolean`
 - `None` is `None`
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 We just learned about `None`, which also introduced us to all the `objects` that it is not. Let's do the same with the first `object` we encountered `False`. What is `False` in python?
 
@@ -382,7 +382,7 @@ update `test_data_structures.py` with a new test
 ```
 the terminal updates to show an `AssertionError`
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - change all the `self.assertTrue` statements in `test_what_is_false` to `self.assertFalse` and we have one failing test left.
 - update `self.assertNotIsInstance` to `self.assertIsInstance` and all the tests pass
@@ -409,7 +409,7 @@ we can sum this up as, in python
 - empty things including `0` and `None` are `False`
 - `None` is `None`
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 What is `True` in python?
 
@@ -435,7 +435,7 @@ update `test_data_structures.py` with a new test
 ```
 the terminal updates to show an `AssertionError`
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - change all the `self.assertFalse` statements in `test_what_is_true` to `self.assertTrue` and we have one failing test left.
 - update `self.assertNotIsInstance` to `self.assertIsInstance` and all the tests pass

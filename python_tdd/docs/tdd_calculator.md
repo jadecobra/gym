@@ -144,7 +144,7 @@ class TestCalculator(unittest.TestCase):
     - `add` refers to something in that file that currently does not exist
 
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 - open `calculator.py` in your Interactive Development Environment(IDE) and add this
     ```python
@@ -300,7 +300,7 @@ Can we make it better?
     ================= 1 failed, 1 passed in 0.02s ========================
     ```
     Another AssertionError
-- <span style="color:green">**GREEN**</span>: Make it Pass - update the `add` function in `calculator.py`
+- <span style="color:green">**GREEN**</span>: make it pass - update the `add` function in `calculator.py`
     ```python
     def add(x, y):
     return x + y
@@ -523,7 +523,7 @@ Let's add the other tests
     ```
 - remove `test subtraction` from the TODO list
 
-#### <span style="color:orange">**REFACTOR**</span> - make it better
+#### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - How can we make this better?
 - Is there any duplication that could be removed? Yes
@@ -633,7 +633,7 @@ def multiply(x, y):
     return x * y
 ```
 terminal response - SUCCESS
-#### <span style="color:orange">**REFACTOR**</span> - make it better
+#### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - remove `test_multiplication` from the TODO list
 - Can you think of any way to make the code better?
@@ -842,7 +842,7 @@ terminal response - SUCCESS
     ```
     terminal response - SUCCESS - We now have a way to `catch` Exceptions in testing, allowing tests to continue when they encounter expected failures
 
-- <span style="color:orange">**REFACTOR**</span> - make it better
+- <span style="color:orange">**REFACTOR**</span>: make it better
     - update `test_calculator.py` to test other division cases when the divisor is not 0 by adding a while condition
     ```python
     import unittest

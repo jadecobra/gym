@@ -74,7 +74,7 @@ What does it mean to call a function?
         - the number you provide is like `"a"` and hitting dial is like `()`
         We will practice this some more in [TDD_FUNCTIONS](./TDD_FUNCTIONS.md)
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 Update `function_a` in `functions.py`
 ```python
@@ -83,7 +83,7 @@ def function_a(data):
 ```
 the terminal updates to show passing tests
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 There's not much to do here but add more tests for practice.
 
@@ -149,7 +149,7 @@ the terminal updates to show
 AttributeError: module 'functions' has no attribute 'function_c'
 ```
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 update `functions.py`
 ```python
@@ -193,7 +193,7 @@ def function_c(arg1, arg2, arg3):
 ```
 and the terminal updates to show all tests pass
 
-#### <span style="color:orange">**REFACTOR**</span> - make it better
+#### <span style="color:orange">**REFACTOR**</span>: make it better
 
 are you bored yet? let's add one more test
 

@@ -6,7 +6,7 @@ Here's the Test Driven Development mantra -
     <span style="color:red">**RED**</span> <span style="color:green">**GREEN**</span> <span style="color:orange">**REFACTOR**</span>
 - <span style="color:red">**RED**</span> - make a failing test
 - <span style="color:green">**GREEN**</span> - make it pass
-- <span style="color:orange">**REFACTOR**</span> - make it better
+- <span style="color:orange">**REFACTOR**</span>: make it better
 
 ## Prerequisites
 
@@ -130,7 +130,7 @@ The error provides important information about the code. Looking at it from the 
 
 ---
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 change line 7 to make the test pass. Which do you think is a better solution?
 `self.assertTrue(True)` or `self.assertFalse(False)`
@@ -152,7 +152,7 @@ OK
 
 ---
 
-### <span style="color:orange">**REFACTOR**</span> - Make it Better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 One way to make code better is to use the
 - [Abstraction Principle](https://en.wikipedia.org/wiki/Abstraction_principle_(computer_programming))

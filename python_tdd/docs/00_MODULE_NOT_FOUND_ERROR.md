@@ -153,7 +153,7 @@ Looking at the traceback starting from the bottom
     ```
 For more information about imports you can read [The Import Statement](https://docs.python.org/3/reference/simple_stmts.html#import)
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - create `module_0.py` in the `project_name` folder
 - the terminal will update to show the following

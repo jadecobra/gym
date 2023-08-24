@@ -37,7 +37,7 @@ class TestExceptionHandling(unittest.TestCase):
 ```
 the terminal updates to show `ModuleNotFoundError`. We know one solution is to create the module, but in this case we want to catch/handle the exception in the test as a way to prove in the code that a `ModuleNotFoundError` will be raised for this module `non_existent_module` that does not exist
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 update `test_catching_module_not_found_error_in_tests`
 
@@ -54,7 +54,7 @@ the terminal updates to show passing tests. How does all this work?
     - Do you want to [read more about with statement context managers](https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers)?
     - Do you want to [read PEP 343 - The "with" Statement](https://peps.python.org/pep-0343/)?
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 We now know how to catch/handle an exception with `unittest`. What can we do with this?
 - How can we test that a program fails in an expected way?
@@ -74,7 +74,7 @@ the terminal updates to show `AttrbuteError` because the called attribute `non_e
 E       AttributeError: module 'module' has no attribute 'non_existent_attribute'
 ```
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 update `test_catching_attribute_errors_in_tests` with `self.assertRaises`
 ```python
@@ -95,7 +95,7 @@ the terminal updates to show `AttrbuteError` because the called attribute `non_e
 E       AttributeError: module 'module' has no attribute 'non_existent_function'
 ```
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 add `self.assertRaises` and indent the failing line
 ```python
@@ -117,7 +117,7 @@ E       AttributeError: module 'module' has no attribute 'NonExistentClass'
 ```
 
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 add `self.assertRaises` to make it pass
 ```python
@@ -137,7 +137,7 @@ the terminal updates to show
 E       AttributeError: type object 'Class' has no attribute 'non_existent_attribute'
 ```
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 add `self.assertRaises` to catch the error
 ```python
@@ -156,7 +156,7 @@ the terminal updates to show
 ```python
 E       AttributeError: type object 'Class' has no attribute 'non_existent_method'
 ```
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 add `self.assertRaises` to make it pass
 ```python
@@ -165,7 +165,7 @@ add `self.assertRaises` to make it pass
 ```
 the terminal updates to show passing tests
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 We just wrote the same context manager 5 times, this is a good candidate for a rewrite. Let's remove the duplication. Update `test_catching_attribute_errors_in_tests`
 ```python
@@ -194,7 +194,7 @@ In [TDD_CALCULATOR](./TDD_CALCULATOR.md), we built a calculator and ran into iss
 - What if we want the program to return a message instead of ending execution of the program abruptly?
 - What if we want to assert that dividing by zero causes an error but the error it causes does not end our tests?
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 add `self.assertRaises` to make the test pass
 ```python
@@ -213,7 +213,7 @@ we will deliberately create an exception in our code and then handle it. update 
 ```
 the terminal updates to show a `NameError`
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 - update the import section with a new import
     ```python
     import unittest
@@ -254,7 +254,7 @@ the terminal updates to show a `NameError`
 ***CONGRATULATIONS**
 You now know how to deliberately create an exception.
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 Let's add exception handling to our program so it does not end when it encounters the exceptions we handle
 
@@ -270,7 +270,7 @@ add a new test to `test_exception_handling`
 ```
 the terminal updates to show an `AttributeError`
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 - update `exceptions.py` with a new name and the terminal updates to show `NameError`
     ```python
     exception_handler
@@ -312,7 +312,7 @@ add a new test to `test_exception_handling`
 ```
 the terminal updates to show an `AttributeError`
 
-#### <span style="color:green">**GREEN**</span>: Make it Pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 - update `exceptions.py` with `succeeding_function` and the terminal updates to show a `NameError`
     ```python
@@ -362,7 +362,7 @@ the terminal updates to show an `AttributeError`
       - [read more about `try...except...else`?](https://docs.python.org/3/reference/compound_stmts.html#the-try-statement)
       - [read more about exception handling?](https://docs.python.org/3/tutorial/errors.html?highlight=try%20except#handling-exceptions)
 
-### <span style="color:orange">**REFACTOR**</span> - make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 ### <span style="color:red">**RED**</span>: make a failing test
 
@@ -375,7 +375,7 @@ update `test_exception_handling.py` and the terminal updates to show an `Attribu
         )
 ```
 
-### <span style="color:green">**GREEN**</span>: Make it Pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - update `exceptions.py` and the terminal updates to show a `NameError`
     ```python
