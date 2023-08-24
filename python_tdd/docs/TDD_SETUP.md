@@ -192,7 +192,8 @@ You just created a [virtual environment](https://docs.python.org/3/library/venv.
 - `source .venv/bin/activate` or `.venv/scripts/activate` activates the virtual environment
 - `pip install --upgrade pip` - upgrades `pip` to the latest version
 - what is pip? the [python package manager](https://pypi.org/project/pip/)
-- `pip install --requirement requirements.txt` installs a python library named `pytest-watch` listed in the `requirements.txt` that will automatically run the tests when a change is made
+- `pip install --requirement requirements.txt` installs a python library named `pytest-watch` listed in the `requirements.txt`
+- what is `pytest-watch` a library that automatically runs our tests when a change is made
 
 run the tests by typing `pytest-watch` in the terminal, you should see something similar to
 ```shell
