@@ -34,7 +34,7 @@ f(input_data) -> output_data # where f is the program|procress
 
 `None` is an object used to represent the absence of a value
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 create a file named `test_data_structures.py` in the `tests` folder
 ```python
@@ -60,7 +60,7 @@ we assert what we learned in [04_ASSERTION_ERROR](04_ASSERTION_ERROR.md) that `N
 
 What other things can we compare with `None` to learn more about what it is or is not
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 add a new test to compare `None` with booleans
 ```python
@@ -86,7 +86,7 @@ we are reminded that
 
 booleans are represented by the keyword `bool` in python so we can do an instance test using another `unittest.TestCase` method that checks if an `object` is an instance of a `class`. We cover classes in [CLASSES](CLASSES.md)
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 update `test_is_none_a_boolean` with `self.assertIsInstance`
 ```python
@@ -114,7 +114,7 @@ We can summarize what we know about `None` so far
 - Is `None` equal to any `int`, `float`, `string`, `tuple`, `list`, `set` or `dict`?
 Let's find out
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 add a new test to compare `None` with `int`
 ```python
@@ -138,7 +138,7 @@ update `test_is_none_an_integer` to make it pass
 
 integers are represented by the keyword `int` in python so we can do an instance test using another `unittest.TestCase` method that checks if an `object` is an instance of a `class`. We cover classes in [CLASSES](CLASSES.md)
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 update `test_is_none_an_integer` with `self.assertIsInstance`
 ```python
@@ -165,7 +165,7 @@ So far we know that in python
 
 Let's add a test for `strings`
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 update `test_data_structures.py`
 ```python
@@ -188,7 +188,7 @@ update `test_is_none_a_string` to make it pass
 
 `strings` are represented by the `str` class keyword in python. Let's add a test that checks if `None` is an instance of the `string` class
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 update `test_is_none_a_string` and the terminal updates to show a failing test
 ```python
@@ -211,7 +211,7 @@ Updating our knowledge of `None`, we know that
 
 Is `None` a `tuple`?
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 add a new test to `test_data_structures.py`
 ```python
@@ -264,7 +264,7 @@ Let's find out if this assumption is true.
 
 Is `None` a list | array?
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 add a new test
 ```python
@@ -295,7 +295,7 @@ We've done this dance a few times now so we can update `test_is_none_a_list` to 
 
 Is `None` a `set`?
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 add a new test
 ```python
@@ -326,7 +326,7 @@ update the tests to make them pass and we can update our knowledge of `None` to 
 
 Is `None` a `dictionary | mapping`?
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 add a new test
 ```python
@@ -365,7 +365,7 @@ update the tests to make them pass and we can update our knowledge of `None` to 
 
 We just learned about `None`, which also introduced us to all the `objects` that it is not. Let's do the same with the first `object` we encountered `False`. What is `False` in python?
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 update `test_data_structures.py` with a new test
 ```python
@@ -413,7 +413,7 @@ we can sum this up as, in python
 
 What is `True` in python?
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 update `test_data_structures.py` with a new test
 ```python

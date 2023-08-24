@@ -4,7 +4,7 @@ This tutorial will step through creating a Test Driven Development Environment i
 
 Here's the Test Driven Development mantra -
     <span style="color:red">**RED**</span> <span style="color:green">**GREEN**</span> <span style="color:orange">**REFACTOR**</span>
-- <span style="color:red">**RED**</span> - write a failing test
+- <span style="color:red">**RED**</span> - make a failing test
 - <span style="color:green">**GREEN**</span> - make it pass
 - <span style="color:orange">**REFACTOR**</span> - make it better
 
@@ -44,9 +44,17 @@ touch tests/test_project_name.py
 - The module we are creating is called `project_name.py`
 - What is a module? A python module is any file that ends in `.py`
 
+Your folder structure should look like this
+```
+project_name
+|--tests
+|   |--__init__.py
+|   |--test_project_name.py
+|--project_name.py
+```
 ---
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 - Open up `project_name/tests/test_project_name.py` in your Interactive Development Environment(IDE) and type the following
     ```python
@@ -164,20 +172,20 @@ How can we avoid this repetition and focus on tests and solutions?
 
 ##### Setup a Virtual Environment
 
-> ***Are you on a Windows machine?***
+> ***Are you on a Windows machine? If you are not using WSL***
 > - replace `python3` in the examples with `python`
 > - replace `source .venv/bin/activate` in the example below with `.venv/scripts/activate`
 
-in your editor create a file named `requirements.txt`, add the following line and save it
-`pytest-watch`
-
-type the following in the terminal
-```shell
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -U pip
-pip install -r requirements.txt
-```
+- in your editor create a file named `requirements.txt`
+- add this to the file `pytest-watch`
+- save the file
+- type the following in the terminal
+    ```shell
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -U pip
+    pip install -r requirements.txt
+    ```
 
 You just created a [virtual environment](https://docs.python.org/3/library/venv.html)
 - `python3 -m venv .venv` creates a virtual environment named `.venv` you can use any name you want

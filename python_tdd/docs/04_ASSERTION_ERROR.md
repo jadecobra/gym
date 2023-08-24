@@ -31,7 +31,7 @@ When building a program we have certain expectations based on given inputs. One 
 
 ## How to solve the AssertionError
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 create a file named `test_assertion_error.py` in the `tests` folder and add the following
 
@@ -71,7 +71,7 @@ the terminal updates to show passing tests
 
 What is another way we can write `assert` statements?
 
-##### <span style="color:red">**RED**</span>: Write a failing test
+##### <span style="color:red">**RED**</span>: make a failing test
 
 add the following line to `test_assertion_errors_with_none`
 
@@ -106,7 +106,7 @@ From our test we now know that In python
 If `False` is not `None`, what is its relation to `True`?
 Let's add a test to find out
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 update `test_assertion_errors_with_none`
 ```python
@@ -125,7 +125,7 @@ update `test_assertion_errors_with_none` to make it pass
 ```
 the terminal shows passing tests
 
-##### <span style="color:red">**RED**</span>: Write a failing test
+##### <span style="color:red">**RED**</span>: make a failing test
 
 let's try with the `unittest` equivalent method. update `test_assertion_errors_with_none`
 ```python
@@ -148,7 +148,7 @@ the terminal shows passing tests and We now know that in python
 
 What else can we discover? How can we use this fundamental information to build programs?
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 Let's add another test. Update `test_assertion_errors_with_none`
 ```python
@@ -166,7 +166,7 @@ update `test_assertion_errors_with_none` to make it pass
 ```
 the terminal updates to show passing tests. Let's add more
 
-##### <span style="color:red">**RED**</span>: Write a failing test
+##### <span style="color:red">**RED**</span>: make a failing test
 update `test_assertion_errors_with_none`
 ```python
         self.assertIsNotNone(None)
@@ -197,7 +197,7 @@ What else can we learn with what we know?
 
 Let's test it
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 update `TestAssertionError` in `test_assertion_error.py` with the following test
 ```python
@@ -216,7 +216,7 @@ update `test_assertion_errors_with_false` to make it pass
 ```
 the terminal updates to show passing tests
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 let's try with the `unittest` equivalent method. update `test_assertion_errors_with_false`
 
 ```python
@@ -240,7 +240,7 @@ the terminal updates to show passing tests and we now know that in python
 - `False` is not `True`
 - `False` is `False`
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 update `TestAssertionError` in `test_assertion_error.py` with the following test
 ```python
@@ -259,7 +259,7 @@ update `test_assertion_errors_with_true` to make it pass
 ```
 the terminal updates to show passing tests
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 let's try with the `unittest` equivalent method. update `test_assertion_errors_with_true`
 
 ```python
@@ -294,7 +294,7 @@ Well, they come in handy when we are learning how a system behaves, they are als
 
 We can also make assertions of equality. Let us test this
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 update `TestAssertionError` in `test_assertion_errors.py` with a new test
 
@@ -319,7 +319,7 @@ the terminal updates to show passing tests.
 
 #### <span style="color:orange">**REFACTOR**</span> - make it better
 
-##### <span style="color:red">**RED**</span>: Write a failing test
+##### <span style="color:red">**RED**</span>: make a failing test
 update `test_assertion_errors_with_equality` with the `unittest` equivalent method
 
 ```python
@@ -355,7 +355,7 @@ the terminal updates to show passing tests and we now know that in python
 - `True` is not `False`
 - `True` is `True`
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 update `test_assertion_errors_with_equality`
 ```python
@@ -375,7 +375,7 @@ update `test_assertion_errors_with_equality` to make it pass
 ```
 the terminal updates to show passing tests
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 update `test_assertion_errors_with_equality` using the equivalent `unittest` method
 
@@ -407,7 +407,7 @@ the terminal updates to show passing tests and we now know that in python
 
 There is a pattern here, let's update the test for the other cases we have
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 update `test_assertion_errors_with_equality`
 

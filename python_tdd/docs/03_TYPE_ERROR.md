@@ -18,7 +18,7 @@ What does it mean to call a function?
 
 ## How to solve the TypeError in functions
 
-### <span style="color:red">**RED**</span>: Write a failing test
+### <span style="color:red">**RED**</span>: make a failing test
 
 - Open a new file in the editor and save it as `tests/test_type_error.py` in the `tests` folder you created in [Setup Test Driven Development Project](./TDD_SETUP.md) and type the following in the file
 
@@ -138,7 +138,7 @@ There's not much to do here but add more tests for practice.
 
 ### Let's add more tests
 
-#### <span style="color:red">**RED**</span>: Write a failing test
+#### <span style="color:red">**RED**</span>: make a failing test
 
 update `TestTypeErrors` in `test_type_error.py` to add more tests
 ```python
