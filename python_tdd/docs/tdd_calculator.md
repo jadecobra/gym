@@ -76,7 +76,7 @@ class TestCalculator(unittest.TestCase):
 
 ### Test Addition
 
-#### <span style="color:red">**RED**</span>: make a failing test
+#### <span style="color:red">**RED**</span>: make it fail
 
 ```python
 import unittest
@@ -243,7 +243,7 @@ What happens if our calculator users try to add other numbers?
 What happens if our calculator users try to add a negative number?
 Can we make it better?
 
-- <span style="color:red">**RED**</span>: make a failing test - update `test_calculator.py` with a new test
+- <span style="color:red">**RED**</span>: make it fail - update `test_calculator.py` with a new test
     ```python
     import unittest
     import calculator
@@ -366,7 +366,7 @@ That's the pattern <span style="color:red">**RED**</span> <span style="color:gre
 ### Test Subtraction
 
 Let's add the other tests
-#### <span style="color:red">**RED**</span> - make a failing test
+#### <span style="color:red">**RED**</span> - make it fail
 
 - update `test_calculator.py` with `test_subtraction`
     ```python
@@ -574,7 +574,7 @@ Let's add the other tests
 
 ### Test Multiplication
 
-#### <span style="color:red">**RED**</span> - make a failing test
+#### <span style="color:red">**RED**</span> - make it fail
 
 update `test_calculator.py` with `test_multiplication`
 ```python
@@ -642,7 +642,7 @@ terminal response - SUCCESS
 
 ### Test Division
 
-#### <span style="color:red">**RED**</span> - make a failing test
+#### <span style="color:red">**RED**</span> - make it fail
 - update `test_calculator.py` with `test_division`
     ```python
     import unittest
@@ -721,7 +721,7 @@ terminal response - SUCCESS
     add `ZeroDivisionError` to the list of errors encountered
 
 ##### How to test for Errors
-- <span style="color:red">**RED**</span> - make a failing test
+- <span style="color:red">**RED**</span> - make it fail
     - update `test_calculator.py` with a test for division by zero
     ```python
     import unittest
