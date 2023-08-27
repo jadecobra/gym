@@ -15,7 +15,7 @@ Some people indent with 2 spaces, others indent with 4. In this exercise we will
 
 ## How to solve the IndentationError
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 - Open a new file in the editor and save it as `tests/test_indentation_error.py` in the `tests` folder you created in [Setup Test Driven Development Project](./TDD_SETUP.md) and type the following in the file. ***NOTE THE SPACING***
 
@@ -69,7 +69,7 @@ fix the offending lines until all tests are green.
 
 Let's add more tests, this time indentation errors with functions, what's the difference in the spacing?
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 - update `test_indentation_error.py`
     ```python
@@ -108,7 +108,7 @@ Let's add more tests, this time indentation errors with functions, what's the di
 
 Let's add more tests, this time indentation errors in Classes, what's the difference in the spacing?
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 - update `test_indentation_error.py`
     ```python
@@ -142,7 +142,7 @@ Let's add more tests, this time indentation errors in Classes, what's the differ
 
 ## How to solve the IndentationError in Classes with Methods
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 - update `test_indentation_error.py`
     ```python
@@ -182,7 +182,7 @@ Let's add more tests, this time indentation errors in Classes, what's the differ
 
 ## How to solve the IndentationError in Classes with Attributes
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 - update `test_indentation_error.py`
     ```python

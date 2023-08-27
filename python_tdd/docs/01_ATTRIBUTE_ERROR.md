@@ -15,7 +15,7 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
 
 ## How to solve the AttributeError by defining a Variable
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 - Open a new file in the editor and save it as `tests/test_attribute_error.py` in the `tests` folder you created in [Setup Test Driven Development Project](./TDD_SETUP.md) and type the following in the file
 
@@ -116,7 +116,7 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
 
 There's not much to do here, we could repeat the above as a drill to make sure we remember the solution
 
-#### <span style="color:red">**RED**</span>: make a failing test
+#### <span style="color:red">**RED**</span>: make it fail
 - Update `tests/test_attribute_error.py`
     ```python
     import unittest
@@ -133,7 +133,7 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     E       AttributeError: module 'module' has no attribute 'variable_1'
     ```
 #### <span style="color:green">**GREEN**</span>: make it pass
-- <span style="color:red">**RED**</span>: make a failing test - Update `module.py`
+- <span style="color:red">**RED**</span>: make it fail - Update `module.py`
     ```python
     variable_0 = None
     variable_1
@@ -149,7 +149,7 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     ```
     The terminal will update to show passing tests
 
-#### <span style="color:red">**RED**</span>: make a failing test
+#### <span style="color:red">**RED**</span>: make it fail
 - Update `tests/test_attribute_error.py`
     ```python
     import unittest
@@ -168,7 +168,7 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     E       AttributeError: module 'module' has no attribute 'variable_2'
     ```
 ##### <span style="color:green">**GREEN**</span>: make it pass
-- <span style="color:red">**RED**</span>: make a failing test - Update `module.py`
+- <span style="color:red">**RED**</span>: make it fail - Update `module.py`
     ```python
     variable_0 = None
     variable_1 = None
@@ -186,7 +186,7 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     ```
     The tests pass
 
-##### <span style="color:red">**RED**</span>: make a failing test
+##### <span style="color:red">**RED**</span>: make it fail
 - Update `tests/test_attribute_error.py`
     ```python
     import unittest
@@ -205,7 +205,7 @@ There's not much to do here, we could repeat the above as a drill to make sure w
     E       AttributeError: module 'module' has no attribute 'variable_3'
     ```
 ##### <span style="color:green">**GREEN**</span>: make it pass
-- <span style="color:red">**RED**</span>: make a failing test - Update `module.py`
+- <span style="color:red">**RED**</span>: make it fail - Update `module.py`
     ```python
     variable_0 = None
     variable_1 = None
@@ -255,7 +255,7 @@ You now know how to solve
 
 ## How to solve the AttributeError by defining a Function
 Let us take a look at solving `AttributeError` for functions
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 - Update the `TestAttributeError` class in `tests/test_attribute_error.py` with
     ```python
@@ -346,7 +346,7 @@ Classes
         - age - return age based on date of birth
         - speak - return words
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 - Update the `TestAttributeError` class in `tests/test_attribute_error.py` with
     ```python
@@ -409,7 +409,7 @@ You now know how to solve
 
 ## How to solve the AttributeError by defining an Attribute in a Class
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 - update the `TestAttributeError` class in `test_attribute_error.py`
     ```python
@@ -517,7 +517,7 @@ You now know how to solve
 
 ## How to solve the AttributeError by defining a Method(Function) in a Class
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 - update the `TestAttributeError` class in `test_attribute_error.py`
     ```python

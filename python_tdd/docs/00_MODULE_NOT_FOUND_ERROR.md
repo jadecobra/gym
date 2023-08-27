@@ -16,7 +16,7 @@ Programming allows us to gain from our previous efforts as well as the efforts o
 We can package, distribute and publish programs for other people to use.
 To use these packages in python we have to import them.
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 Open a new file in your editor and save it as `test_module_not_found_error.py` in the `tests` folder you created in [Setup Test Driven Development Project](./TDD_SETUP.md)
 Type the following in the file

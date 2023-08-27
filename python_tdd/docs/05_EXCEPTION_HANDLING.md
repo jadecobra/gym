@@ -21,7 +21,7 @@ Enter Exception Handling. In programming there is a mechanism for handling excep
 
 ### How to test that an Exception is raised
 
-#### <span style="color:red">**RED**</span>: make a failing test
+#### <span style="color:red">**RED**</span>: make it fail
 
 create a file named `test_exception_handling.py` in the `tests` folder and add the following
 
@@ -61,7 +61,7 @@ We now know how to catch/handle an exception with `unittest`. What can we do wit
 - How can we deliberately create an exception?
 - How can we design for failure?
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 add a new test to `TestExceptionHandling` in `test_exception_handling.py`
 
@@ -83,7 +83,7 @@ update `test_catching_attribute_errors_in_tests` with `self.assertRaises`
 ```
 the terminal updates to show passing tests. Let's do it again
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 update `test_catching_attribute_errors_in_tests`
 
@@ -104,7 +104,7 @@ add `self.assertRaises` and indent the failing line
 ```
 the terminal updates to show passing tests
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 let's add another failing line to `test_catching_attribute_errors_in_tests`
 
@@ -126,7 +126,7 @@ add `self.assertRaises` to make it pass
 ```
 the terminal shows passing tests
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 update `test_catching_attribute_errors_in_tests` with the following
 ```python
@@ -146,7 +146,7 @@ add `self.assertRaises` to catch the error
 ```
 the terminal updates to show passing tests
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 let's add another attribute error, update `test_catching_attribute_errors_in_tests`
 ```python
@@ -178,7 +178,7 @@ We just wrote the same context manager 5 times, this is a good candidate for a r
 ```
 the terminal shows our tests are still passing
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 Let's try another exception. add a new test to `test_exception_handling.py`
 ```python
@@ -205,7 +205,7 @@ the terminal updates to show passing tests
 
 ## How to Handle Exceptions in programs
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 we will deliberately create an exception in our code and then handle it. update `test_exception_handling.py` with a new test.
 ```python
     def test_catching_exceptions(self):
@@ -258,7 +258,7 @@ You now know how to deliberately create an exception.
 
 Let's add exception handling to our program so it does not end when it encounters the exceptions we handle
 
-#### <span style="color:red">**RED**</span>: make a failing test
+#### <span style="color:red">**RED**</span>: make it fail
 
 add a new test to `test_exception_handling`
 ```python
@@ -300,7 +300,7 @@ the terminal updates to show an `AttributeError`
         return 'failed'
     ```
 
-#### <span style="color:red">**RED**</span>: make a failing test
+#### <span style="color:red">**RED**</span>: make it fail
 
 add a new test to `test_exception_handling`
 ```python
@@ -364,7 +364,7 @@ the terminal updates to show an `AttributeError`
 
 ### <span style="color:orange">**REFACTOR**</span>: make it better
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 update `test_exception_handling.py` and the terminal updates to show an `AttributeErroor`
 ```python

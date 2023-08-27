@@ -4,7 +4,7 @@ This tutorial will step through creating a Test Driven Development Environment i
 
 Here's the Test Driven Development mantra -
     <span style="color:red">**RED**</span> <span style="color:green">**GREEN**</span> <span style="color:orange">**REFACTOR**</span>
-- <span style="color:red">**RED**</span> - make a failing test
+- <span style="color:red">**RED**</span> - make it fail
 - <span style="color:green">**GREEN**</span> - make it pass
 - <span style="color:orange">**REFACTOR**</span>: make it better
 
@@ -54,7 +54,7 @@ project_name
 ```
 ---
 
-### <span style="color:red">**RED**</span>: make a failing test
+### <span style="color:red">**RED**</span>: make it fail
 
 - Open up `project_name/tests/test_project_name.py` in your Interactive Development Environment(IDE) and type the following
     ```python
