@@ -536,4 +536,7 @@ Why did that work?
 - `self.sex` within each class refers to the `sex` attribute in the class, allowing its definition from the `__init__` method
 
 ***CONGRATULATIONS***
-- YOu know 
+You know how to define a class with
+- an attribute
+- a method
+- an initializer
