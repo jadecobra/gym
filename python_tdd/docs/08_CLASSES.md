@@ -139,21 +139,21 @@ We now know that in python
 
 ## Class Attributes
 
-Since we know how to define a class, let's add some tests for attributes. update `TestClasses` in `classes.py`
-```python
-    def test_classes_with_attributes(self):
-        self.assertEqual(classes.ClassWithAttributes.an_integer, int)
-```
-the terminal updates to show [AttributeError](./01_ATTRIBUTE_ERROR.md)
+Since we know how to define a class, let's add some tests for attributes.
 
 ### <span style="color:red">**RED**</span>: make it fail
-
-update `classes.py` with a `class` definition
-```python
-class ClassWithAttributes(object):
-    pass
-```
-the terminal updates to show another [AttributeError](./01_ATTRIBUTE_ERROR.md), this time for a missing attribute in our newly defined class
+- update `TestClasses` in `classes.py`
+    ```python
+        def test_classes_with_attributes(self):
+            self.assertEqual(classes.ClassWithAttributes.an_integer, int)
+    ```
+    the terminal updates to show [AttributeError](./01_ATTRIBUTE_ERROR.md)
+- update `classes.py` with a `class` definition
+    ```python
+    class ClassWithAttributes(object):
+        pass
+    ```
+    the terminal updates to show another [AttributeError](./01_ATTRIBUTE_ERROR.md), this time for a missing attribute in our newly defined class
 
 ### <span style="color:green">**GREEN**</span>: make it pass
 
@@ -214,6 +214,83 @@ the terminal updates to show passing tests
 
 ## Class Methods
 
+Classes can have `methods/functions`
+
 ### <span style="color:red">**RED**</span>: make it fail
+
+Let us add some tests for class methods. update `TestClasses` in `classes.py`
+```python
+    def test_classes_with_methods(self):
+        self.assertEqual(classes.ClassWithMethods.method_a(), 'You called MethodA')
+```
+the terminal updates to show [AttributeError](./01_ATTRIBUTE_ERROR.md)
+
 ### <span style="color:green">**GREEN**</span>: make it pass
+
+- update `classes.py` with a class definition
+    ```python
+    class ClassWithMethods(object):
+        pass
+    ```
+    the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
+- add an attribute to the `ClassWithMethods`
+    ```python
+    class ClassWithMethods(object):
+        method_a
+    ```
+    the terminal updates to show a `Nameerror`
+- define `method_a` as an attribute
+    ```python
+    class ClassWithMethods(object):
+        method_a = None
+    ```
+    the terminal updates to show a [TypeError](./03_TYPE_ERROR.md) since `method_a` is not callable
+- update the definition of `method_a` to make it a function
+    ```python
+    class ClassWithMethods(object):
+
+        def method_a():
+            return None
+    ```
+    the terminal updates to show an [AssertionError](./04_ASSERTION_ERROR.md)
+-  change the value the function returns to match the expectation in our test
+    ```python
+        def method_a():
+            return 'You called MethodA'
+    ```
+    the terminal updates to show passing tests
+
 ### <span style="color:orange">**REFACTOR**</span>: make it better
+
+- Let's add a few more tests for fun to `test_classes_with_methods`
+    ```python
+        def test_classes_with_methods(self):
+            self.assertEqual(classes.ClassWithMethods.method_a(), 'You called MethodA')
+            self.assertEqual(classes.ClassWithMethods.method_b(), 'You called MethodB')
+            self.assertEqual(classes.ClassWithMethods.method_c(), 'You called MethodC')
+            self.assertEqual(classes.ClassWithMethods.method_d(), 'You called MethodD')
+    ```
+    the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
+- update `ClassWithmethods` to make it pass
+- let's add another test for a class that has both attributes and methods
+    ```python
+        def test_classes_with_attributes_and_methods(self):
+            self.assertEqual(classes.ClassWithAttributesAndMethods.attribute, 'attribute')
+            self.assertEqual(classes.ClassWithAttributesAndMethods.method(), 'you called a method')
+    ```
+    the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
+- update `classes.py` to make the tests pass by defining the class, attribute and methods
+    ```python
+    class ClassWithAttributesAndMethods(object):
+
+        attribute = 'attribute'
+
+        def method():
+            return 'you called a method'
+    ```
+    the terminal updates to show passing tests
+
+
+## Class Initializers
+
+CONGRATULATIONS. You now know how to define classes, attributes and methods. Let's expand on this knowledge
