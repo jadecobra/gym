@@ -1,6 +1,6 @@
 # How to write classes in python
 
-This tutorial will step through clesses in python using Test Driven Development
+This tutorial will step through classes in python using Test Driven Development
 
 ## Prerequisites
 
