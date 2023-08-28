@@ -154,9 +154,9 @@ OK
 
 ### <span style="color:orange">**REFACTOR**</span>: make it better
 
-One way to make code better is to use the
+We can make code better by using the
 - [Abstraction Principle](https://en.wikipedia.org/wiki/Abstraction_principle_(computer_programming))
-- [Do Not Repeat Yourself (DRY)](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
+- [Do Not Repeat Yourself (DRY) Principle](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
 
 So far there's not much to improve on what has been written but there has been duplication.
 - we ran `python3 -m unittest` to see the test fail

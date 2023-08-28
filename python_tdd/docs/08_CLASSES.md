@@ -354,11 +354,186 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
 ### <span style="color:green">**GREEN**</span>: make it pass
 
-add a definition for the class
-```python
+- add a definition for the class
+    ```python
 
 
-class
-```
+    class Boy(object):
+
+        pass
+    ```
+    the terminal updates to show another [AttributeError](./01_ATTRIBUTE_ERROR.md)
+- add the name `sex` to the `Boy` class
+    ```oython
+
+
+    class Boy(object):
+
+        sex
+    ```
+    the terminal updates to show a `NameError`
+- add a definition for the `sex` attribute
+    ```python
+
+
+    class Boy(object):
+
+        sex = 'M
+    ```
+    the terminal updates to show passing tests
 
 ### <span style="color:orange">**REFACTOR**</span>: make it better
+
+- Let's add another test to `test_classes_with_initializers`
+    ```python
+            self.assertEqual(classes.Girl(sex='F').sex, 'F')
+    ```
+    the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
+- update `classes.py` with a definition for the `Girl` class
+    ```python
+
+
+    class Girl(object):
+
+        sex = 'M'
+    ```
+    the terminal updates to show
+    ```python
+    TypeError: Girl() takes no arguments
+    ```
+    here we see a similarity between `classes` and [functions](./07_FUNCTIONS.md)
+    - the call `classes.Girl(sex='F')` looks like a call to a function with keyword arguments
+    - How do we define classes to accept keyword arguments when the definition of a class defines the parent it inherits from e.g. `class Class(object)`? We use an initializer
+    - What's an initializer? a class method that allows customization of `instances/copies` of a `class`
+- add an initiializer to the `Girl` class
+    ```python
+
+
+    class Girl(object):
+
+        sex = 'F'
+
+        def __init__(self):
+            pass
+    ```
+    the terminal updates to show
+    ```python
+    TypeError: __init__() got an unexpected keyword argument 'sex'
+    ```
+- update the signature of the `__init__` method to accept a keyword argument
+    ```python
+    def __init__(self, sex=None):
+        pass
+    ```
+    the terminal updates to show passing tests
+- let's add another test we can use an initializer with to `test_classes_with_initializers`
+    ```python
+        self.assertEqual(classes.Other(sex='?').sex, '?')
+    ```
+    the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
+- add a class definition to `classes.py`
+    ```python
+
+
+    class Other(object):
+
+    sex = '?'
+
+    def __init__(self, sex=None):
+        pass
+    ```
+    the terminal updates to show passing tests
+- Wait a minute, we just repeated the same thing twice.
+    - We defined a `class` with a name
+    - defined an attribute named `sex`
+    - defined an `__init__` method which takes in a `sex` keyword argument
+- let's make the repetition complete by redefining the `Boy` class to match the `Girl` and `Other` class
+    ```python
+
+
+    class Boy(object):
+
+        sex = 'M'
+
+        def __init__(self, sex=None):
+            pass
+    ```
+    the terminal shows tests are still passing. Now we have written the same thing 3 times, how can we remove this duplication? Inheritance/Abstraction
+- We have 3 classes that are defined in exactly the same way, how can we abstract these things to a parent class that they inherit from? add a new class called `Human` to `classes.py` before the definition for `Boy`
+    ```python
+
+
+    class Human(object):
+
+        sex = 'M'
+
+        def __init__(self, sex='M'):
+            pass
+
+
+    class Boy(object):
+        ...
+    ```
+    the terminal still shows passing tests
+- Update the definitions for `Boy` to inherit from the `Human` class
+    ```python
+    class Boy(Human):
+        ...
+    ```
+    the terminal shows passing tests
+- remove the `sex` attribute from the `Boy` class and the tests continue to pass
+- remove the `__init__` method, updating the class definition
+    ```python
+
+
+    class Boy(Human):
+
+        pass
+    ```
+    the terminal still shows passing tests
+- Let's try the same thing with the `Girl` class. update the definition to inherit from the `Human` class
+    ```python
+    class Girl(Human):
+        ...
+    ```
+    the terminal shows passing tests
+- remove the `sex` attribute and the terminal shows an [AssertionError](./04_ASSERTION_ERROR.md)
+- update the `Human` class to set the `sex` attribute in the initializer instead of at the class level
+    ```python
+    class Human(object):
+
+        sex = 'M'
+
+        def __init__(self, sex='M'):
+            self.sex = sex
+    ```
+    the terminal still shows an [AssertionError](./04_ASSERTION_ERROR.md)
+- remove the `__init__` method from the `Girl` class
+    ```python
+    class Girl(Human):
+
+        pass
+    ```
+    the terminal updates to show passing tests
+- can we do the same with the `Other` class? update the definition of the class to inherit from the `Human` class
+    ```python
+    class Other(Human):
+
+        pass
+    ```
+    the terminal updates to show passing tests.
+- one last change, we remove the `sex` attribute from the `Human` class
+    ```python
+    class Human(object):
+
+        def __init__(self, sex='M'):
+            self.sex = sex
+    ```
+    the terminal still shows passing tests
+
+Why did that work?
+- the `Boy`, `Girl` and `Other` class now inherit from the `Human` class which means they all get the same methods and attributes that the `Human` class has, including the `__init__` method
+- `self.sex` within each class refers to the `sex` attribute in the class, allowing its definition from the `__init__` method
+
+***CONGRATULATIONS***
+- YOu know 
