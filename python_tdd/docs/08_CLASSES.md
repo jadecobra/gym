@@ -38,21 +38,30 @@ the terminal updates to show a [ModuleNotFoundError](./00_MODULE_NOT_FOUND_ERROR
 - create a python module named `classes.py` and the terminal updates to show [AttributeError](./01_ATTRIBUTE_ERROR.md)
 - add the name `ClassWithPass` to the module
     ```python
+
+
     ClassWithPass
     ```
     the terminal updates to show a `NameError`
 - update the name to define a variable
     ```python
+
+
     ClassWithPass = None
     ```
 - redefine the variable as a class
     ```python
+
+
     class ClassWithPass:
     ```
     the terminal updates to show an [IndentationError](./02_INDENTATION_ERROR.md)
 - add `pass` to the definition like we did in [Functions](./07_FUNCTIONS.md)
     ```python
+
+
     class ClassWithPass:
+
         pass
     ```
     the terminal updates to show passing tests
@@ -76,13 +85,19 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
 - update `classes.py` with a class definition
     ```python
+
+
     class ClassWithParentheses:
+
         pass
     ```
     the terminal updates to show passing tests
 - update the definition to include parentheses
     ```python
+
+
     class ClassWithParentheses():
+
         pass
     ```
     the terminal shows all tests are still passing.
@@ -110,13 +125,19 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
 - add a class definition to `classes.py`
     ```python
+
+
     class ClassWithObject():
+
         pass
     ```
     the terminal updates to show passing tests
 - update the definition to explicitly state the parent `object`
     ```python
+
+
     class ClassWithObject(object):
+
         pass
     ```
     the terminal updates to show passing tests
@@ -134,7 +155,6 @@ We now know that in python
 > `Explicit is better than implicit.`
 > We will use the explicit form of class definitions with the parent `object` in parentheses
 
-
 ### <span style="color:orange">**REFACTOR**</span>: make it better
 
 ## Class Attributes
@@ -150,7 +170,10 @@ Since we know how to define a class, let's add some tests for attributes.
     the terminal updates to show [AttributeError](./01_ATTRIBUTE_ERROR.md)
 - update `classes.py` with a `class` definition
     ```python
+
+
     class ClassWithAttributes(object):
+
         pass
     ```
     the terminal updates to show another [AttributeError](./01_ATTRIBUTE_ERROR.md), this time for a missing attribute in our newly defined class
@@ -159,19 +182,28 @@ Since we know how to define a class, let's add some tests for attributes.
 
 - add an attribute to `ClassWithAttributes`
     ```python
+
+
     class ClassWithAttributes(object):
+
         a_boolean
     ```
     the terminal updates to show a `NameError`
 - update the name with a definition
     ```python
+
+
     class ClassWithAttributes(object):
+
         a_boolean = None
     ```
     the terminal updates show an [AssertionError](./04_ASSERTION_ERROR.md)
 - redefine the attribute to make the test pass
     ```python
+
+
     class ClassWithAttributes(object):
+
         a_boolean = bool
     ```
     the terminal updates to show passing tests
@@ -200,7 +232,10 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
 update `ClassWithAttributes` with attributes sto make the tests pass
 ```python
+
+
 class ClassWithAttributes(object):
+
     a_boolean = bool
     an_integer = int
     a_float = float
@@ -229,24 +264,35 @@ the terminal updates to show [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
 - update `classes.py` with a class definition
     ```python
+
+
     class ClassWithMethods(object):
+
         pass
     ```
     the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 - add an attribute to the `ClassWithMethods`
     ```python
+
+
     class ClassWithMethods(object):
+
         method_a
     ```
     the terminal updates to show a `Nameerror`
 - define `method_a` as an attribute
     ```python
+
+
     class ClassWithMethods(object):
+
         method_a = None
     ```
     the terminal updates to show a [TypeError](./03_TYPE_ERROR.md) since `method_a` is not callable
 - update the definition of `method_a` to make it a function
     ```python
+
+
     class ClassWithMethods(object):
 
         def method_a():
@@ -281,6 +327,8 @@ the terminal updates to show [AttributeError](./01_ATTRIBUTE_ERROR.md)
     the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 - update `classes.py` to make the tests pass by defining the class, attribute and methods
     ```python
+
+
     class ClassWithAttributesAndMethods(object):
 
         attribute = 'attribute'
@@ -293,4 +341,24 @@ the terminal updates to show [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
 ## Class Initializers
 
-CONGRATULATIONS. You now know how to define classes, attributes and methods. Let's expand on this knowledge
+CONGRATULATIONS. You now know how to define classes, attributes and methods. Let's expand on this knowledge. How do we use classes?
+
+### <span style="color:red">**RED**</span>: make it fail
+
+add a test to `test_clases.py`
+```python
+    def test_classes_with_initializers(self):
+        self.assertEqual(classes.Boy().sex, 'M')
+```
+the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
+
+### <span style="color:green">**GREEN**</span>: make it pass
+
+add a definition for the class
+```python
+
+
+class
+```
+
+### <span style="color:orange">**REFACTOR**</span>: make it better
