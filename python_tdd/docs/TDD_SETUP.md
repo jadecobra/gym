@@ -4,8 +4,8 @@ This tutorial will step through creating a Test Driven Development Environment i
 
 Here's the Test Driven Development mantra -
     <span style="color:red">**RED**</span> <span style="color:green">**GREEN**</span> <span style="color:orange">**REFACTOR**</span>
-- <span style="color:red">**RED**</span> - make it fail
-- <span style="color:green">**GREEN**</span> - make it pass
+- <span style="color:red">**RED**</span>: make it fail
+- <span style="color:green">**GREEN**</span>: make it pass
 - <span style="color:orange">**REFACTOR**</span>: make it better
 
 ## Prerequisites
@@ -154,9 +154,9 @@ OK
 
 ### <span style="color:orange">**REFACTOR**</span>: make it better
 
-One way to make code better is to use the
+We can make code better by using the
 - [Abstraction Principle](https://en.wikipedia.org/wiki/Abstraction_principle_(computer_programming))
-- [Do Not Repeat Yourself (DRY)](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
+- [Do Not Repeat Yourself (DRY) Principle](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
 
 So far there's not much to improve on what has been written but there has been duplication.
 - we ran `python3 -m unittest` to see the test fail

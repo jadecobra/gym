@@ -729,3 +729,10 @@ add a new test that checks if a singleton that accepts inputs returns the same v
 > - we can define default values for arguments
 > - positional arguments must come before keyword arguments
 > - singleton functions return the same thing everytime they are called
+
+Do you want to read more about
+- [functions](https://docs.python.org/3/glossary.html#term-function)
+- [methods](https://docs.python.org/3/glossary.html#term-method)
+- [parameters](https://docs.python.org/3/glossary.html#term-parameter)
+- [function definitions](https://docs.python.org/3/reference/compound_stmts.html#function-definitions)
+- [nested scope](https://docs.python.org/3/glossary.html#term-nested-scope)

@@ -366,7 +366,7 @@ That's the pattern <span style="color:red">**RED**</span> <span style="color:gre
 ### Test Subtraction
 
 Let's add the other tests
-#### <span style="color:red">**RED**</span> - make it fail
+#### <span style="color:red">**RED**</span> : make it fail
 
 - update `test_calculator.py` with `test_subtraction`
     ```python
@@ -477,7 +477,7 @@ Let's add the other tests
     =================== 1 failed, 2 passed in 0.02s =========================
     ```
 
-#### <span style="color:green">**GREEN**</span> - make it pass
+#### <span style="color:green">**GREEN**</span> : make it pass
 
 - update `calculator.py`
     ```python
@@ -574,7 +574,7 @@ Let's add the other tests
 
 ### Test Multiplication
 
-#### <span style="color:red">**RED**</span> - make it fail
+#### <span style="color:red">**RED**</span> : make it fail
 
 update `test_calculator.py` with `test_multiplication`
 ```python
@@ -620,7 +620,7 @@ class TestCalculator(unittest.TestCase):
 ```
 terminal response - AttributeError
 
-#### <span style="color:green">**GREEN**</span> - make it pass
+#### <span style="color:green">**GREEN**</span> : make it pass
 update `calculator.py`
 ```python
 def add(x, y):
@@ -642,7 +642,7 @@ terminal response - SUCCESS
 
 ### Test Division
 
-#### <span style="color:red">**RED**</span> - make it fail
+#### <span style="color:red">**RED**</span> : make it fail
 - update `test_calculator.py` with `test_division`
     ```python
     import unittest
@@ -721,7 +721,7 @@ terminal response - SUCCESS
     add `ZeroDivisionError` to the list of errors encountered
 
 ##### How to test for Errors
-- <span style="color:red">**RED**</span> - make it fail
+- <span style="color:red">**RED**</span> : make it fail
     - update `test_calculator.py` with a test for division by zero
     ```python
     import unittest
@@ -789,7 +789,7 @@ terminal response - SUCCESS
     =================== 1 failed, 4 passed in 0.02s ================
     ```
 
-- <span style="color:green">**GREEN**</span> - make it pass
+- <span style="color:green">**GREEN**</span> : make it pass
     - update `test_calculator.py` to confirm that `ZeroDivisionError` is raised when dividing by 0
     ```python
     import unittest
