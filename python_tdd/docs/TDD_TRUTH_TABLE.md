@@ -60,8 +60,8 @@ Let's add a test for `logical_false`
     ```
     the terminal updates to show passing tests
 - We are again reminded that
-    - `True` is `True`
     - `False` is `False`
+    - `True` is `True`
 
 
 ## Unary Operations
@@ -119,12 +119,12 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     ```
     the terminal updates to show passing tests
 - Reviewing what we know so far
-    - `True` is `True`
-    - `False` is `False`
     - `True` is `not False`
     - `False` is `not True`
+    - `False` is `False`
+    - `True` is `True`
 
-## Binary Operations
+## Binary Operations - It takes 2 to tango
 
 Let's test the 16 outcomes of binary operations
 
@@ -246,11 +246,11 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     the terminal shows passing tests
 
 ***FANTASTIC!*** You have tested logical_conjunction which is a conditional operation using `and`. We now know that
-- `True` is `True`
-- `False` is `False`
-- `True` is `not False`
-- `False` is `not True`
 - `logical_conjunction` is `and`
+- `False` is `not True`
+- `True` is `not False`
+- `False` is `False`
+- `True` is `True`
 
 ### Logical Disjunction
 
@@ -328,7 +328,8 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     ```python
         return False if not p not and not q else True
     ```
-    this is not what we had in the beginning, we forgot to "multiply" `not` with the opposite of `and` to get `not`. What is the opposite of and? it's `or`. let's update the statement with an `or` to see if it works
+    this is not what we had in the beginning, we forgot to "multiply" `not` with the opposite of `and`. What is the opposite of and? `or`.
+- let's update the statement with an `or` to see if it works
     ```python
     def logical_disjunction(p, q):
         return False if not (p or q) else True
@@ -382,14 +383,14 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
 ***VOILA!*** the tests still pass and we have a simple statement that makes all 4 states pass for `logical_disjunction` or `or`
 Our knowledge is updated to
-- `True` is `True`
-- `False` is `False`
-- `True` is `not False`
-- `False` is `not True`
-- `logical_conjunction` is `and`
+- `and` is "not `or`"
+- `or` is "not `and`"
 - `logical_disjunction` is `or`
-- `or` is not `and`
-- `and` is not `or`
+- `logical_conjunction` is `and`
+- `False` is `not True`
+- `True` is `not False`
+- `False` is `False`
+- `True` is `True`
 
 ## Logical Implication/Material Implication
 
@@ -443,91 +444,75 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
         return True
     ```
     this looks simpler and the tests still pass.
-- can we write the whole thing as one line?
+- let's write out the second half with an `else` statement to be explicit
     ```python
     def logical_implication(p, q):
-        return False if p and not q else True
-    ```
-    fantastic!
-- how can we make this even simpler? let's take a step back and see. If it fails we can always come back to what worked. Comment out the working line and add a new line
-    ```python
-    def logical_implication(p, q):
-        # return False if p and not q else True
         if p and not q:
             return False
         else:
             return True
     ```
-    it works.
-- can we express the `else` part of the condition as a negation of the `if` portion?
+- if we replace the `else` with the opposite of the `if` statement we get
     ```python
     def logical_implication(p, q):
-        # return False if p and not q else True
         if p and not q:
             return False
         if not(p and not q):
             return True
     ```
-    the tests pass
-- Let's reorder the conditional statements
+- "multiplying" it out
     ```python
     def logical_implication(p, q):
-        # return False if p and not q else True
-        if not(p and not q):
+        if p and not q:
+            return False
+        if not p not and not not q:
+            return True
+    ```
+    We get a `SyntaxError`, correcting the syntax we get
+    ```python
+    def logical_implication(p, q):
+        if p and not q:
+            return False
+        if not p or q:
+            return True
+        ```
+- We reorder
+    ```python
+    def logical_implication(p, q):
+        if not p or q:
             return True
         if p and not q:
             return False
     ```
-    this has no effect on the tests since it's not a real change
-- let's make the second condition an `else`
+- replace the second statement with an `else`
     ```python
     def logical_implication(p, q):
-        # return False if p and not q else True
-        if not(p and not q):
-            return True
-        else:
-            return False
-    ```
-    tests are still passing
-- there are parentheses in the first condition, can we abstract the inner parts or expand it out to get a better understanding or better statement? Let's try expanding the "multiplication"
-    ```python
-    def logical_implication(p, q):
-        # return False if p and not q else True
         if not p or q:
             return True
         else:
             return False
     ```
-    the tests pass
-- let's rewrite it as a single statement
+- try to write it as one line?
     ```python
     def logical_implication(p, q):
-        # return False if p and not q else True
         return True if not p or q else False
     ```
-    we are still green
-- we can get rid of the explicit parts by using python's implicit conditional testing
-    ```python
-    def logical_implication(p, q):
-        # return False if p and not q else True
-        return not p or q
-    ```
-    Wonderful! the tests still pass and this is less words than the previous working statement. Let's delete our comment and leave the simpler line
+- we simplify using python's implicit conditional testing
     ```python
     def logical_implication(p, q):
         return not p or q
     ```
-    could we have gotten here in less steps?
+    fantastic! the tests pass
 
 Reviewing what we know
-- `True` is `True`
-- `False` is `False`
-- `True` is `not False`
-- `False` is `not True`
-- `logical_conjunction` is `and`
+- `or` is "not `and`"
+- `and` is "not `or`"
 - `logical_disjunction` is `or`
-- `or` is not `and`
-- `and` is not `or`
+- `logical_conjunction` is `and`
+- `False` is `not True`
+- `True` is `not False`
+- `False` is `False`
+- `True` is `True`
 
 ## Logical Equality/Logical Bi-conditional
 
@@ -599,12 +584,125 @@ What can we do to make this better?
     all tests pass
 
 We now know that
-- `True` is `True`
-- `False` is `False`
-- `True` is `not False`
-- `False` is `not True`
-- `logical_conjunction` is `and`
-- `logical_disjunction` is `or`
 - `logical_equality` is `==`
-- `or` is not `and`
+- `logical_disjunction` is `or`
+- `logical_conjunction` is `and`
 - `and` is not `or`
+- `or` is not `and`
+- `False` is `not True`
+- `True` is `not False`
+- `False` is `False`
+- `True` is `True`
+
+## Exclusive Disjunction
+
+### <span style="color:red">**RED**</span>: make it fail
+
+add a test for exclusive disjunction to `TestBinaryOperations`
+
+```python
+    def test_exclusive_disjunction(self):
+        self.assertFalse(truth_table.exclusive_disjunction(True, True))
+        self.assertTrue(truth_table.exclusive_disjunction(True, False))
+        self.assertTrue(truth_table.exclusive_disjunction(False, True))
+        self.assertFalse(truth_table.exclusive_disjunction(False, False))
+```
+
+the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
+
+### <span style="color:green">**GREEN**</span>: make it pass
+
+- add a definition with a condition for the first case
+    ```python
+    def exclusive_disjunction(p, q):
+        if p == True and q == True:
+            return True
+    ```
+    we get an [AssertionError](./04_ASSERTION_ERROR.md)
+- change the return statement
+    ```python
+            return False
+    ```
+- on to the next case
+    ```python
+    def exclusive_disjunction(p, q):
+        if p == True and q == True:
+            return False
+        if p == True and q == False:
+            return True
+    ```
+- onward to the 3rd case
+    ```python
+    def exclusive_disjunction(p, q):
+        if p == True and q == True:
+            return False
+        if p == True and q == False:
+            return True
+        if p == False and q == True:
+            return True
+    ```
+    all tests pass. Fantastic!
+
+### <span style="color:orange">**REFACTOR**</span>: make it better
+
+Let's try to refactor those statements to make them better
+
+- in the first case `p` and `q` have the same value, can we change the statement to reflect this like we did with `logical_equality`?
+    ```python
+    def exclusive_disjunction(p, q):
+        if p == q:
+            return False
+        if p == True and q == False:
+            return True
+        if p == False and q == True:
+            return True
+    ```
+    tests still pass
+- the other 2 statements both return `True` and `p` and `q` are opposite of each other in both cases, we can rewrite that as
+    ```python
+    def exclusive_disjunction(p, q):
+        if p == q:
+            return False
+        if p != q:
+            return True
+        if p != q:
+            return True
+    ```
+    removing the repetition
+    ```python
+    def exclusive_disjunction(p, q):
+        if p == q:
+            return False
+        if p != q:
+            return True
+    ```s
+- we reorder and replace a statement with an `else` since there are now only 2 case
+    ```python
+    def exclusive_disjunction(p, q):
+        if p != q:
+            return True
+        else:
+            return False
+    ```
+- rewriting it on one line
+    ```python
+    def exclusive_disjunction(p, q):
+        return True if p != q else False
+    ```
+- using implicit conditional testing we rewrite it as
+    ```python
+    def exclusive_disjunction(p, q):
+        return p != q
+    ```
+
+What do we know so far?
+- `exclusive_disjunction` is `!=` aka opposite of `logical_equality`
+- `logical_equality` is `==`
+- `logical_disjunction` is `or`
+- `logical_conjunction` is `and`
+- `and` is not `or`
+- `or` is not `and`
+- `False` is `not True`
+- `True` is `not False`
+- `False` is `False`
+- `True` is `True`
