@@ -52,7 +52,7 @@ Here's the Test Driven Development mantra paraphrased -
 
 ---
 
-### <span style="color:red">**RED**</span>: make it fail
+## <span style="color:red">**RED**</span>: make it fail
 
 - Open up `project_name/tests/test_project_name.py` in your Interactive Development Environment(IDE) and type the following
     ```python
@@ -128,7 +128,7 @@ The error provides important information about the code. Looking at it from the 
 
 ---
 
-### <span style="color:green">**GREEN**</span>: make it pass
+## <span style="color:green">**GREEN**</span>: make it pass
 
 - change line 7 to make the test pass. Which do you think is a better solution?
   - `self.assertTrue(True)` or
@@ -152,7 +152,7 @@ The error provides important information about the code. Looking at it from the 
 
 ---
 
-### <span style="color:orange">**REFACTOR**</span>: make it better
+## <span style="color:orange">**REFACTOR**</span>: make it better
 
 We can make code better by using the
 - [Abstraction Principle](https://en.wikipedia.org/wiki/Abstraction_principle_(computer_programming))
@@ -166,11 +166,9 @@ So far there's not much to improve on what has been written but there has been d
 This means for every test we introduce we have to run that command 3 times.
 How do we avoid this repetition and focus on tests and solutions?
 
----
-
 ### How to Automatically Run Tests
 
-#### Setup a Virtual Environment
+#### How to Setup a Virtual Environment
 
 > ***Are you on a Windows machine? If you are not using WSL***
 > - replace `python3` in the examples with `python`
@@ -220,5 +218,11 @@ You just created a [virtual environment](https://docs.python.org/3/library/venv.
 
     ======================= 1 passed in 0.00s ============================
     ```
+
+> ***NOTE***
+> #### How To activate a virtual environment when one exists
+> - Open your terminal
+> - change directory to <PROJECT_NAME>
+> - activate the virtual environment by typing `source .venv/bin/activate`
 
 ***CONGRATULATIONS!*** You have successfully setup a python Test Driven Environment and can build anything you want. Go forth and conquer the world
