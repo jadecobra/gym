@@ -388,6 +388,8 @@ Our knowledge is updated to
 - `False` is `not True`
 - `logical_conjunction` is `and`
 - `logical_disjunction` is `or`
+- `or` is not `and`
+- `and` is not `or`
 
 ## Logical Implication/Material Implication
 
@@ -469,5 +471,140 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     the tests pass
 - Let's reorder the conditional statements
     ```python
-
+    def logical_implication(p, q):
+        # return False if p and not q else True
+        if not(p and not q):
+            return True
+        if p and not q:
+            return False
     ```
+    this has no effect on the tests since it's not a real change
+- let's make the second condition an `else`
+    ```python
+    def logical_implication(p, q):
+        # return False if p and not q else True
+        if not(p and not q):
+            return True
+        else:
+            return False
+    ```
+    tests are still passing
+- there are parentheses in the first condition, can we abstract the inner parts or expand it out to get a better understanding or better statement? Let's try expanding the "multiplication"
+    ```python
+    def logical_implication(p, q):
+        # return False if p and not q else True
+        if not p or q:
+            return True
+        else:
+            return False
+    ```
+    the tests pass
+- let's rewrite it as a single statement
+    ```python
+    def logical_implication(p, q):
+        # return False if p and not q else True
+        return True if not p or q else False
+    ```
+    we are still green
+- we can get rid of the explicit parts by using python's implicit conditional testing
+    ```python
+    def logical_implication(p, q):
+        # return False if p and not q else True
+        return not p or q
+    ```
+    Wonderful! the tests still pass and this is less words than the previous working statement. Let's delete our comment and leave the simpler line
+    ```python
+    def logical_implication(p, q):
+        return not p or q
+    ```
+    could we have gotten here in less steps?
+
+Reviewing what we know
+- `True` is `True`
+- `False` is `False`
+- `True` is `not False`
+- `False` is `not True`
+- `logical_conjunction` is `and`
+- `logical_disjunction` is `or`
+- `or` is not `and`
+- `and` is not `or`
+
+## Logical Equality/Logical Bi-conditional
+
+### <span style="color:red">**RED**</span>: make it fail
+
+add a test for logical equality to `TestBinaryOperations`
+
+```python
+    def test_logical_equality_aka_logical_biconditional(self):
+        self.assertTrue(truth_table.logical_equality(True, True))
+        self.assertFalse(truth_table.logical_equality(True, False))
+        self.assertFalse(truth_table.logical_equality(False, True))
+        self.assertTrue(truth_table.logical_equality(False, False))
+```
+
+the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
+
+### <span style="color:green">**GREEN**</span>: make it pass
+
+- add a definition to `truth_table.py` with a condition for the first case
+    ```python
+    def logical_equality(p, q):
+        if p == True and q == True:
+            return True
+    ```
+    the terminal updates to show 3 cases pass and the 4th case fails
+- add a condition for it
+    ```python
+    def logical_equality(p, q):
+        if p == True and q == True:
+            return True
+        if p == False and q == False:
+            return True
+    ```
+    lovely! the tests pass
+
+### <span style="color:orange">**REFACTOR**</span>: make it better
+
+What can we do to make this better?
+
+- Let's simplify the 2 statements. In statement 1 `p` and `q` have the same value so we could change our condition to reflect that
+    ```python
+    def logical_equality(p, q):
+        if p == q:
+            return True
+        if p == False and q == False:
+            return True
+    ```
+    wait a minute, the second statement looks exactly the same
+    ```python
+    def logical_equality(p, q):
+        if p == q:
+            return True
+        if p == q:
+            return True
+    ```
+    remove the repetition
+    ```python
+    def logical_equality(p, q):
+        if p == q:
+            return True
+    ```
+    all tests still pass
+- let's write it as a one line return statement
+    ```python
+    def logical_equality(p, q):
+        return p == q
+    ```
+    all tests pass
+
+We now know that
+- `True` is `True`
+- `False` is `False`
+- `True` is `not False`
+- `False` is `not True`
+- `logical_conjunction` is `and`
+- `logical_disjunction` is `or`
+- `logical_equality` is `==`
+- `or` is not `and`
+- `and` is not `or`
