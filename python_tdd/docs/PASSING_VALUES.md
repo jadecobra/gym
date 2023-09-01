@@ -1,6 +1,6 @@
 # How to pass values in python
 
-This tutorial will step through passing values in python using Test Driven Development
+We will will step through passing values in python using Test Driven Development
 
 ## Prerequisites
 
