@@ -263,7 +263,7 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
 ### Logical Disjunction
 
-### <span style="color:red">**RED**</span>: make it fail
+#### <span style="color:red">**RED**</span>: make it fail
 
 add a test for logical disjunction to `TestBinaryOperations` in `test_truth_table.py`
 
@@ -403,7 +403,7 @@ Our knowledge is updated to
 
 ## Logical Implication/Material Implication
 
-### <span style="color:red">**RED**</span>: make it fail
+#### <span style="color:red">**RED**</span>: make it fail
 
 add a test for logical implication to `TestBinaryOperations`
 
@@ -525,7 +525,7 @@ Reviewing what we know
 
 ## Logical Equality/Logical Bi-conditional
 
-### <span style="color:red">**RED**</span>: make it fail
+#### <span style="color:red">**RED**</span>: make it fail
 
 add a test for logical equality to `TestBinaryOperations`
 
@@ -605,7 +605,7 @@ We now know that
 
 ## Exclusive Disjunction
 
-### <span style="color:red">**RED**</span>: make it fail
+#### <span style="color:red">**RED**</span>: make it fail
 
 add a test for exclusive disjunction to `TestBinaryOperations`
 
@@ -718,7 +718,7 @@ What do we know so far?
 
 ## Logical NAND
 
-### <span style="color:red">**RED**</span>: make it fail
+#### <span style="color:red">**RED**</span>: make it fail
 
 add a test for exclusive disjunction to `TestBinaryOperations`
 
@@ -848,7 +848,7 @@ Let's update our knowledge
 
 ## Logical NOR
 
-### <span style="color:red">**RED**</span>: make it fail
+#### <span style="color:red">**RED**</span>: make it fail
 
 add a test for exclusive disjunction to `TestBinaryOperations`
 
@@ -928,7 +928,7 @@ Knowledge update
 
 ## Converse NonImplication
 
-### <span style="color:red">**RED**</span>: make it fail
+#### <span style="color:red">**RED**</span>: make it fail
 
 add a test for converse nonimplication to `TestBinaryOperations`
 
