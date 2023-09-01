@@ -27,3 +27,6 @@ EOF
 # Verify SSH Key
 ssh -T git@github.com
 # ssh -T git@bitbucket.com # if you are using BitBucket
+
+git config --global user.name "John Doe"
+git config --global user.email $email

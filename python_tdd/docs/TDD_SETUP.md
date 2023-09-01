@@ -1,6 +1,6 @@
 # How to Setup a Test Driven Development Environment
 
-This tutorial will step through creating a Test Driven Development Environment in python
+This tutorial will step through creating a [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) Environment in python
 
 Here's the Test Driven Development mantra paraphrased -
     <span style="color:red">**RED**</span> <span style="color:green">**GREEN**</span> <span style="color:orange">**REFACTOR**</span>
@@ -8,7 +8,7 @@ Here's the Test Driven Development mantra paraphrased -
 - <span style="color:green">**GREEN**</span>: make it pass
 - <span style="color:orange">**REFACTOR**</span>: make it better
 
-## Prerequisites
+## Requirements
 
 - [download and install python](https://www.python.org/downloads/)
 - an Interactive Development Environment(IDE) - Here are a few options
@@ -35,11 +35,11 @@ Here's the Test Driven Development mantra paraphrased -
     touch tests/__init__.py
     touch tests/test_project_name.py
     ```
-- `project_name` is a placeholder for the name of the project e.g. if you are building a project called `the_greatest_application`, replace `project_name` with `the_greatest_application`
+- `project_name` is a placeholder for the name of the project e.g. if you are building a project called `the_greatest_application`, replace `project_name` with `the_greatest_application`. We are going to place all our code for this project in the `project_name` folder
 - Tests are stored in the `tests` folder to separate them from the actual source code
 - The `__init__.py` file in the `tests` folder tells python that this is a python package
 - The actual test file is called `test_project_name.py`
-- The module we are creating is called `project_name.py`
+- The python module we are creating is called `project_name.py`
 - What is a module? A python module is any file that ends in `.py`
 - Your folder structure should look like this
     ```
@@ -100,10 +100,10 @@ We follow the iterative process of <span style="color:red">**RED**</span> <span 
 We are currently <span style="color:red">**RED**</span>.
 The error provides important information about the code. Looking at it from the last line
 - `FAILED (failures=1)` The test failed - <span style="color:red">**RED**</span>
-- `Ran 1 test in 0.000s` python ran the 1 test written so far in 0.000s, the time might vary on your machine
-- `AssertionError: True is not false` The error is an [AssertionError](https://docs.python.org/3/library/exceptions.html?highlight=exceptions#AssertionError). This is raised by python when an assert statement fails
+- `Ran 1 test in 0.000s` python ran the 1 test written so far in 0.000s
+- `AssertionError: True is not false` The error is an [AssertionError](./04_ASSERTION_ERROR.md). This is raised by python when an assert statement fails
 - It further gives the False Assertion `True is not false`
-- Keep a running tab of Errors aka Exceptions seen as you go through this exercise, they will help you be a better troubleshooter
+- Let's keep a running tab of Errors aka [Exceptions](https://docs.python.org/3/library/exceptions.html) seen as we go through this exercise, they will help you be a better python programmer
     ```python
     import unittest
 
@@ -186,7 +186,7 @@ How do we avoid this repetition and focus on tests and solutions?
     pip install --upgrade pip
     pip install --requirement requirements.txt
     ```
-    Your folder structure shoudl now look like this
+    Your folder structure should now look like this
     ```
     project_name
     |--.venv
