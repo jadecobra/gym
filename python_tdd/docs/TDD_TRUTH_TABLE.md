@@ -16,7 +16,7 @@ We know there are two boolean values - `True` and `False`. The truth table shows
 
 These operations take in no inputs and always return the same value. They are singleton [functions](./07_FUNCTIONS.md)
 
-#### <span style="color:red">**RED**</span>: make it fail
+### <span style="color:red">**RED**</span>: make it fail
 
 create a file named `test_truth_table.py` in the `tests` folder and add the following
 
@@ -32,7 +32,7 @@ class TestNullaryOperations(unittest.TestCase):
 ```
 the terminal updates to show a [ModuleNotFoundError](./00_MODULE_NOT_FOUND_ERROR.md)
 
-#### <span style="color:green">**GREEN**</span>: make it pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - create a module named `truth_table.py` and the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 - add a singleton function named `logical_true`
@@ -43,7 +43,7 @@ the terminal updates to show a [ModuleNotFoundError](./00_MODULE_NOT_FOUND_ERROR
     the terminal updates to show passing tests
 - We are reminded that `True` is `True`
 
-#### <span style="color:orange">**REFACTOR**</span>: make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 Let's add a test for `logical_false`
 
@@ -56,9 +56,14 @@ Let's add a test for `logical_false`
 - add a function definition to `truth_table.py`
     ```python
     def logical_false():
+        return True
+    ```
+    the terminal shows an [AssertionError](./04_ASSERTION_ERROR.md)
+- update the return value to `False` and the terminal updates to show passing tests
+    ```python
+    def logical_false():
         return False
     ```
-    the terminal updates to show passing tests
 - We are again reminded that
     - `False` is `False`
     - `True` is `True`
@@ -67,7 +72,7 @@ Let's add a test for `logical_false`
 ## Unary Operations
 
 These take in one input and return the input, they are passthrough [functions](./07_FUNCTIONS.md)
-
+### Logical Identity
 
 #### <span style="color:red">**RED**</span>: make it fail
 
@@ -94,7 +99,9 @@ def logical_identity(value):
 ```
 the terminal updates to show passing tests
 
-#### <span style="color:red">**RED**</span>: make it fail
+### Logical Negation
+
+### <span style="color:red">**RED**</span>: make it fail
 
 add a test for `logical_negation`
 ```python
@@ -104,25 +111,27 @@ add a test for `logical_negation`
 ```
 the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
-#### <span style="color:green">**GREEN**</span>: make it pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - update `truth_table.py` with a definition for `logical_negation`
     ```python
     def logical_negation(value):
         return value
     ```
-- the terminal updates to show an [AssertionError](./04_ASSERTION_ERROR.md). The `logical_negation` function returns the value it receives as input. How do we make the function return the opposite of what it receives? use the `not` keyword
-- update `logical_negation` to return the opposite of the `bool` value it returns
+    the terminal updates to show an [AssertionError](./04_ASSERTION_ERROR.md). The `logical_negation` function returns the value it receives as input.
+- How do we make the function return the opposite of what it receives? use the `not` keyword. update `logical_negation` to return the opposite of the `bool` value it returns
     ```python
     def logical_negation(value):
         return not value
     ```
     the terminal updates to show passing tests
-- Reviewing what we know so far
+
+Reviewing what we know so far
     - `True` is `not False`
     - `False` is `not True`
     - `False` is `False`
     - `True` is `True`
+
 
 ## Binary Operations - It takes 2 to tango
 
@@ -130,7 +139,7 @@ Let's test the 16 outcomes of binary operations
 
 ### Logical Conjunction
 
-##### <span style="color:red">**RED**</span>: make it fail
+#### <span style="color:red">**RED**</span>: make it fail
 
 create a `TestCase` for binary operations in `test_truth_table.py`
 
@@ -147,7 +156,7 @@ class TestBinaryOperations(unittest.TestCase):
 ```
 the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
-#### <span style="color:green">**GREEN**</span>: make it pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - add a definition for `logical_conjunction` to `truth_table.py`
     ```python
@@ -191,10 +200,10 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     the test updates to show passing tests. Lovely!
 
 
-#### <span style="color:orange">**REFACTOR**</span>: make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - Why does this work? We didn't define an alternate condition, just the one that returns `True` when p is `True` and q is `True`
-- Is the function somehow implicitly returning `False`? In other words `is None False?`. We know the answer to this from [DATA_STRUCTURES](./06_DATA_STRUCTURES.md), let's test it as a reminder. add an explicit statement to the definition of `logical_conjunction`
+- Is the function somehow implicitly returning `False`? In other words `is None False?`. We know the answer to this from [data structures](./06_DATA_STRUCTURES.md), let's test it as a reminder. add an explicit statement to the definition of `logical_conjunction`
     ```python
     def logical_conjunction(p, q):
         if p == True:
@@ -254,7 +263,7 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
 ### Logical Disjunction
 
-#### <span style="color:red">**RED**</span>: make it fail
+### <span style="color:red">**RED**</span>: make it fail
 
 add a test for logical disjunction to `TestBinaryOperations` in `test_truth_table.py`
 
@@ -267,7 +276,7 @@ add a test for logical disjunction to `TestBinaryOperations` in `test_truth_tabl
 ```
 the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
-#### <span style="color:green">**GREEN**</span>: make it pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - update `truth_table.py` with a function definition like we did for `logical_conjunction`
     ```python
@@ -285,7 +294,7 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     ```
     the terminal updates to show passing tests
 
-#### <span style="color:orange">**REFACTOR**</span>: make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - we know from earlier that when we have a nested if statement it can be replaced with an `and`, so we update our condition
     ```python
@@ -394,7 +403,7 @@ Our knowledge is updated to
 
 ## Logical Implication/Material Implication
 
-#### <span style="color:red">**RED**</span>: make it fail
+### <span style="color:red">**RED**</span>: make it fail
 
 add a test for logical implication to `TestBinaryOperations`
 
@@ -408,7 +417,7 @@ add a test for logical implication to `TestBinaryOperations`
 
 the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
-#### <span style="color:green">**GREEN**</span>: make it pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - add the function definition
     ```python
@@ -426,7 +435,7 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     ```
     the tests pass!
 
-#### <span style="color:orange">**REFACTOR**</span>: make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - How can we make this better? let's make the nested condition one line
     ```python
@@ -836,3 +845,119 @@ Let's update our knowledge
 - `True` is `not False`
 - `False` is `False`
 - `True` is `True`
+
+## Logical NOR
+
+### <span style="color:red">**RED**</span>: make it fail
+
+add a test for exclusive disjunction to `TestBinaryOperations`
+
+```python
+    def test_logical_nor(self):
+        self.assertFalse(truth_table.logical_nor(True, True))
+        self.assertFalse(truth_table.logical_nor(True, False))
+        self.assertFalse(truth_table.logical_nor(False, True))
+        self.assertTrue(truth_table.logical_nor(False, False))
+```
+
+the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
+
+### <span style="color:green">**GREEN**</span>: make it pass
+
+- add a function definition to `truth_table.py`
+    ```python
+    def logical_nor(p, q):
+        return False
+    ```
+- the first 3 pass and we see a failure for the 4th case, let's add a condition for it
+    ```python
+    def logical_nor(p, q):
+        if p == False and q == False:
+            return True
+        return False
+    ```
+
+### <span style="color:orange">**REFACTOR**</span>: make it better
+
+- we restate the `if` condition using implicit conditional testing
+    ```python
+    def logical_nor(p, q):
+        if not p and not q:
+            return True
+        return False
+    ```
+- we abstract the repetition of `not` by rewriting the entire statement in terms of `not`
+    ```python
+    def logical_nor(p, q):
+        if not p not or not q:
+            return True
+        return False
+    ```
+    the terminal shows a `SyntaxError` and we rewrite the syntax properly
+    ```python
+    def logical_nor(p, q):
+        if not(p or q):
+            return True
+        return False
+    ```
+- rewrite the entire thing on one line
+    ```python
+    def logical_nor(p, q):
+        return True if not(p or q) else False
+    ```
+- simplify using implied conditional testing
+    ```python
+    def logical_nor(p, q):
+        return not(p or q)
+    ```
+    BOOM! all the tests pass. Are we getting better at this?
+
+Knowledge update
+- `logical_nor` is `not(p or q)`
+- `logical_nand` is `not(p and q)`
+- `exclusive_disjunction` is `!=` aka opposite of `logical_equality`
+- `logical_equality` is `==`
+- `logical_disjunction` is `or`
+- `logical_conjunction` is `and`
+- `and` is "not `or`"
+- `or` is "not `and`"
+- `False` is `not True`
+- `True` is `not False`
+- `False` is `False`
+- `True` is `True`
+
+## Converse NonImplication
+
+### <span style="color:red">**RED**</span>: make it fail
+
+add a test for converse nonimplication to `TestBinaryOperations`
+
+```python
+    def test_converse_nonimplication(self):
+        self.assertFalse(truth_table.converse_nonimplication(True, True))
+        self.assertFalse(truth_table.converse_nonimplication(True, False))
+        self.assertTrue(truth_table.converse_nonimplication(False, True))
+        self.assertFalse(truth_table.converse_nonimplication(False, False))
+```
+
+the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
+
+### <span style="color:green">**GREEN**</span>: make it pass
+
+- add a function definition to `truth_table.py`
+    ```python
+    def converse_nonimplication(p, q):
+        return False
+    ```
+    since the first two cases pass, the terminal updates to show an [AssertionError](./04_ASSERTION_ERROR.md)
+- add a condition for the third case
+    ```python
+    def converse_nonimplication(p, q):
+        if p == False and q == True:
+            return True
+        return False
+    ```
+    all the tests pass
+
+### <span style="color:green">**GREEN**</span>: make it pass
+### <span style="color:orange">**REFACTOR**</span>: make it better
