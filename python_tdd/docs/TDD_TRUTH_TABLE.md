@@ -156,7 +156,7 @@ class TestBinaryOperations(unittest.TestCase):
 ```
 the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
-### <span style="color:green">**GREEN**</span>: make it pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 - add a definition for `logical_conjunction` to `truth_table.py`
     ```python
@@ -200,7 +200,7 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     the test updates to show passing tests. Lovely!
 
 
-### <span style="color:orange">**REFACTOR**</span>: make it better
+#### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - Why does this work? We didn't define an alternate condition, just the one that returns `True` when p is `True` and q is `True`
 - Is the function somehow implicitly returning `False`? In other words `is None False?`. We know the answer to this from [data structures](./06_DATA_STRUCTURES.md), let's test it as a reminder. add an explicit statement to the definition of `logical_conjunction`
@@ -276,7 +276,7 @@ add a test for logical disjunction to `TestBinaryOperations` in `test_truth_tabl
 ```
 the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
-### <span style="color:green">**GREEN**</span>: make it pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 - update `truth_table.py` with a function definition like we did for `logical_conjunction`
     ```python
@@ -294,7 +294,7 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     ```
     the terminal updates to show passing tests
 
-### <span style="color:orange">**REFACTOR**</span>: make it better
+#### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - we know from earlier that when we have a nested if statement it can be replaced with an `and`, so we update our condition
     ```python
@@ -417,7 +417,7 @@ add a test for logical implication to `TestBinaryOperations`
 
 the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
-### <span style="color:green">**GREEN**</span>: make it pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 - add the function definition
     ```python
@@ -435,7 +435,7 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     ```
     the tests pass!
 
-### <span style="color:orange">**REFACTOR**</span>: make it better
+#### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - How can we make this better? let's make the nested condition one line
     ```python
@@ -539,7 +539,7 @@ add a test for logical equality to `TestBinaryOperations`
 
 the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
-### <span style="color:green">**GREEN**</span>: make it pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 - add a definition to `truth_table.py` with a condition for the first case
     ```python
@@ -558,7 +558,7 @@ the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     ```
     lovely! the tests pass
 
-### <span style="color:orange">**REFACTOR**</span>: make it better
+#### <span style="color:orange">**REFACTOR**</span>: make it better
 
 What can we do to make this better?
 
@@ -619,7 +619,7 @@ add a test for exclusive disjunction to `TestBinaryOperations`
 
 the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
-### <span style="color:green">**GREEN**</span>: make it pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 - add a definition with a condition for the first case
     ```python
@@ -652,7 +652,7 @@ the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     ```
     all tests pass. Fantastic!
 
-### <span style="color:orange">**REFACTOR**</span>: make it better
+#### <span style="color:orange">**REFACTOR**</span>: make it better
 
 Let's try to refactor those statements to make them better
 
@@ -733,7 +733,7 @@ add a test for exclusive disjunction to `TestBinaryOperations`
 the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
 
-### <span style="color:green">**GREEN**</span>: make it pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 - add a definition for the function to `truth_table.py` with a condition for the first case
     ```python
@@ -779,7 +779,7 @@ the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     ```
     We are green! All tests pass
 
-### <span style="color:orange">**REFACTOR**</span>: make it better
+#### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - Looking at the four conditions we have, 3 of them return exactly the same thing and we know there are only 2 outcomes, either `True` or `False`. Let's state the 3 statements as an else
     ```python
@@ -862,7 +862,7 @@ add a test for exclusive disjunction to `TestBinaryOperations`
 
 the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
-### <span style="color:green">**GREEN**</span>: make it pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 - add a function definition to `truth_table.py`
     ```python
@@ -877,7 +877,7 @@ the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
         return False
     ```
 
-### <span style="color:orange">**REFACTOR**</span>: make it better
+#### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - we restate the `if` condition using implicit conditional testing
     ```python
@@ -942,7 +942,7 @@ add a test for converse nonimplication to `TestBinaryOperations`
 
 the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
-### <span style="color:green">**GREEN**</span>: make it pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 - add a function definition to `truth_table.py`
     ```python
@@ -959,5 +959,5 @@ the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     ```
     all the tests pass
 
-### <span style="color:green">**GREEN**</span>: make it pass
-### <span style="color:orange">**REFACTOR**</span>: make it better
+#### <span style="color:green">**GREEN**</span>: make it pass
+#### <span style="color:orange">**REFACTOR**</span>: make it better
