@@ -101,7 +101,7 @@ the terminal updates to show passing tests
 
 ### Logical Negation
 
-### <span style="color:red">**RED**</span>: make it fail
+#### <span style="color:red">**RED**</span>: make it fail
 
 add a test for `logical_negation`
 ```python
@@ -111,7 +111,7 @@ add a test for `logical_negation`
 ```
 the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
-### <span style="color:green">**GREEN**</span>: make it pass
+#### <span style="color:green">**GREEN**</span>: make it pass
 
 - update `truth_table.py` with a definition for `logical_negation`
     ```python
