@@ -2,17 +2,17 @@
 
 We will continue to step through learning conditional statements in python using Test Driven Development using the [Truth Table](https://en.wikipedia.org/wiki/Truth_table)
 
+We know that there are two boolean values
+- `True`
+- `False`
+
 ## Prerequisites
 
 - [Setup Test Driven Development Project](./TDD_SETUP.md)
 
 ---
 
-# Truth Table
-
-We know there are two boolean values - `True` and `False`. The truth table shows us the logical outcomes of interactions between the two. It will give us practice in writing conditional statements
-
-## Binary Operations - It takes 2 to tango
+# Binary Operations - It takes 2 to tango
 
 Let's test the 16 outcomes of binary operations
 
@@ -144,7 +144,7 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     things are still green. I don't think we can get a simpler statement than this
 
 ***FANTASTIC!*** You have tested logical_conjunction which is a conditional operation using `and`. We now know that
-- we can express `conditional statements` on one line with return
+- we can express `conditional statements` on one line with `return`
 - when there are multiple outcomes we only need to write the condition for the special case and use `else` for the others
 - `logical_conjunction` is `and`
 - `False` is `not True`

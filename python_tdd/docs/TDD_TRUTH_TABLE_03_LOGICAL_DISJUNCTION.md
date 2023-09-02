@@ -2,13 +2,21 @@
 
 We will continue to step through learning conditional statements in python using Test Driven Development using the [Truth Table](https://en.wikipedia.org/wiki/Truth_table)
 
+Reviewing what we know so far
+- we can express `conditional statements` on one line with `return`
+- when there are multiple outcomes we only need to write the condition for the special case and use `else` for the others
+- `logical_conjunction` is `and`
+- `False` is `not True`
+- `True` is `not False`
+- `False` is `False`
+- `True` is `True`
 ## Prerequisites
 
 - [Setup Test Driven Development Project](./TDD_SETUP.md)
 
 ---
 
-### Logical Disjunction
+## Logical Disjunction
 
 #### <span style="color:red">**RED**</span>: make it fail
 
