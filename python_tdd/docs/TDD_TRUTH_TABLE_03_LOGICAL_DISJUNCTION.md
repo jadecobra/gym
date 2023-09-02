@@ -59,64 +59,81 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
         return True
     ```
     the terminal shows our tests are still passing
-- we also know from earlier that we can return the entire condition in one line
+- we can restate the equality comparison against `False` in terms of `True` by using the `not equal` comparison operator `!=`
     ```python
     def logical_disjunction(p, q):
-        return False if p == False and q == False else return True
+        if p != False and q != False:
+            return False
+        return True
     ```
-    the terminal still shows passing tests
-- let's rewrite the statement to use `True` instead of `False` since we know from earlier that python implicitly checks if a conditional statement is `True`
+- how can we express the `if` statement using python's implied comparison evaluation? we can use the `not` keyword like we did with `logical_negation`
     ```python
     def logical_disjunction(p, q):
-        return False if p != True and q != True else True
+        if not p and not q:
+            return False
+        return True
     ```
-    the terminal shows tests are still passing
-- in `test_logical_negation` we learned we can use `not` to represent the opposite of a `boolean` so we can use it here
+- `not` happens twice in that statement. Let's see if we can "factor" it out using algebra
     ```python
     def logical_disjunction(p, q):
-        return False if not p and not q else True
+        if not(p and q):
+            return False
+        return True
     ```
-    the terminal shows passing tests
-- there is some duplication in the statement, can we abstract the `not`?
+     the terminal shows a failing test. OOPS! We've introduced a regression. If we expand our statement using "multiplication" rules. What we have above is
     ```python
     def logical_disjunction(p, q):
-        return False if (not p and not q) else True
+        if not p not and not q:
+            return False
+        return True
     ```
-    the terminal shows passing tests
-- we abstract `not` from inside the parentheses to "multiply" the internals
+    We get a `SyntaxError`, the result of the "multiplication" is different from what we started with so we need something different. It should be something that expands out to
     ```python
     def logical_disjunction(p, q):
-        return False if not (p and q) else True
+        if not p not not and not q:
+            return False
+        return True
     ```
-    the terminal shows a failing test. OOPS! If we expand our statement using "multiplication" rules. What we have above is
-    ```python
-        return False if not p not and not q else True
-    ```
-    this is not what we had in the beginning, we forgot to "multiply" `not` with the opposite of `and`. What is the opposite of and? `or`.
-- let's update the statement with an `or` to see if it works
+    this would "factor" out to be
     ```python
     def logical_disjunction(p, q):
-        return False if not (p or q) else True
+        if not(p not and q):
+            return False
+        return True
     ```
-    the terminal shows passing tests
-- okay, can we do better? we have `False`, `not` and `True`, can we restate the statement in a way that uses less words? what if we restate the condition in terms of `True`. Let's unpack the statement to see if we can do better
+    okay, this looks more like, if we "multiply" this out we get our original statement since the opposite of the opposite of something is something. Let's fix the syntax. The opposite of and is `or`
     ```python
     def logical_disjunction(p, q):
-        if not (p or q):
+        if not(p or q):
+            return False
+        return True
+    ```
+    Hooray! tests are passing again
+- add an else statement
+    ```python
+    def logical_disjunction(p, q):
+        if not(p or q):
             return False
         else:
             return True
     ```
-    tests are still passing. We could also say this as
+- the `else` statement that returns `True` can be restated as the opposite of the `if` statement
     ```python
     def logical_disjunction(p, q):
-        if not (p or q):
+        if not(p or q):
+            return False
+        if not(not(p or q)):
+            return True
+    ```
+    since the negation of a negation gives the original thing we can say
+    ```python
+    def logical_disjunction(p, q):
+        if not(p or q):
             return False
         if p or q:
             return True
     ```
-    we are still green
-- what happens if state the `True` case first?
+- reorder the statements
     ```python
     def logical_disjunction(p, q):
         if p or q:
@@ -124,8 +141,7 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
         if not(p or q):
             return False
     ```
-    the tests pass
-- what if we change the `False` condition to an `else`
+- restate using `else`
     ```python
     def logical_disjunction(p, q):
         if p or q:
@@ -133,19 +149,18 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
         else:
             return False
     ```
-    we can now restate it on one line
+- rewriting to one line with a `return` statement
     ```python
     def logical_disjunction(p, q):
-        return True if p or q else False
+        return True if p or q else return False
     ```
-    which also means we can restate it since we know python evaluates if statements against `True`
+- using python's implicit conditional evaluation we simplify to
     ```python
     def logical_disjunction(p, q):
         return p or q
     ```
-    Could this have been done in less steps?
+    ***VOILA!*** the tests still pass and we have a simple statement that makes all 4 states pass for `logical_disjunction`
 
-***VOILA!*** the tests still pass and we have a simple statement that makes all 4 states pass for `logical_disjunction` or `or`
 Our knowledge is updated to
 - `and` is "not `or`"
 - `or` is "not `and`"
