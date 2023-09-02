@@ -62,7 +62,7 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     ```
     this makes the first of the four tests pass. the terminal updates to show the second line fails
 - how can we make this function return different values based on the input it receives? we can use [if statements](https://docs.python.org/3/tutorial/controlflow.html?highlight=statement#if-statements)
-- add an `if statement` for the first case `self.assertTrue(truth_table.logical_conjunction(True, True))` where p is `True` and q is `True`
+- add an [if statement](https://docs.python.org/3/reference/compound_stmts.html?highlight=return%20true#the-if-statement) for the first case `self.assertTrue(truth_table.logical_conjunction(True, True))` where p is `True` and q is `True`
     ```python
     def logical_conjunction(p, q):
         if p == True:
@@ -81,38 +81,48 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
 #### <span style="color:orange">**REFACTOR**</span>: make it better
 
-- Why does this work? We didn't define an alternate condition, just the one that returns `True` when p is `True` and q is `True`
-- Is the function somehow implicitly returning `False`? In other words `is None False?`. We know the answer to this from [data structures](./06_DATA_STRUCTURES.md), let's test it as a reminder. add an explicit statement to the definition of `logical_conjunction`
+- Why does this work?
+    - we add a condition for when the value of `p` is equal to `True` and inside that condition we have another for when the value of `q` is equal to `True`
+    - if both conditions are met, the `logical_conjunction` function returns True but what does it do when those two conditions are not met?
+- we know by default a function returns `None` so it must be returning `None` for the other cases. Does this mean `None` is `False`? We know the answer to this from [data structures](./06_DATA_STRUCTURES.md), let's test it as a reminder. add another return statement to the definition of `logical_conjunction`
     ```python
     def logical_conjunction(p, q):
         if p == True:
             if q == True:
                 return True
-        if p != True:
-            if q != True:
-                return False
+        return None
     ```
-    we have now explicitly stated the condition for all 4 cases. In one case when both `p ` and `q` are `True`, the function returns `True` and in every other case it returns `False`. Is there a better way to say this? We can use `else`. Update the `logical_conjunction` function
+    tests are still passing
+- if `None` is `False` we can be more explicit by using the boolean `False`
     ```python
     def logical_conjunction(p, q):
         if p == True:
             if q == True:
                 return True
-        else:
-            return False
+        return False
     ```
-    we have reduced the amount of code and still get the same result. Is it better than what we had before? what else can we change?
-- in python the [if statement]((https://docs.python.org/3/tutorial/controlflow.html?highlight=statement#if-statements) implicitly checks if something is `True`, which means we can refactor `if x == True` to `if x`. Both statements are the same. Knowing this we update `logical_conjunction`
+    tests still pass
+- can we express these nested conditionals as one line? yes, we can use the `and` keyword
     ```python
     def logical_conjunction(p, q):
-        if p:
-            if q:
-                return True
+        if p == True and q == True:
+            return True
+        return False
+    ```
+    still green
+- we can rewrite the opposite of the `if` statement by using the `else` keyword
+    ```python
+    def logical_conjunction(p, q):
+        if p == True and q == True:
+            return True
         else:
             return False
     ```
-    the terminal updates to show passing tests
-- there's one last thing we can do, we can use the `and` operator to represent our nested conditions. Let's try it.
+    tests are still green because this expresses all four cases from `test_logical_conjunction`
+    - in 1 case where `p is True` and `q is True` it returns True
+    - in the 3 remaining cases it returns False
+    - this means in a binary operation with 2 outcomes we only need to write a condition for one and write an else for the other. This will save us having to write out a condition for every case
+- python equality [comparisons](https://docs.python.org/3/reference/expressions.html?highlight=ternary%20conditional#comparisons) for booleans can be implicitly stated because python calls `bool()` on the values, e.g `if p == True` can be rewritten as `if p` so we can rewrite our `if` statement in a simpler way
     ```python
     def logical_conjunction(p, q):
         if p and q:
@@ -120,20 +130,22 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
         else:
             return False
     ```
-- there's one more way we can represent this conditional. python allows for returning a conditional so we can say the above in one line
+    our tests still pass, so far so good
+- we can also express conditions in a return statement using [conditional expressions/ternary operators](https://docs.python.org/3/reference/expressions.html?highlight=ternary%20conditional#conditional-expressions)
     ```python
     def logical_conjunction(p, q):
         return True if p and q else False
     ```
-    the terminal shows passing tests
-- python also can return the evaluation of the condition, try this
+- since python implicitly tests conditionals we can rewrite the statement this way
     ```python
     def logical_conjunction(p, q):
         return p and q
     ```
-    the terminal shows passing tests
+    things are still green. I don't think we can get a simpler statement than this
 
 ***FANTASTIC!*** You have tested logical_conjunction which is a conditional operation using `and`. We now know that
+- we can express `conditional statements` on one line with return
+- when there are multiple outcomes we only need to write the condition for the special case and use `else` for the others
 - `logical_conjunction` is `and`
 - `False` is `not True`
 - `True` is `not False`
