@@ -2,15 +2,13 @@
 
 We will step through learning conditional statements in python using Test Driven Development using the [Truth Table](https://en.wikipedia.org/wiki/Truth_table)
 
+We know that there are two boolean values - `True` and `False`
+
 ## Prerequisites
 
 - [Setup Test Driven Development Project](./TDD_SETUP.md)
 
 ---
-
-# Truth Table
-
-We know there are two boolean values - `True` and `False`. The truth table shows us the logical outcomes of interactions between the two. It will give us practice in writing conditional statements
 
 ## Nullary Operations
 
