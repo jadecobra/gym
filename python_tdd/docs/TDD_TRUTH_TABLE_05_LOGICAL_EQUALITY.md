@@ -8,13 +8,9 @@ We will continue to step through learning conditional statements in python using
 
 ---
 
-# Truth Table
+## Logical Equality/Logical Bi-conditional
 
-We know there are two boolean values - `True` and `False`. The truth table shows us the logical outcomes of interactions between the two. It will give us practice in writing conditional statements
-
-### Logical Equality/Logical Bi-conditional
-
-#### <span style="color:red">**RED**</span>: make it fail
+### <span style="color:red">**RED**</span>: make it fail
 
 add a test for logical equality to `TestBinaryOperations`
 
@@ -28,66 +24,79 @@ add a test for logical equality to `TestBinaryOperations`
 
 the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
-#### <span style="color:green">**GREEN**</span>: make it pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
-- add a definition to `truth_table.py` with a condition for the first case
+- add a definition to `truth_table.py` with a return statement, we can pick `True` or `False` since 2 out of the 4 cases are either `True` or `False`
     ```python
     def logical_equality(p, q):
-        if p == True and q == True:
-            return True
+        return True
     ```
-    the terminal updates to show 3 cases pass and the 4th case fails
+    the terminal updates to show the second case failing
 - add a condition for it
     ```python
     def logical_equality(p, q):
-        if p == True and q == True:
-            return True
-        if p == False and q == False:
-            return True
+        if p == True and q == False:
+            return False
+        return True
     ```
-    lovely! the tests pass
+    the terminal shows a failure for the 3rd case
+- add a condition
+    ```python
+    def logical_equality(p, q):
+        if p == True and q == False:
+            return False
+        if p == False and q == True:
+            return False
+        return True
+    ```
+    We are green!
 
-#### <span style="color:orange">**REFACTOR**</span>: make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 What can we do to make this better?
 
-- Let's simplify the 2 statements. In statement 1 `p` and `q` have the same value so we could change our condition to reflect that
+- looking at the test cases, we can summarize them as 2 states
+    - logical_equality returns True when `p` and `q` are the same
+    - logical_equality returns False when `p` and `q` are not the same
+- we rewrite the condition statements to reflect the second observation
+    ```python
+    def logical_equality(p, q):
+        if p != q:
+            return False
+        return True
+    ```
+- updating the function with the first observation we have
+    ```python
+    def logical_equality(p, q):
+        if p != q:
+            return False
+        if p == q:
+            return True
+    ```
+- reorder
     ```python
     def logical_equality(p, q):
         if p == q:
             return True
-        if p == False and q == False:
-            return True
+        if p != q:
+            return False
     ```
-    wait a minute, the second statement looks exactly the same
+- replace with `else`
     ```python
     def logical_equality(p, q):
         if p == q:
             return True
-        if p == q:
-            return True
+        else:
+            return False
     ```
-    remove the repetition
+- rewrite as one line with the `return` statement
     ```python
     def logical_equality(p, q):
-        if p == q:
-            return True
+        return True if p == q else False
     ```
-    all tests still pass
-- let's write it as a one line return statement
+- use implicit condition comparison
     ```python
     def logical_equality(p, q):
         return p == q
     ```
-    all tests pass
-
-We now know that
-- `logical_equality` is `==`
-- `logical_disjunction` is `or`
-- `logical_conjunction` is `and`
-- `and` is not `or`
-- `or` is not `and`
-- `False` is `not True`
-- `True` is `not False`
-- `False` is `False`
-- `True` is `True`
+    Well done! the tests are still green

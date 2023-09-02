@@ -2,15 +2,27 @@
 
 We will continue to step through learning conditional statements in python using Test Driven Development using the [Truth Table](https://en.wikipedia.org/wiki/Truth_table)
 
+Reviewing what we know so far
+- `and` is "not `or`"
+- `or` is "not `and`"
+- `logical_disjunction` is `or`
+- `logical_conjunction` is `and`
+- `False` is `not True`
+- `True` is `not False`
+- `False` is `False`
+- `True` is `True`
+- we can express `conditional statements` on one line with `return`
+- when there are multiple outcomes we only need to write the condition for the special case and use `else` for the others
+
 ## Prerequisites
 
 - [Setup Test Driven Development Project](./TDD_SETUP.md)
 
 ---
 
-### Logical Implication/Material Implication
+## Logical Implication/Material Implication
 
-#### <span style="color:red">**RED**</span>: make it fail
+### <span style="color:red">**RED**</span>: make it fail
 
 add a test for logical implication to `TestBinaryOperations`
 
@@ -24,9 +36,9 @@ add a test for logical implication to `TestBinaryOperations`
 
 the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
-#### <span style="color:green">**GREEN**</span>: make it pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
-- add the function definition
+- add a function definition with `True` as the return value since that is what is expected in 3 out of the 4 cases
     ```python
     def logical_implication(p, q):
         return True
@@ -42,7 +54,7 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     ```
     the tests pass!
 
-#### <span style="color:orange">**REFACTOR**</span>: make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - How can we make this better? let's make the nested condition one line
     ```python
@@ -52,7 +64,7 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
         return True
     ```
     the tests still pass
-- in the earlier examples we replaced the equality tests with implied condition statements, let's try it here
+- in the earlier examples we replaced the equality tests with implied condition statements
     ```python
     def logical_implication(p, q):
         if p and not q:
@@ -84,7 +96,7 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
         if not p not and not not q:
             return True
     ```
-    We get a `SyntaxError`, correcting the syntax we get
+    We get a `SyntaxError` and correct the syntax to get
     ```python
     def logical_implication(p, q):
         if p and not q:
@@ -119,13 +131,3 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
         return not p or q
     ```
     fantastic! the tests pass
-
-Reviewing what we know
-- `or` is "not `and`"
-- `and` is "not `or`"
-- `logical_disjunction` is `or`
-- `logical_conjunction` is `and`
-- `False` is `not True`
-- `True` is `not False`
-- `False` is `False`
-- `True` is `True`
