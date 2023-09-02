@@ -401,7 +401,7 @@ Our knowledge is updated to
 - `False` is `False`
 - `True` is `True`
 
-## Logical Implication/Material Implication
+### Logical Implication/Material Implication
 
 #### <span style="color:red">**RED**</span>: make it fail
 
@@ -523,7 +523,7 @@ Reviewing what we know
 - `False` is `False`
 - `True` is `True`
 
-## Logical Equality/Logical Bi-conditional
+### Logical Equality/Logical Bi-conditional
 
 #### <span style="color:red">**RED**</span>: make it fail
 
@@ -603,7 +603,7 @@ We now know that
 - `False` is `False`
 - `True` is `True`
 
-## Exclusive Disjunction
+### Exclusive Disjunction
 
 #### <span style="color:red">**RED**</span>: make it fail
 
@@ -716,7 +716,7 @@ What do we know so far?
 - `False` is `False`
 - `True` is `True`
 
-## Logical NAND
+### Logical NAND
 
 #### <span style="color:red">**RED**</span>: make it fail
 
@@ -846,7 +846,7 @@ Let's update our knowledge
 - `False` is `False`
 - `True` is `True`
 
-## Logical NOR
+### Logical NOR
 
 #### <span style="color:red">**RED**</span>: make it fail
 
@@ -926,7 +926,7 @@ Knowledge update
 - `False` is `False`
 - `True` is `True`
 
-## Converse NonImplication
+### Converse NonImplication
 
 #### <span style="color:red">**RED**</span>: make it fail
 
