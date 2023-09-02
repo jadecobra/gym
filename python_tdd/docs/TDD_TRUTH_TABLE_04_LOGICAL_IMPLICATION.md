@@ -11,7 +11,7 @@ Reviewing what we know so far
 - `True` is `not False`
 - `False` is `False`
 - `True` is `True`
-- we can express `conditional statements` on one line with `return`
+- `return True if x else y` can be rewritten as `return x` if `x` evaluates to `True`
 - when there are multiple outcomes we only need to write the condition for the special case and use `else` for the others
 
 ## Prerequisites

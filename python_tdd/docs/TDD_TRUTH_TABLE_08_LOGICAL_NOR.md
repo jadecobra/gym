@@ -8,9 +8,9 @@ We will continue to step through learning conditional statements in python using
 
 ---
 
-### Logical NOR
+## Logical NOR
 
-#### <span style="color:red">**RED**</span>: make it fail
+### <span style="color:red">**RED**</span>: make it fail
 
 add a test for exclusive disjunction to `TestBinaryOperations`
 
@@ -24,7 +24,7 @@ add a test for exclusive disjunction to `TestBinaryOperations`
 
 the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
-#### <span style="color:green">**GREEN**</span>: make it pass
+### <span style="color:green">**GREEN**</span>: make it pass
 
 - add a function definition to `truth_table.py`
     ```python
@@ -39,7 +39,7 @@ the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
         return False
     ```
 
-#### <span style="color:orange">**REFACTOR**</span>: make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - we restate the `if` condition using implicit conditional testing
     ```python

@@ -100,3 +100,15 @@ What can we do to make this better?
         return p == q
     ```
     Well done! the tests are still green
+
+Let's review
+- `logical_equality` is `==`
+- `logical_disjunction` is `or`
+- `logical_conjunction` is `and`
+- `and` is "not `or`"
+- `or` is "not `and`"
+- `False` is `not True`
+- `True` is `not False`
+- `False` is `False`
+- `True` is `True`
+- `return True if x else y` can be rewritten as `return x` if `x` evaluates to `True`

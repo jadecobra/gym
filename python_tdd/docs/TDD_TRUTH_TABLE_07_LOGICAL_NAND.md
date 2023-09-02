@@ -8,9 +8,9 @@ We will continue to step through learning conditional statements in python using
 
 ---
 
-### Logical NAND
+## Logical NAND
 
-#### <span style="color:red">**RED**</span>: make it fail
+### <span style="color:red">**RED**</span>: make it fail
 
 add a test for exclusive disjunction to `TestBinaryOperations`
 
@@ -24,56 +24,26 @@ add a test for exclusive disjunction to `TestBinaryOperations`
 
 the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
 
+### <span style="color:green">**GREEN**</span>: make it pass
 
-#### <span style="color:green">**GREEN**</span>: make it pass
-
-- add a definition for the function to `truth_table.py` with a condition for the first case
+- add a definition for the function to `truth_table.py` returning `True` since 3 out of the 4 cases return that value
+    ```python
+    def logical_nand(p, q):
+        return True
+    ```
+    the terminal updates to show an [AssertionError](./04_ASSERTION_ERROR.md) for the first case
+- add a condition for the one case that returns `False`
     ```python
     def logical_nand(p, q):
         if p == True and q == True:
-            return True
-    ```
-    the terminal updates to show an [AssertionError](./04_ASSERTION_ERROR.md) for the first case
-- update the condition to return `False`
-    ```python
             return False
-    ```
-    the terminal shows an [AssertionError](./04_ASSERTION_ERROR.md) for the second case
-- add a condition for the second case
-    ```python
-    def logical_nand(self):
-        if p == True and q == True:
-            return False
-        if p == True and q == False:
-            return True
-    ```
-- add a condition for the 3rd case
-    ```python
-    def logical_nand(self):
-        if p == True and q == True:
-            return False
-        if p == True and q == False:
-            return True
-        if p == False and q == True:
-            return True
-    ```
-- one more for the 4th case
-    ```python
-    def logical_nand(self):
-        if p == True and q == True:
-            return False
-        if p == True and q == False:
-            return True
-        if p == False and q == True:
-            return True
-        if p == False and q == False:
-            return True
+        return True
     ```
     We are green! All tests pass
 
-#### <span style="color:orange">**REFACTOR**</span>: make it better
+### <span style="color:orange">**REFACTOR**</span>: make it better
 
-- Looking at the four conditions we have, 3 of them return exactly the same thing and we know there are only 2 outcomes, either `True` or `False`. Let's state the 3 statements as an else
+- add an `else` to be explicit
     ```python
     def logical_nand(p, q):
         if p == True and q == True:
@@ -81,7 +51,7 @@ the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
         else:
             return True
     ```
-- we can use implicit conditional checking to rewrite the `if` statement
+- change to an implied `if` statement
     ```python
     def logical_nand(p, q):
         if p and q:
@@ -89,7 +59,7 @@ the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
         else:
             return True
     ```
-- restate the `else` clause as the opposite of the `if` statement
+- change it to the opposite of the `if` statement
     ```python
     def logical_nand(p, q):
         if p and q:
@@ -105,7 +75,7 @@ the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
         if p and q:
             return False
     ```
-- restate the second statement with `else`
+- replace second statement with `else`
     ```python
     def logical_nand(p, q):
         if not(p and q):
@@ -113,19 +83,20 @@ the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
         else:
             return False
     ```
-- rewrite it to one line
+- return on one line
     ```python
     def logical_nand(p, q):
         return True if not(p and q) else False
     ```
-- simplify using implicit conditional
+- simplify to
     ```python
     def logical_nand(p, q):
         return not(p and q)
     ```
+    I don't think we can get simpler than this and all the tests are still passing
 
-Let's update our knowledge
-
+***REVIEW***
+We know that
 - `logical_nand` is `not(p and q)`
 - `exclusive_disjunction` is `!=` aka opposite of `logical_equality`
 - `logical_equality` is `==`
@@ -137,3 +108,4 @@ Let's update our knowledge
 - `True` is `not False`
 - `False` is `False`
 - `True` is `True`
+- `return True if x else y` can be rewritten as `return x` if `x` evaluates to `True`
