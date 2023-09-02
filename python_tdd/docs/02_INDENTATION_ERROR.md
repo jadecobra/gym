@@ -1,6 +1,6 @@
 # How to solve the IndentationError in python
 
-We will will step through solving an `IndentationError` in python using Test Driven Development
+We will step through solving an `IndentationError` in python using Test Driven Development
 
 ## Prerequisites
 

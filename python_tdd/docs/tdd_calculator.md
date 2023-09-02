@@ -1,6 +1,6 @@
 # How to create a Calculator using Test Driven Development
 
-We will will step through creating a calculator using Test Driven Development
+We will step through creating a calculator using Test Driven Development
 
 ## Prerequisites
 

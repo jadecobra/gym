@@ -1,6 +1,6 @@
 # How to handle Exceptions in python
 
-We will will step through handling Exceptions in python using Test Driven Development
+We will step through handling Exceptions in python using Test Driven Development
 
 ## Prerequisites
 

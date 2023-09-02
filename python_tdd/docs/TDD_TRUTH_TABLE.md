@@ -1,6 +1,6 @@
 # How to write conditions in python
 
-We will will step through learning conditional statements in python using Test Driven Development using the [Truth Table](https://en.wikipedia.org/wiki/Truth_table)
+We will step through learning conditional statements in python using Test Driven Development using the [Truth Table](https://en.wikipedia.org/wiki/Truth_table)
 
 ## Prerequisites
 

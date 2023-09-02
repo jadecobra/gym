@@ -1,6 +1,6 @@
 # How to solve the AttributeError in python
 
-We will will step through solving a `ModuleNotFoundError` in python using Test Driven Development
+We will step through solving a `ModuleNotFoundError` in python using Test Driven Development
 
 ## Prerequisites
 
