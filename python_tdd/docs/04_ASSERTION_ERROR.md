@@ -1,6 +1,6 @@
 # How to solve the AssertionError in python
 
-This tutorial will step through solving an `AssertionError` in python using Test Driven Development
+We will step through solving an `AssertionError` in python using Test Driven Development
 
 ## Prerequisites
 

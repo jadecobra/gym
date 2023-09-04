@@ -1,6 +1,6 @@
 # How to Setup a Test Driven Development Environment
 
-This tutorial will step through creating a [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) Environment in python
+We will step through creating a [Test Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) Environment in python
 
 Here's the Test Driven Development mantra paraphrased -
     <span style="color:red">**RED**</span> <span style="color:green">**GREEN**</span> <span style="color:orange">**REFACTOR**</span>

@@ -1,6 +1,6 @@
 # None
 
-This tutorial will cover `None` in python using Test Driven Development
+We will cover `None` in python using Test Driven Development
 
 ## Prerequisites
 

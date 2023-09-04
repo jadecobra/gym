@@ -1,6 +1,6 @@
 # How to write functions in python
 
-This tutorial will step through functions in python using Test Driven Development
+We will step through functions in python using Test Driven Development
 
 ## Prerequisites
 
