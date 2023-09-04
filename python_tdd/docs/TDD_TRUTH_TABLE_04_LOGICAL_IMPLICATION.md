@@ -2,7 +2,7 @@
 
 We will continue to step through learning conditional statements in python using Test Driven Development using the [Truth Table](https://en.wikipedia.org/wiki/Truth_table)
 
-Reviewing what we know so far
+Reviewing what we know so far, for any boolean operation involving 2 inputs - `p` and `q` which can take the values `True` or `False`
 - `and` is "not `or`"
 - `or` is "not `and`"
 - `logical_disjunction` is `or`

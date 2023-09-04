@@ -162,7 +162,7 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     ```
     ***VOILA!*** the tests still pass and we have a simple statement that makes all 4 states pass for `logical_disjunction`
 
-Our knowledge is updated to
+Our knowledge is updated to show that for any boolean operation involving 2 inputs - `p` and `q` which can take the values `True` or `False`
 - `and` is "not `or`"
 - `or` is "not `and`"
 - `logical_disjunction` is `or`

@@ -101,7 +101,7 @@ What can we do to make this better?
     ```
     Well done! the tests are still green
 
-Let's review
+Let's review. For any boolean operation involving 2 inputs - `p` and `q` which can take the values `True` or `False`
 - `logical_equality` is `==`
 - `logical_disjunction` is `or`
 - `logical_conjunction` is `and`

@@ -143,7 +143,7 @@ the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     ```
     things are still green. I don't think we can get a simpler statement than this
 
-***FANTASTIC!*** You have tested logical_conjunction which is a conditional operation using `and`. We now know that
+***FANTASTIC!*** You have tested logical_conjunction which is a conditional operation using `and`. We now know that for any boolean operation involving 2 inputs - `p` and `q` which can take the values `True` or `False`
 - `return True if x else y` can be rewritten as `return x` if `x` evaluates to `True`
 - when there are multiple outcomes we only need to write the condition for the special case and use `else` for the others
 - `logical_conjunction` is `and`

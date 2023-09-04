@@ -12,7 +12,7 @@ We will continue to step through learning conditional statements in python using
 
 ### <span style="color:red">**RED**</span>: make it fail
 
-add a test for converse nonimplication to `TestBinaryOperations`
+add a test for material non-implication to `TestBinaryOperations`
 
 ```python
     def test_material_non_implication(self):
@@ -66,7 +66,7 @@ the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     ```
     We are still green
 
-Our knowledge is growing
+Our knowledge is growing, we now know that for any boolean operation involving 2 inputs - `p` and `q` which can take the values `True` or `False`
 - `material_non_implication` is `p and not q`
 - `converse_non_implication` is `not p and q` which is different from `not(p and q)`
 - `logical_nor` is `not(p or q)`

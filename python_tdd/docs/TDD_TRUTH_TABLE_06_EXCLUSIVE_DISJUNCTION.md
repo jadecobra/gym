@@ -124,7 +124,7 @@ Let's try to refactor those statements to make them better
         return p != q
     ```
 
-What do we know so far?
+What do we know so far? For any boolean operation involving 2 inputs - `p` and `q` which can take the values `True` or `False`
 - `exclusive_disjunction` is `!=`
 - `logical_equality` is `==`
 - `logical_disjunction` is `or`

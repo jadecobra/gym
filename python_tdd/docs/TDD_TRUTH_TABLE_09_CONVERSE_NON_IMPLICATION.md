@@ -66,7 +66,7 @@ the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     ```
     Another success! All tests pass
 
-Our knowledge has increased
+Our knowledge has increased. We know that for any boolean operation involving 2 inputs - `p` and `q` which can take the values `True` or `False`
 - `converse_non_implication` is `not p and q` which is different from `not(p and q)`
 - `logical_nor` is `not(p or q)`
 - `logical_nand` is `not(p and q)`

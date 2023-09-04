@@ -74,7 +74,7 @@ the terminal shows an [AttributeError](./01_ATTRIBUTE_ERROR.md)
     ```
     BOOM! all the tests pass. Are we getting better at this?
 
-Knowledge update
+Knowledge update. For any boolean operation involving 2 inputs - `p` and `q` which can take the values `True` or `False`
 - `logical_nor` is `not(p or q)`
 - `logical_nand` is `not(p and q)`
 - `exclusive_disjunction` is `!=` aka opposite of `logical_equality`
