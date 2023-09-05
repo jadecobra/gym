@@ -276,7 +276,7 @@ How can we make this better?
     def passthrough_with_positional_arguments(*arguments):
         return arguments
     ```
-    the terminal updates to show passing tests. But wait, what is a starred expression? it is a way to represent multiple arguments with one. For now we trust in the evidence that it works, until we understand it better
+    the terminal updates to show passing tests. But wait, what is a starred expression? it is a way to represent multiple arguments with one. For now we trust in the evidence that it works, until we understand it better. You can also [read about arbitrary argument lists](https://docs.python.org/3/tutorial/controlflow.html#arbitrary-argument-lists)
 
 ## Functions with keyword arguments
 

@@ -1,6 +1,6 @@
 # Lists
 
-We will cover `lists/arrays` in python using Test Driven Development
+We will cover `None` in python using Test Driven Development
 
 ## Prerequisites
 
@@ -30,19 +30,13 @@ f(input_data) -> output_data # where f is the program|procress
 - `set` - sets - a sequence of values with no duplicates
 - `dict` - dictionaries - a mapping of key, values
 
-## What is a list/array?
+## What is None?
 
-A `list` is an object that holds elements. It is a container like `tuples` and `sets`.
-In python
-- Lists are represented with `[]`
-- Lists can also be created with the `list` keyword
-- Lists are mutable which means they can be changed after creation, tuples are not, they are immutable
+`None` is an object used to represent the absence of a value
 
-
-Let's play with lists
 ### <span style="color:red">**RED**</span>: make it fail
 
-create a file named `test_lists.py` in the `tests` folder
+create a file named `test_data_structures.py` in the `tests` folder
 ```python
 import unittest
 
