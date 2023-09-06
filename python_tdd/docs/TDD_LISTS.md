@@ -326,6 +326,17 @@ the terminal updates to show an [IndexError](https://docs.python.org/3/library/e
 ### <span style="color:green">**GREEN**</span>: make it pass
 
 - add `IndexError` to the running list of exceptions encountered
+    ```python
+    # Exceptions Encountered
+    # AssertionError
+    # ModuleNotFoundError
+    # AttributeError
+    # NameError
+    # TypeError
+    # SyntaxError
+    # IndentationError
+    # IndexError
+    ```
 - add a `self.assertRaises` like we did in [Exception Handling](./05_EXCEPTION_HANDLING.md) to make the test pass
     ```python
     def test_indexing_with_a_number_greater_than_the_length_of_the_list(self):
