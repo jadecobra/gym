@@ -78,10 +78,10 @@ cat description
 cd ..
 clear
 
-git remote add github git@github.com:$GITHUB_USERNAME/$PROJECTNAME.git
+git remote add origin git@github.com:$GITHUB_USERNAME/$PROJECTNAME.git
 
 git remote --verbose
-git push --set-upstream github main
+git push --set-upstream origin main
 clear
 
 ###############################################################
@@ -317,17 +317,17 @@ git branch branch3
 git branch branchN
 git branch --all
 
-git push github a_branch
+git push origin a_branch
 git branch --all
-git push github a_new_branch
+git push origin a_new_branch
 git branch --all
-git push github branch1
+git push origin branch1
 git branch --all
-git push github branch2
+git push origin branch2
 git branch --all
-git push github branch3
+git push origin branch3
 git branch --all
-git push github branchN
+git push origin branchN
 git branch --all
 
 ###############################################################
@@ -341,19 +341,19 @@ touch new_directory_from_a_branch/File{1,2,3,N}InThisDirectory.extension
 git status
 git add .
 git commit --all --message "I added a new File and Directory in a_branch"
-git diff github/a_branch
-git push github a_branch
+git diff origin/a_branch
+git push origin a_branch
 git diff
 git diff main
 git checkout main
-git diff github/main
+git diff origin/main
 git diff a_branch
 git merge a_branch
 git diff
 git diff a_branch
-git diff github/main
+git diff origin/main
 git status
-git push github main
+git push origin main
 git status
 
 git checkout -b new_feature
@@ -368,17 +368,17 @@ git status
 git add .
 git commit -am "I had a Genius Idea and tested it in new_feature"
 git diff main
-git diff remotes/github/new_feature
-git push github new_feature
+git diff remotes/origin/new_feature
+git push origin new_feature
 git checkout main
 git merge --no-ff new_feature
 I Had a Genius idea, tested it in new_feature and merged it into main
 # save and exit
 git diff
 git diff new_feature
-git diff remotes/github/main
+git diff remotes/origin/main
 git status
-git push github main
+git push origin main
 git log
 git log --oneline
 git log --merges
@@ -414,9 +414,9 @@ git show any_tag
 git show non_existent_tag
 clear
 
-git push github v0.1
-git push github vN.M
-git push github --tags
+git push origin v0.1
+git push origin vN.M
+git push origin --tags
 
 git log
 git log --oneline

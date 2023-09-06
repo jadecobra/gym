@@ -535,8 +535,73 @@ Why did that work?
 - the `Boy`, `Girl` and `Other` class now inherit from the `Human` class which means they all get the same methods and attributes that the `Human` class has, including the `__init__` method
 - `self.sex` within each class refers to the `sex` attribute in the class, allowing its definition from the `__init__` method
 
+## How to view the Attributes and Methods of a Class
+
+To view what `attributes` and `methods` are defined for any object we can call `dir` on the object
+
+### <span style="color:red">**RED**</span>: make it fail
+
+add a test to `test_classes.py`
+```python
+    def test_view_attributes_and_methods_of_an_object(self):
+        self.assertEqual(
+            dir(classes.ClassWithAttributesAndMethods),
+            [
+
+            ]
+        )
+```
+
+the terminal updates to show an [AssertionError](./04_ASSERTION_ERROR.md) as our expected and real values do not match
+
+### <span style="color:green">**GREEN**</span>: make it pass
+
+update the test with the correct values shown in the terminal
+
+```python
+    def test_view_attributes_and_methods_of_an_object(self):
+        self.assertEqual(
+            dir(classes.ClassWithAttributesAndMethods),
+            [
+                '__class__',
+                '__delattr__',
+                '__dict__',
+                '__dir__',
+                '__doc__',
+                '__eq__',
+                '__format__',
+                '__ge__',
+                '__getattribute__',
+                '__gt__',
+                '__hash__',
+                '__init__',
+                '__init_subclass__',
+                '__le__',
+                '__lt__',
+                '__module__',
+                '__ne__',
+                '__new__',
+                '__reduce__',
+                '__reduce_ex__',
+                '__repr__',
+                '__setattr__',
+                '__sizeof__',
+                '__str__',
+                '__subclasshook__',
+                '__weakref__',
+                'attribute',
+                'method'
+            ]
+        )
+```
+
+the tests pass and we see the last two values in our list are `attribute` and `method` which we defined earlier
+
 ***CONGRATULATIONS***
-You know how to define a class with
-- an attribute
-- a method
-- an initializer
+You know
+- how to define a class with
+    - an attribute
+    - a method
+    - an initializer
+- how to view the attributes and methods defined for a class
+- Do you want to [read more about classes](https://docs.python.org/3/tutorial/classes.html#tut-firstclasses)

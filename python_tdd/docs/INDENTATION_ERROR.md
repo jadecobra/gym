@@ -37,6 +37,7 @@ Some people indent with 2 spaces, others indent with 4. In this exercise we will
     # NameError
     # TypeError
     # SyntaxError
+    # IndentationError
     ```
     Why did line 2 create an error? python was not expecting the indentation there. Indentation has meaning in python and in this case it doesn't meet the predefined rules for indentation
 

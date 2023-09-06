@@ -359,7 +359,7 @@ the terminal updates to show an `AttributeError`
     - `except Exception` - if `function()` raises an Exception return `failed`
     - `else` - if `function()` does not raise an Exception return `succeeded`
     - do you want to
-      - [read more about `try...except...else`?](https://docs.python.org/3/reference/compound_stmts.html#the-try-statement)
+      - [read more about the try statement?](https://docs.python.org/3/reference/compound_stmts.html#the-try-statement)
       - [read more about exception handling?](https://docs.python.org/3/tutorial/errors.html?highlight=try%20except#handling-exceptions)
 
 ### <span style="color:orange">**REFACTOR**</span>: make it better
