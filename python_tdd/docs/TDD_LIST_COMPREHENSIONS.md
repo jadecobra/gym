@@ -1,6 +1,6 @@
-# Lists
+# List Comprehensions
 
-We will cover `lists/arrays` in python using Test Driven Development
+We will cover `list comprehensions` in python using Test Driven Development
 
 ## Prerequisites
 
@@ -8,205 +8,146 @@ We will cover `lists/arrays` in python using Test Driven Development
 
 ---
 
-## Data Structures
+## List Comprehension
 
-In programming we process input data of some form and output data in some form.
-We can think of it as
+## Creating a List with an Iterable
 
-```python
-input_data -> program -> output_data
-f(input_data) -> output_data # where f is the program|procress
-```
-
-## What are the data structures in python
-
-- `None` - none - no value
-- `bool` - boolean - True | False
-- `int` - integers - positive/negative whole numbers e.g. -1, 0, 1
-- `float` - floats - floating point numbers e.g. -1.1, 0.1, 1.1
-- `str` - string - any text in strings"
-- `tuple` - tuples - an immutable sequence of values
-- `list` - lists | arrays - a mutable sequence of values
-- `set` - sets - a sequence of values with no duplicates
-- `dict` - dictionaries - a mapping of key, values
-
-## What is a list/array?
-
-A `list` is an object that holds elements. It is a container like `tuples` and `sets`.
-In python
-- Lists are represented with `[]`
-- Lists can also be created with the `list` keyword
-- Lists are mutable which means they can be changed after creation, tuples are not, they are immutable
-
-
-Let's play with lists
-
-## How to create a list
+List comprehensions are a way to create lists from another iterable. It is a nice way to loop over elements
 
 ### <span style="color:red">**RED**</span>: make it fail
 
-add a file named `test_lists.py` to the `tests` folder
+add `test_list_comprehension.py` to the `tests` folder
 
 ```python
 import unittest
 
 
-class TestLists(unittest.TestCase):
+class TestListComprehensions(unittest.TestCase):
 
-    def test_creating_list_with_list_keyword(self):
-        self.assertEqual(list(0, 1, 2, 3), [])
+    def test_creating_a_list_from_an_iterable(self):
+        collection_a = range(10)
+        list_a = []
+        self.assertEqual(list_a, [])
+
+        for element in collection_a:
+            list_a.append(element)
+        self.assertEqual(list_a, [])
 ```
-the terminal shows a [TypeError](./03_TYPE_ERROR.md)
-
-### <span style="color:green">**GREEN**</span>: make it pass
-
-- Looking at the error we see that the `list` keyword expects one argument but we gave it four, so we are violating the signature for creating lists. How can we pass in values correctly to this object?
-- We check out the [documentation](https://docs.python.org/3/library/stdtypes.html?highlight=list#list) and see that list takes in an `iterable`
-- What is an iterable? any object that we can loop over
-- update the left value in the test
+- we create `collection_a` which uses the `range` object
+- what is the `range` object? it creates an `iterable` of numbers from 0 to the number we give minus 1. [read more](https://docs.python.org/3/library/stdtypes.html?highlight=range#range)
+- we create a list named `list_a` that has no elements and confirm it is empty with an `assertEqual`
+- we then create a loop using the `for` keyword, that goes over every element of `collection_a` and adds it to `list_a` using the `append` method we learned in [TDD_LISTS](./TDD_LISTS.md)
+- the terminal updates to show an [AssertionError](./04_ASSERTION_ERROR.md) for our  test to check the elements of `list_a` after the loop runs
     ```python
-    def test_creating_list_with_list_keyword(self):
-        self.assertEqual(list((0, 1, 2, 3)), [])
-    ```
-    the terminal updates to show an [AssertionError](./04_ASSERTION_ERROR.md)
-    ```python
-    >       self.assertEqual(list((0, 1, 2, 3)), [])
-    E       AssertionError: Lists differ: [0, 1, 2, 3] != []
+    E       AssertionError: Lists differ: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] != []
     E
-    E       First list contains 4 additional elements.
+    E       First list contains 10 additional elements.
     E       First extra element 0:
-    E       1
+    E       0
     E
-    E       - [0, 1, 2, 3]
+    E       - [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     E       + []
     ```
-- update the right side to match the values on the left from the terminal
-    ```python
-    def test_creating_list_with_list_keyword(self):
-        self.assertEqual(list((0, 1, 2, 3)), [0, 1, 2, 3])
-    ```
-    the test passes
-
-### <span style="color:orange">**REFACTOR**</span>: make it better
-
-- we know we can create a list with the `list` keyword but our passing test also shows we can create a list with `[]` and it uses less characters. Let's test it, add a test
-    ```python
-    def test_creating_list_with_square_brackets(self):
-        self.assertEqual([0, 1, 2, 3], list((0, 1, 2, 3)))
-    ```
-
-## How to add items to a list
-
-### <span style="color:red">**RED**</span>: make it fail
-
-add a test to `TestLists` in `test_lists.py`
-
-```python
-    def test_adding_an_item_to_a_list(self):
-        a_list = [0, 1, 2, 3]
-        self.assertEqual(a_list, [0, 1, 2, 3])
-        a_list.append(4)
-        self.assertEqual(a_list, [0, 1, 2, 3])
-```
-
-the terminal updates to show an [AssertionError](./04_ASSERTION_ERROR.md) because after we call `a_list.append(5)`, the values in `a_list` change
-
-```python
->       self.assertEqual(a_list, [0, 1, 2, 3])
-E       AssertionError: Lists differ: [0, 1, 2, 3, 4] != [0, 1, 2, 3]
-E
-E       First list contains 1 additional elements.
-E       First extra element 4:
-E       4
-E
-E       - [0, 1, 2, 3, 4]
-E       ?            ---
-E
-E       + [0, 1, 2, 3]
-```
 
 ### <span style="color:green">**GREEN**</span>: make it pass
 
-update the values on the right side of the `assertEqual` to make it match the expectation
-```python
-    def test_adding_an_item_to_a_list(self):
-        a_list = [0, 1, 2, 3]
-        self.assertEqual(a_list, [0, 1, 2, 3])
-        a_list.append(4)
-        self.assertEqual(a_list, [0, 1, 2, 3, 4])
-```
-the terminal updates to show passing tests
-- we started with a list that contained 4 elements
-- we added an element
-- our test confirms that the element we added is the extra element in the list
-
-## How to remove an item from a list
-
-
-### <span style="color:red">**RED**</span>: make it fail
-
-add a test to `TestLists`
+update the tests with the expected value
 
 ```python
-    def test_removing_any_item_from_a_list(self):
-        a_list = [0, 1, 2, 3]
-        self.assertEqual(a_list, [0, 1, 2, 3])
-        a_list.remove(2)
-        self.assertEqual(a_list, [0, 1, 2, 3])
+    def test_creating_a_list_from_an_iterable(self):
+        collection_a = range(10)
+        list_a = []
+        self.assertEqual(list_a, [])
+
+        for element in collection_a:
+            list_a.append(element)
+        self.assertEqual(list_a, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 ```
 
-the terminal updates to show a difference after we call `a_list.remove(2)`, because the call removes an element from `a_list`
-```python
->       self.assertEqual(a_list, [0, 1, 2, 3])
-E       AssertionError: Lists differ: [0, 1, 3] != [0, 1, 2, 3]
-E
-E       First differing element 2:
-E       3
-E       2
-E
-E       Second list contains 1 additional elements.
-E       First extra element 3:
-E       3
-E
-E       - [0, 1, 3]
-E       + [0, 1, 2, 3]
-E       ?
-```
-
-### <span style="color:green">**GREEN**</span>: make it pass
-
-update the test to make the values on the right match the expected value
-
-```python
-    def test_removing_any_item_from_a_list(self):
-        a_list = [0, 1, 2, 3]
-        self.assertEqual(a_list, [0, 1, 2, 3])
-        a_list.remove(2)
-        self.assertEqual(a_list, [0, 1, 3])
-```
-
-we are green. tests are passing
+the tests pass
 
 ### <span style="color:orange">**REFACTOR**</span>: make it better
 
-What if there was more than one element, how does python decide which to remove when we call `.remove(element)` on a list?
-Let's find out
-
-- add a failing test
+- add a test to check what happens when we call the `list` keyword on `collection_a`
     ```python
-    def test_removing_an_item_from_a_list_when_multiple_exist(self):
-        a_list = [0, 2, 1, 2, 3, 2]
-        self.assertEqual(a_list, [0, 2, 1, 2, 3, 2])
-        a_list.remove(2)
-        self.assertEqual(a_list, [0, 2, 1, 2, 3, 2])
+        self.assertEqual(list(collection_a), list_a)
+    ```
+    the tests pass because calling `list` on an `iterable` creates a `list`
+- add another test
+    ```python
+        self.assertEqual(list_comprehensions.make_a_list(collection_a), list_a)
+    ```
+    the terminal updates to show a `NameError`
+- add an import statement for `list_comprehensions` at the beginning of `test_list_comprehension.py`
+    ```python
+    import list_comprehensions
+    import unittest
+    ```
+    the terminal updates to show a [ModuleNotFoundError](./00_MODULE_NOT_FOUND_ERROR.md)
+- create `list_comprehensions.py` in the project folder and the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md)
+- update `list_comprehensions.py` with a function
+    ```python
+    def make_a_list():
+        return None
+    ```
+    the terminal updates to show a [TypeError](./03_TYPE_ERROR.md)
+- we update the signature of the function to take in an argument
+    ```python
+    def make_a_list(argument):
+        return None
     ```
     the terminal updates to show an [AssertionError](./04_ASSERTION_ERROR.md)
-- update the  values on the right to match the expectation
+- update the function to return a list of whatever argument it gets
     ```python
-    def test_remove_an_item_from_a_list_when_multiple_exist(self):
-        a_list = [0, 2, 1, 2, 3, 2]
-        self.assertEqual(a_list, [0, 2, 1, 2, 3, 2])
-        a_list.remove(2)
-        self.assertEqual(a_list, [0, 1, 2, 3, 2])
+    def make_a_list(argument):
+        return list(argument)
     ```
-    the tests pass. We can conclude from our experiment that the `remove` function removes the first occurrence of an item from a list
+    the tests pass
+
+## Creating a List with a For Loop
+
+Let's test creating a list with a for loop like the example above
+
+### <span style="color:red">**RED**</span>: make it fail
+
+add a test to `TestListComprehensions`
+
+```python
+def test_creating_a_list_with_a_for_loop(self):
+    collection = range(10)
+    a_list = []
+    self.assertEqual(a_list, [])
+
+    for element in collection:
+        a_list.append(element)
+
+    self.assertEqual(a_list, [])
+    self.assertEqual(list_comprehensions.for_loop(collection), a_list)
+```
+
+the terminal updates to show an [AssertionError](./04_ASSERTION_ERROR.md) for the values of `a_list` after we loop through `collection` and add elements
+
+### <span style="color:green">**GREEN**</span>: make it pass
+
+- update the right side of the test with the expected values
+    ```python
+    def test_creating_a_list_with_a_for_loop(self):
+        collection = range(10)
+        a_list = []
+        self.assertEqual(a_list, [])
+
+        for element in collection:
+            a_list.append(element)
+
+        self.assertEqual(a_list, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+        self.assertEqual(list_comprehensions.for_loop(collection), a_list)
+    ```
+    the terminal updates to show an [AttributeError](./01_ATTRIBUTE_ERROR.md) since `list_comprehensions.py` does not have a definition for `for_loop`
+- add a function definition to `list_comprehensions.py`
+    ```python
+    def for_loop():
+        return None
+    ```
+    the terminal updates to show a [TypeError](./03_TYPE_ERROR.md)
+- 
+### <span style="color:orange">**REFACTOR**</span>: make it better
