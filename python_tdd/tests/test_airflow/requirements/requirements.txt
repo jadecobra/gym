@@ -110,7 +110,7 @@ apache-airflow-providers-microsoft-winrm==3.1.1
 apache-airflow-providers-mongo==3.1.1
 apache-airflow-providers-mysql==4.0.0
 apache-airflow-providers-neo4j==3.2.1
-apache-airflow-providers-odbc==3.2.1
+apache-airflow-providers-odbc==4.0.0
 apache-airflow-providers-openfaas==3.1.0
 apache-airflow-providers-opsgenie==5.0.0
 apache-airflow-providers-oracle==3.6.0
