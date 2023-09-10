@@ -346,9 +346,9 @@ the terminal updates to show an [IndexError](https://docs.python.org/3/library/e
     ```
 ### <span style="color:orange">**REFACTOR**</span>: make it better
 
-## How to view the attributes and methods of a `list`
+## How to view the attributes and methods of a list
 
-At the end of [TDD_CLASSES](./08_CLASSES.md) we learned how to view `attributes` and `methods` of an object. Let's do the same for `lists`
+[CLASSES] covers how to view the `attributes` and `methods` of an object. Let's do the same for `lists`
 
 ### <span style="color:red">**RED**</span>: make it fail
 
