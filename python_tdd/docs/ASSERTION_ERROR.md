@@ -10,10 +10,12 @@ We will step through solving an `AssertionError` in python using Test Driven Dev
 
 ## What is an Assertion?
 
-Is it a statement of fact? Is it a belief?
+Is it a statement of fact? 
+Is it a belief?
 Is it some fundamental thing that we agree upon?
 
-In python an `AssertionError` is raised when the result of an `assert` statement is `False`. We are familiar with an `assert` statement from the first failing test we wrote
+In python an `AssertionError` is raised when the result of an `assert` statement is `False`. 
+We are familiar with an `assert` statement from the first failing test we wrote
 
 ```python
 self.assertFalse(True)
@@ -29,7 +31,7 @@ assert False is True
 
 When building a program we have certain expectations based on given inputs. One way to test these expectations is by adding assert statements in the program, another is by using assert statements in the tests to check whether our expectations match reality. It helps us check that the system is doing what it was designed to do, and also catch things that break previous behavior when introduced.
 
-## How to solve the AssertionError
+## AssertionError
 
 ### <span style="color:red">**RED**</span>: make it fail
 
@@ -53,9 +55,8 @@ E       assert None is False
 tests/test_assertion_error.py:7: AssertionError
 ```
 
-- This error is triggered by the line `assert None is False` which is like asking the question "is `None` the same as `False`?"
-- The difference here is that the `assert` of the beginning of the line makes the statement more like "Make sure `None` is the same as `False`"
-- Since In python `None` is not `False`, python raises an `AssertionError`
+This error is triggered by the line `assert None is False` which is similar to the question "is `None` the same as `False`?". The difference here is that the `assert` of the beginning of the line makes the statement more like "Make sure `None` is the same as `False`"
+Since In python `None` is not `False`, python raises an `AssertionError`
 
 ### <span style="color:green">**GREEN**</span>: make it pass
 
@@ -76,7 +77,7 @@ What is another way we can write `assert` statements?
 add the following line to `test_assertion_errors_with_none`
 
 ```python
-        self.assertIsNone(False)    # this uses the unittest.TestCase assertIsNotNone method
+        self.assertIsNone(False)    # this uses the unittest.TestCase assertIsNone method
 ```
 
 the terminal updates to show a more descriptive error
@@ -87,7 +88,7 @@ E       AssertionError: False is not None
 tests/test_assertion_error.py:8: AssertionError
 ```
 
-- since `False is not None` we get an AssertionError
+since `False is not None` we get an AssertionError
 
 #### <span style="color:green">**GREEN**</span>: make it pass
 
@@ -100,7 +101,7 @@ update the assert statement to make it pass
 the terminal updates to show passing tests because we have an `assert` statement that is `True`.
 As we learned earlier `False` is not `None`.
 
-From our test we now know that In python
+From our test we now know that in python
 - `False` is not `None`
 
 If `False` is not `None`, what is its relation to `True`?
