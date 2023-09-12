@@ -10,12 +10,12 @@ We will step through solving an [AssertionError](https://docs.python.org/3/libra
 
 ## What is an Assertion?
 
-Is it a statement of fact? 
+Is it a statement of fact?
 Is it a belief?
 Is it some fundamental thing that we agree upon?
 
-In python an `AssertionError` is raised when the result of an `assert` statement is `False`. 
-We are familiar with an `assert` statement from the first failing test we wrote
+In python an `AssertionError` is raised when the result of an `assert` statement is `False`.
+We are familiar with an `assert` statement from the first failing test we wrote in [Setup TDD](./TDD_SETUP.md)
 
 ```python
 self.assertFalse(True)
@@ -29,17 +29,22 @@ assert True is False
 
 ## Why are asserts important?
 
-When building a program we have certain expectations based on given inputs. 
+When building a program we have certain expectations based on given inputs.
 
-One way to test these expectations is by adding `assert` statements in the program, we could also place these `assert` statements in tests to check whether our expectations match reality. 
+One way to test these expectations is by adding `assert` statements in the program, we could also place these `assert` statements in tests to check whether our expectations match reality. These tests help us check that the system is doing what it was designed to do, and catch bugs that break previous behavior when introduced.
 
-These tests help us check that the system is doing what it was designed to do, and catch bugs that break previous behavior when introduced.
+We are constantly asking two questions
+- What is similar?
+- What is different?
 
-## AssertionError
+The difference tells us what changes we have to make for our expectations and reality to match.
+
+
+## AssertionError with None
 
 ### <span style="color:red">**RED**</span>: make it fail
 
-let us create a file named `test_assertion_error.py` in the `tests` folder and add the following text
+let us create a file named `test_assertion_error.py` in the `tests` folder and add the following text using the python `assert` keyword
 
 ```python
 import unittest
@@ -48,7 +53,6 @@ import unittest
 class TestAssertionError(unittest.TestCase):
 
     def test_assertion_errors_with_none(self):
-        # this uses the python assert keyword
         assert None is False
 ```
 
@@ -57,16 +61,16 @@ the terminal updates to show
 ```python
 E       assert None is False
 
-tests/test_assertion_error.py:8: AssertionError
+tests/test_assertion_error.py:7: AssertionError
 ```
 
-This error is triggered by the line `assert None is False` which is similar to the question "is `None` the same as `False`?". 
-
-The difference here is that the `assert` of the beginning of the line makes the statement more like "Make sure `None` is `False`". Since `None` and `False` are different objects that are not equal, python raises an `AssertionError`
+- This error is triggered by the line `assert None is False` which is similar to the question "is `None` the same as `False`?"
+- The difference here is that the `assert` at the beginning of the line makes the statement more like "Make sure `None` is `False`"
+- Since `None` and `False` are different objects that are not equal, python raises an `AssertionError`
 
 ### <span style="color:green">**GREEN**</span>: make it pass
 
-update `test_assertion_errors_with_none` in `test_assertion_error.py` to make it pass
+we update `test_assertion_errors_with_none` in `test_assertion_error.py` to make it pass
 
 ```python
         assert None is not False
@@ -76,126 +80,105 @@ the terminal updates to show passing tests
 
 ### <span style="color:orange">**REFACTOR**</span>: make it better
 
-What is another way we can write `assert` statements?
+Is there another way we can write `assert` statements?
 
-##### <span style="color:red">**RED**</span>: make it fail
+- ##### <span style="color:red">**RED**</span>: make it fail
+    we add the following line to `test_assertion_errors_with_none` using the `unittest.TestCase.assertIsNone` method
+    ```python
+            self.assertIsNone(False)
+    ```
+    the terminal updates to show a more descriptive error
+    ```python
+    E       AssertionError: False is not None
 
-add the following line to `test_assertion_errors_with_none` using the `unittest.TestCase.assertIsNone` method
+    tests/test_assertion_error.py:8: AssertionError
+    ```
+    since `False is not None` we get an AssertionError
 
-```python
-        self.assertIsNone(False)
-```
+- #### <span style="color:green">**GREEN**</span>: make it pass
+    let's update the assert statement to make it pass
+    ```python
+            self.assertIsNotNone(False)
+    ```
+    the terminal updates to show passing tests because this `assert` statement is `True`.
 
-the terminal updates to show a more descriptive error
+    From our test we now know that in python
+    - `False` is not `None`
 
-```python
-E       AssertionError: False is not None
+    If `False` is not `None`, what is the relation of `None` to `True`? What test can we add to find out
+- #### <span style="color:red">**RED**</span>: make it fail
+    we add a test to `test_assertion_errors_with_none`
+    ```python
+            assert None is True
+    ```
+    the terminal updates to show an error
+    ```python
+    E       assert None is True
+    ```
+- #### <span style="color:green">**GREEN**</span>: make it pass
+    update `test_assertion_errors_with_none` to make it pass
+    ```python
+            assert None is not True
+    ```
+    the terminal shows passing tests
+- #### <span style="color:red">**RED**</span>: make it fail
+    what if we rewrite the above statement using the `unittest.TestCase` equivalent method? update `test_assertion_errors_with_none`
 
-tests/test_assertion_error.py:8: AssertionError
-```
+    ```python
+            self.assertIsNone(True)
+    ```
 
-since `False is not None` we get an AssertionError
+    the terminal updates to show
+    ```python
+    E       AssertionError: True is not None
+    ```
+- #### <span style="color:green">**GREEN**</span>: make it pass
+    update `test_assertion_errors_with_none` to make it pass
+    ```python
+            self.assertIsNotNone(True)
+    ```
+    the terminal shows passing tests and we now know that in python
+    - `False` is not `None`
+    - `True` is not `None`
 
-#### <span style="color:green">**GREEN**</span>: make it pass
+    What else can we discover?
+    How can we use this information to build programs?
+- #### <span style="color:red">**RED**</span>: make it fail
+    add another test to `test_assertion_errors_with_none`
+    ```python
+            assert None is not None
+    ```
+    the terminal updates to show
+    ```python
+    E       assert None is not None
+    ```
+- #### <span style="color:green">**GREEN**</span>: make it pass
+    update `test_assertion_errors_with_none` to make it pass
+    ```python
+            assert None is None
+    ```
+    the terminal updates to show passing tests
+- #### <span style="color:red">**RED**</span>: make it fail
+    add another test to `test_assertion_errors_with_none`
+    ```python
+            self.assertIsNotNone(None)
+    ```
+    the terminal updates to show
+    ```python
+    >       self.assertIsNotNone(None)
+    E       AssertionError: unexpectedly None
+    ```
+- #### <span style="color:green">**GREEN**</span>: make it pass
+    update `test_assertion_errors_with_none` to make it pass
+    ```python
+            self.assertIsNone(None)
+    ```
+    the terminal updates to show passing tests and we now know that in python
+    - `False` is not `None`
+    - `True` is not `None`
+    - `None` is `None`
 
-update the assert statement to make it pass
-
-```python
-        self.assertIsNotNone(False)
-```
-
-the terminal updates to show passing tests because we have an `assert` statement that is `True`.
-
-From our test we now know that in python
-- `False` is not `None`
-
-If `False` is not `None`, what is the relation of `None` to `True`? We will add a test to find out
-
-#### <span style="color:red">**RED**</span>: make it fail
-
-update `test_assertion_errors_with_none`
-```python
-        assert None is True
-```
-the terminal updates to show
-```python
-E       assert None is True
-```
-
-#### <span style="color:green">**GREEN**</span>: make it pass
-
-update `test_assertion_errors_with_none` to make it pass
-```python
-        assert None is not True
-```
-the terminal shows passing tests
-
-##### <span style="color:red">**RED**</span>: make it fail
-
-what if we rewrite the above statement using the `unittest` equivalent method? update `test_assertion_errors_with_none`
-```python
-        self.assertIsNone(True)
-```
-the terminal updates to show
-```python
-E       AssertionError: True is not None
-```
-
-#### <span style="color:green">**GREEN**</span>: make it pass
-
-update `test_assertion_errors_with_none` to make it pass
-```python
-        self.assertIsNotNone(True)
-```
-the terminal shows passing tests and We now know that in python
-- `False` is not `None`
-- `True` is not `None`
-
-What else can we discover? 
-How can we use this fundamental information to build programs?
-
-#### <span style="color:red">**RED**</span>: make it fail
-
-Let us add another test. Update `test_assertion_errors_with_none`
-```python
-        assert None is not None
-```
-The terminal updates to show
-```python
-E       assert None is not None
-```
-
-#### <span style="color:green">**GREEN**</span>: make it pass
-
-update `test_assertion_errors_with_none` to make it pass
-
-```python
-        assert None is None
-```
-the terminal updates to show passing tests. Let's add more
-
-##### <span style="color:red">**RED**</span>: make it fail
-update `test_assertion_errors_with_none`
-```python
-        self.assertIsNotNone(None)
-```
-the terminal updates to show
-```python
->       self.assertIsNotNone(None)
-E       AssertionError: unexpectedly None
-```
-
-#### <span style="color:green">**GREEN**</span>: make it pass
-update `test_assertion_errors_with_none` to make it pass
-```python
-        self.assertIsNone(None)
-```
-the terminal updates to show passing tests and we now know that in python
-- `False` is not `None`
-- `True` is not `None`
-- `None` is `None`
-
-Which do you prefer for testing `None`?
+Which of the `assert` statements do you prefer for testing `None`?
 - `assert x is None`        - this can be used anywhere
 - `self.assertIsNone(x)`    - this can only be used in a `unittest.TestCase`
 
@@ -205,19 +188,22 @@ What else can we learn with what we know?
 
 Let's test it
 
-#### <span style="color:red">**RED**</span>: make it fail
+## AssertionError with False
+
+### <span style="color:red">**RED**</span>: make it fail
 
 update `TestAssertionError` in `test_assertion_error.py` with the following test
+
 ```python
     def test_assertion_errors_with_false(self):
         assert False is True
 ```
+
 the terminal updates to show
 ```python
 E       assert False is True
 ```
-
-#### <span style="color:green">**GREEN**</span>: make it pass
+### <span style="color:green">**GREEN**</span>: make it pass
 update `test_assertion_errors_with_false` to make it pass
 ```python
         assert False is False
