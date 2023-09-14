@@ -317,119 +317,100 @@ the terminal updates to show passing tests.
     ```python
             self.assertEqual(False, None)
     ```
-    the `assertEqual` method checks that the 2 inputs given are equal
-    does this look familiar. In [03_TYPE_ERROR](./03_TYPE_ERROR.md) we looked at function signatures. `assertEqual` is a method(function) in the `unittest.TestCase` class that according to its signature definition, when given two inputs it checks if they are equal. We could imagine that in a file named `unittest.py` there is a definition that looks like this
+    the terminal updates to show
+    ```python
+    E       AssertionError: False != None
+    ```
+    the `assertEqual` method from `unittest.TestCase` checks if the 2 given inputs are equal. In [03_TYPE_ERROR](./03_TYPE_ERROR.md) we look at function signatures to get a better understanding of providing inputs to functions. For our learning purpose, we could imagine that in a file named `unittest.py` there is a definition that looks like the code below. We could also look at the real definition [here](https://github.com/python/cpython/blob/f1f85a42eafd31720cf905c5407ca3e043946698/Lib/unittest/case.py#L868)
     ```python
     class TestCase():
         def assertEqual(positional_argument_1, positional_argument_2):
             assert positional_argument_1 == positional_argument_2
     ```
 
-the terminal updates to show
-```python
-E       AssertionError: False != None
-```
+- #### <span style="color:green">**GREEN**</span>: make it pass
+    update `test_assertion_errors_with_equality` to make it pass
 
-#### <span style="color:green">**GREEN**</span>: make it pass
-
-update `test_assertion_errors_with_equality` to make it pass
-
-```python
-    self.assertNotEqual(False, None)
-```
+    ```python
+        self.assertNotEqual(False, None)
+    ```
 
 the terminal updates to show passing tests and we now know that in python
-- `False` is not `None` and `False` is not equal to `None`
 - `True` is not `None`
-- `None` is `None`
-- `False` is not `True`
-- `False` is `False`
-- `True` is not `False`
-- `True` is `True`
-
-#### <span style="color:red">**RED**</span>: make it fail
-
-update `test_assertion_errors_with_equality`
-```python
-        assert True == None
-```
-the terminal updates to show
-```python
-E       assert True == None
-```
-
-#### <span style="color:green">**GREEN**</span>: make it pass
-
-update `test_assertion_errors_with_equality` to make it pass
-
-```python
-        assert True != None
-```
-the terminal updates to show passing tests
-
-#### <span style="color:red">**RED**</span>: make it fail
-
-update `test_assertion_errors_with_equality` using the equivalent `unittest` method
-
-```python
-        self.assertEqual(True, None)
-```
-the terminal updates to show
-```python
-E       AssertionError: True != None
-```
-
-#### <span style="color:green">**GREEN**</span>: make it pass
-
-update `test_assertion_errors_with_equality` to make it pass
-
-```python
-        self.assertNotEqual(True, None)
-```
-the terminal updates to show passing tests and we now know that in python
 - `False` is not `None` and `False` is not equal to `None`
-- `True` is not `None` and `True` is not equal to `None`
 - `None` is `None`
 - `False` is not `True`
 - `False` is `False`
 - `True` is not `False`
 - `True` is `True`
 
-#### <span style="color:orange">**REFACTOR**</span>: make it better
+- #### <span style="color:red">**RED**</span>: make it fail
+    update `test_assertion_errors_with_equality`
+    ```python
+            assert True == None
+    ```
+    the terminal updates to show
+    ```python
+    E       assert True == None
+    ```
+- #### <span style="color:green">**GREEN**</span>: make it pass
+    update `test_assertion_errors_with_equality` to make it pass
+    ```python
+            assert True != None
+    ```
+    and the terminal updates to show passing tests
+- #### <span style="color:red">**RED**</span>: make it fail
+    update `test_assertion_errors_with_equality` using the equivalent `unittest` method
+    ```python
+            self.assertEqual(True, None)
+    ```
+    the terminal updates to show
+    ```python
+    E       AssertionError: True != None
+    ```
+- #### <span style="color:green">**GREEN**</span>: make it pass
+    update `test_assertion_errors_with_equality` to make it pass
+    ```python
+            self.assertNotEqual(True, None)
+    ```
+    the terminal updates to show passing tests and we now know that in python
+    - `True` is not `None` and `True` is not equal to `None`
+    - `False` is not `None` and `False` is not equal to `None`
+    - `None` is `None`
+    - `False` is not `True`
+    - `False` is `False`
+    - `True` is not `False`
+    - `True` is `True`
 
 There is a pattern here, let's update the test for the other cases we have
+- #### <span style="color:red">**RED**</span>: make it fail
+    update `test_assertion_errors_with_equality`
 
-#### <span style="color:red">**RED**</span>: make it fail
+    ```python
+            assert False == True
+            self.assertEqual(False, True)
 
-update `test_assertion_errors_with_equality`
+            assert False != False
+            self.assertNotEqual(False, False)
 
-```python
-        assert False == True
-        self.assertEqual(False, True)
+            assert None != None
+            self.assertNotEqual(None, None)
 
-        assert False != False
-        self.assertNotEqual(False, False)
+            assert True == False
+            self.assertEqual(True, False)
 
-        assert None != None
-        self.assertNotEqual(None, None)
-
-        assert True == False
-        self.assertEqual(True, False)
-
-        assert True != True
-        self.assertNotEqual(True, True)
-```
-
-#### <span style="color:green">**GREEN**</span>: make it pass
-
-update `test_assertion_errors_with_equality` to make it pass. Once all the tests pass we can conclude that in python
-- `False` is not `None` and `False` is not equal to `None`
-- `True` is not `None` and `True` is not equal to `None`
-- `None` is `None` and `None` is equal to `None`
-- `False` is not `True` and `False` is not equal to `True`
-- `False` is `False` and `False` is equal to `False`
-- `True` is not `False` and `True` is not equal to `False`
-- `True` is `True` and `True` is equal to `True`
+            assert True != True
+            self.assertNotEqual(True, True)
+    ```
+- #### <span style="color:green">**GREEN**</span>: make it pass
+    update `test_assertion_errors_with_equality` to make it pass. Once all the tests pass we can conclude that in python
+    - `True` is not `None` and `True` is not equal to `None`
+    - `False` is not `None` and `False` is not equal to `None`
+    - `None` is `None` and `None` is equal to `None`
+    - `False` is not `True` and `False` is not equal to `True`
+    - `False` is `False` and `False` is equal to `False`
+    - `True` is not `False` and `True` is not equal to `False`
+    - `True` is `True` and `True` is equal to `True`
 
 ***FOOD FOR THOUGHT***
 > do these statements mean the following
@@ -445,10 +426,10 @@ You now know How to
 - use `assert` statements
 - use `unittest`
   - `self.assertIsNone`     - is this thing `None`?
-  - `self.assertIsNotNone`
+  - `self.assertIsNotNone`  - is this thing not `None`?
   - `self.assertFalse`      - is this thing `False`?
   - `self.assertTrue`       - is this thing `True`?
   - `self.assertEqual`      - are these two things equal?
-  - `self.assertNotEqual`   - are these two things unequal?
+  - `self.assertNotEqual`   - are these two things not equal?
 
 Do you want to [read more about unittest.TestCase methods](https://docs.python.org/3/library/unittest.html?highlight=unittest#classes-and-functions)?
