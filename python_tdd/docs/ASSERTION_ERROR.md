@@ -1,6 +1,6 @@
 # AssertionError
 
-In this chapter we will get familiar with the [AssertionError](https://docs.python.org/3/library/exceptions.html?highlight=assertionerror#AssertionError) in python using Test Driven Development
+In this chapter we will explore the [AssertionError](https://docs.python.org/3/library/exceptions.html?highlight=assertionerror#AssertionError) exception in python using Test Driven Development (TDD)
 
 ### Prerequisites
 
@@ -10,14 +10,14 @@ In this chapter we will get familiar with the [AssertionError](https://docs.pyth
 
 ## What is an Assertion?
 
-In python an `AssertionError` is raised when the result of an `assert` statement is `False`.
-We are familiar with an `assert` statement from the first failing test we wrote in [Setup TDD](./TDD_SETUP.md)
+An `AssertionError` is raised when the result of an `assert` statement is `False`.
+We encountered it when we wrote the first failing test in [Setup TDD](./TDD_SETUP.md)
 
 ```python
         self.assertFalse(True)
 ```
 
-which is another way of saying
+which is similar to this
 
 ```python
 assert True is False
@@ -27,19 +27,17 @@ assert True is False
 
 When building a program we have certain expectations based on given inputs. To test these expectations we can add `assert` statements to the program or place them in tests.
 
-These tests help catch bugs that break previous tested behavior when introduced.
-
-We are constantly asking these questions as we test
+These tests help catch bugs that break previous tested behavior when introduced, and help us answer the following questions
 - What is similar?
 - What is different?
 
-The difference give us a clue as to what changes to make for our expectations and reality to match.
+A difference in our expectations and reality (the result of our programs) gives us a clue as to what changes to make for them to match.
 
 ## AssertionError with None
 
 ### <span style="color:red">**RED**</span>: make it fail
 
-let us create a file in the `tests` folder named `test_assertion_error.py` and add the following test using the python `assert` keyword to become familiar with the `AssertionError`
+We will create a new file in the `tests` folder named `test_assertion_error.py`. In this file, we will add the following test using the python `assert` keyword to become familiar with the `AssertionError` by intentionally triggering the exception.
 
 ```python
 import unittest
@@ -59,21 +57,21 @@ E       assert False is None
 tests/test_assertion_error.py:7: AssertionError
 ```
 
-This `AssertionError` is triggered by the line `assert False is None`, which is similar to the question "is `False` the same as `None`?"
+This `AssertionError` is raised by the line `assert False is None`. This essentially asks "is `False` the same as `None`?"
 
-The difference here is that the `assert` at the beginning of the line makes the statement more like "DO NOT PROCEED UNLESS `False` is `None`"
+The difference is that the `assert` at the beginning of the line makes the statement more like "DO NOT PROCEED UNLESS `False` is `None`"
 
 Since `None` and `False` are different objects and are not equal, python raises an `AssertionError`
 
 ### <span style="color:green">**GREEN**</span>: make it pass
 
-we update `test_assertion_errors_with_none` in `test_assertion_error.py`
+we modify `test_assertion_errors_with_none` in `test_assertion_error.py`
 
 ```python
         assert False is not None
 ```
 
-and the terminal shows passing tests
+and the terminal shows the tests succeed
 
 ### <span style="color:orange">**REFACTOR**</span>: make it better
 
