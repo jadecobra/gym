@@ -268,7 +268,7 @@ This was one of the options to solve the failing test in [TDD Setup](./TDD_SETUP
 
 We could sum up the above statements this way - in python `True`, `False` and `None` are different.
 
-Knowing these distinctions can help us write useful programs as they come in handy when learning how a system behaves, they are now our python beliefs, fundamentals, truths - a foundation that is a predictable expectation of the language.
+Understanding these differences helps write useful programs. They show how python behaves and form our core truths - a foundation of predictable expectations of the language.
 
 ## AssertionError with Equality
 
@@ -276,29 +276,29 @@ We can also make assertions of equality, where we compare if two things are the 
 
 ### <span style="color:red">**RED**</span>: make it fail
 
-we add a test to `TestAssertionError` in `test_assertion_errors.py`
+we add a new test to `TestAssertionError` in `test_assertion_errors.py`
 
 ```python
     def test_assertion_errors_with_equality(self):
         assert False == None
 ```
 
-and the terminal updates to show
+the terminal then displays
 
 ```python
 E       assert False == None
 ```
 
-this `assert` statement could be translated in english as `ensure False is equal to None`
+as stated earlier we could take this `assert` statement to mean `DO NOT PROCEED UNLESS False is equal to None`
 
 ### <span style="color:green">**GREEN**</span>: make it pass
 
-update `test_assertion_errors_with_equality` to make it pass
+change `test_assertion_errors_with_equality` to make it pass
 
 ```python
         assert False != None
 ```
-the terminal updates to show passing tests because `False` is not equal to `None`
+the terminal displays passing tests because `False` is not equal to `None`
 
 ### <span style="color:orange">**REFACTOR**</span>: make it better
 
@@ -307,13 +307,13 @@ the terminal updates to show passing tests because `False` is not equal to `None
     ```python
             self.assertEqual(False, None)
     ```
-    the terminal updates to show
+    the terminal shows
     ```python
     E       AssertionError: False != None
     ```
-    the `assertEqual` method from `unittest.TestCase` checks if the 2 given inputs - `False` and `None` in this case - are equal. In [TypeError](./TYPE_ERROR.md) we look at function signatures to get a better understanding of providing inputs to functions.
+    The `assertEqual` method from `unittest.TestCase` checks if the two given inputs, `False` and `None` are equal. We look at function signatures in [TypeError](./TYPE_ERROR.md) to get a better understanding of passing inputs to functions.
 
-    For our learning purpose, we could imagine that in a file named `unittest.py` there is a definition that means something like the code below. We could also [look at the real definition of the assertEqual method](https://github.com/python/cpython/blob/f1f85a42eafd31720cf905c5407ca3e043946698/Lib/unittest/case.py#L868)
+    We could imagine that in a file named `unittest.py` there is a definition that means something like the code below. We could also [look at the real definition of the assertEqual method](https://github.com/python/cpython/blob/f1f85a42eafd31720cf905c5407ca3e043946698/Lib/unittest/case.py#L868)
     ```python
     class TestCase(object):
         def assertEqual(self, positional_argument_1, positional_argument_2):
@@ -321,14 +321,14 @@ the terminal updates to show passing tests because `False` is not equal to `None
     ```
 
 - #### <span style="color:green">**GREEN**</span>: make it pass
-    update `test_assertion_errors_with_equality` to make it pass
+    change `test_assertion_errors_with_equality` to make it pass
 
     ```python
         self.assertNotEqual(False, None)
     ```
-    the terminal updates to show passing tests
+    the terminal now shows all tests are passing
 
-    We now know that in python
+    We have learned that in python
     - `True` is `True`
     - `True` is not `False`
     - `False` is `False`
