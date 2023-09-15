@@ -25,9 +25,9 @@ assert True is False
 
 ## Why are asserts important?
 
-When building a program we have certain expectations based on given inputs.
+When building a program we have certain expectations based on given inputs. To test these expectations we can add `assert` statements to the program or place them in tests.
 
-One way to test these expectations is by adding `assert` statements to the program, we could also place them in tests to check if our expectations match the actual behavior of the program. These tests also help us catch bugs that break previous tested behavior when introduced.
+These tests help catch bugs that break previous tested behavior when introduced.
 
 We are constantly asking these questions as we test
 - What is similar?
@@ -59,7 +59,11 @@ E       assert False is None
 tests/test_assertion_error.py:7: AssertionError
 ```
 
-This `AssertionError` is triggered by the line `assert False is None`, which is similar to the question "is `False` the same as `None`?". The difference here is that the `assert` at the beginning of the line makes the statement more like "DO NOT PROCEED UNLESS `False` is `None`". Since `None` and `False` are different objects and are not equal, python raises an `AssertionError`
+This `AssertionError` is triggered by the line `assert False is None`, which is similar to the question "is `False` the same as `None`?"
+
+The difference here is that the `assert` at the beginning of the line makes the statement more like "DO NOT PROCEED UNLESS `False` is `None`"
+
+Since `None` and `False` are different objects and are not equal, python raises an `AssertionError`
 
 ### <span style="color:green">**GREEN**</span>: make it pass
 
