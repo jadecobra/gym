@@ -11,7 +11,7 @@ In this chapter we will explore the [AssertionError](https://docs.python.org/3/l
 ## What is an Assertion?
 
 An `AssertionError` is raised when the result of an `assert` statement is `False`.
-We encountered it when we wrote the first failing test in [Setup TDD](./TDD_SETUP.md)
+We encountered this when we wrote the first failing test in [Setup TDD](./TDD_SETUP.md)
 
 ```python
         self.assertFalse(True)
@@ -31,13 +31,13 @@ These tests help catch bugs that break previous tested behavior when introduced,
 - What is similar?
 - What is different?
 
-A difference in our expectations and reality (the result of our programs) gives us a clue as to what changes to make for them to match.
+A difference in our expectations and reality (the result of our programs) gives us a clue as to what changes need to be made to make them match.
 
 ## AssertionError with None
 
 ### <span style="color:red">**RED**</span>: make it fail
 
-We will create a new file in the `tests` folder named `test_assertion_error.py`. In this file, we will add the following test using the python `assert` keyword to become familiar with the `AssertionError` by intentionally triggering the exception.
+We will create a new file in the `tests` folder named `test_assertion_error.py`. In this file, we will add a test named `test_assertion_errors_with_none` that uses the python `assert` keyword to initially trigger an `AssertionError` which will help us become more familiar with the exception.
 
 ```python
 import unittest
@@ -57,28 +57,26 @@ E       assert False is None
 tests/test_assertion_error.py:7: AssertionError
 ```
 
-This `AssertionError` is raised by the line `assert False is None`. This essentially asks "is `False` the same as `None`?"
-
-The difference is that the `assert` at the beginning of the line makes the statement more like "DO NOT PROCEED UNLESS `False` is `None`"
+This `AssertionError` is raised by the line `assert False is None`, which is similar to asking the question "is `False` the same as `None`?" The difference is that the `assert` at the beginning of the line makes the statement more like "DO NOT PROCEED UNLESS `False` is `None`"
 
 Since `None` and `False` are different objects and are not equal, python raises an `AssertionError`
 
 ### <span style="color:green">**GREEN**</span>: make it pass
 
-we modify `test_assertion_errors_with_none` in `test_assertion_error.py`
+we modify the failing line of `test_assertion_errors_with_none` in `test_assertion_error.py`
 
 ```python
         assert False is not None
 ```
 
-and the terminal shows the tests succeed
+and the terminal shows the test passed
 
 ### <span style="color:orange">**REFACTOR**</span>: make it better
 
 We can also use `assert` methods from the `unittest.TestCase` class to make assertions
 
 - ##### <span style="color:red">**RED**</span>: make it fail
-    let's add the following line to `test_assertion_errors_with_none` using the `unittest.TestCase.assertIsNone` method
+    let's add another line to `test_assertion_errors_with_none` using the `unittest.TestCase.assertIsNone` method
     ```python
             self.assertIsNone(False)
     ```
@@ -112,16 +110,16 @@ We can also use `assert` methods from the `unittest.TestCase` class to make asse
     ```
     the terminal shows passing tests
 - #### <span style="color:red">**RED**</span>: make it fail
-    let's add a variation of the above statement using the `unittest.TestCase` equivalent method in `test_assertion_errors_with_none`
+    let's add a variation of the above statement using the `unittest.TestCase` equivalent method to `test_assertion_errors_with_none`
     ```python
             self.assertIsNone(True)
     ```
-    and the terminal updates to show
+    and the terminal reveals
     ```python
     E       AssertionError: True is not None
     ```
 - #### <span style="color:green">**GREEN**</span>: make it pass
-    update `test_assertion_errors_with_none` to make it pass
+    update the failing line in `test_assertion_errors_with_none` to make it pass
     ```python
             self.assertIsNotNone(True)
     ```
@@ -133,16 +131,16 @@ We can also use `assert` methods from the `unittest.TestCase` class to make asse
     ```python
             assert None is not None
     ```
-    and the terminal updates to show
+    and the terminal displays
     ```python
     E       assert None is not None
     ```
 - #### <span style="color:green">**GREEN**</span>: make it pass
-    update `test_assertion_errors_with_none` to make it pass
+    change the failing line in `test_assertion_errors_with_none` to make it pass
     ```python
             assert None is None
     ```
-    the terminal updates to show passing tests
+    the terminal changes to show passing tests
 - #### <span style="color:red">**RED**</span>: make it fail
     add another test to `test_assertion_errors_with_none` using the `unittest.TestCase` method
     ```python
@@ -158,12 +156,12 @@ We can also use `assert` methods from the `unittest.TestCase` class to make asse
     ```python
             self.assertIsNone(None)
     ```
-    the terminal shows passing tests and we now know that in python
+    we see passing tests in the terminal and can conclude that in python
     - `None` is `None`
     - `True` is not `None`
     - `False` is not `None`
 
-Which of the `assert` statements do you prefer when testing `None`?
+Which of these `assert` statements do you prefer when testing `None`?
 - `assert x is None`
 - `self.assertIsNone(x)`
 
