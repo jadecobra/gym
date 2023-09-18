@@ -4,7 +4,7 @@ We will step through solving a `ModuleNotFoundError` in python using Test Driven
 
 ## Prerequisites
 
-- [Setup Test Driven Development Project](./TDD_SETUP.md)
+- [Setup Test Driven Development Environment](./TDD_SETUP.md)
 
 ---
 
@@ -18,7 +18,7 @@ To use these packages in python we have to import them.
 
 ### <span style="color:red">**RED**</span>: make it fail
 
-Open a new file in your editor and save it as `test_module_not_found_error.py` in the `tests` folder you created in [Setup Test Driven Development Project](./TDD_SETUP.md)
+Open a new file in your editor and save it as `test_module_not_found_error.py` in the `tests` folder you created in [Setup Test Driven Development Environment](./TDD_SETUP.md)
 Type the following in the file
 
 ```python
@@ -124,7 +124,7 @@ import module_98
 import module_99
 ```
 
-If you left `pytest-watch` running from [Setup Test Driven Development Project](./TDD_SETUP.md) you should see the following in the terminal
+If you left `pytest-watch` running from [Setup Test Driven Development Environment](./TDD_SETUP.md) you should see the following in the terminal
 
 ```shell
 ImportError while importing test module '/<PATH_TO_PROJECT_NAME>/project_name/tests/test_module_not_found_error.py'.

@@ -4,7 +4,7 @@ We will step through solving a `TypeError` in python using Test Driven Developme
 
 ## Prerequisites
 
-- [Setup Test Driven Development Project](./TDD_SETUP.md)
+- [Setup Test Driven Development Environment](./TDD_SETUP.md)
 
 ---
 
@@ -20,7 +20,7 @@ What does it mean to call a function?
 
 ### <span style="color:red">**RED**</span>: make it fail
 
-- Open a new file in the editor and save it as `tests/test_type_error.py` in the `tests` folder you created in [Setup Test Driven Development Project](./TDD_SETUP.md) and type the following in the file
+- Open a new file in the editor and save it as `tests/test_type_error.py` in the `tests` folder you created in [Setup Test Driven Development Environment](./TDD_SETUP.md) and type the following in the file
 
     ```python
     import unittest

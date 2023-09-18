@@ -16,7 +16,7 @@ Reviewing what we know so far, for any boolean operation involving 2 inputs - `p
 
 ## Prerequisites
 
-- [Setup Test Driven Development Project](./TDD_SETUP.md)
+- [Setup Test Driven Development Environment](./TDD_SETUP.md)
 
 ---
 

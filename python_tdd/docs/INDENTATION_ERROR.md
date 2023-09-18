@@ -4,7 +4,7 @@ We will step through solving an `IndentationError` in python using Test Driven D
 
 ## Prerequisites
 
-- [Setup Test Driven Development Project](./TDD_SETUP.md)
+- [Setup Test Driven Development Environment](./TDD_SETUP.md)
 
 ---
 
@@ -17,7 +17,7 @@ Some people indent with 2 spaces, others indent with 4. In this exercise we will
 
 ### <span style="color:red">**RED**</span>: make it fail
 
-- Open a new file in the editor and save it as `tests/test_indentation_error.py` in the `tests` folder you created in [Setup Test Driven Development Project](./TDD_SETUP.md) and type the following in the file. ***NOTE THE SPACING***
+- Open a new file in the editor and save it as `tests/test_indentation_error.py` in the `tests` folder you created in [Setup Test Driven Development Environment](./TDD_SETUP.md) and type the following in the file. ***NOTE THE SPACING***
 
     ```python
     'a'

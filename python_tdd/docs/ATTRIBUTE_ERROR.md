@@ -4,7 +4,7 @@ We will step through solving an `AttributeError` in python using Test Driven Dev
 
 ## Prerequisites
 
-- [Setup Test Driven Development Project](./TDD_SETUP.md)
+- [Setup Test Driven Development Environment](./TDD_SETUP.md)
 
 ---
 
@@ -17,7 +17,7 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
 
 ### <span style="color:red">**RED**</span>: make it fail
 
-- Open a new file in the editor and save it as `tests/test_attribute_error.py` in the `tests` folder you created in [Setup Test Driven Development Project](./TDD_SETUP.md) and type the following in the file
+- Open a new file in the editor and save it as `tests/test_attribute_error.py` in the `tests` folder you created in [Setup Test Driven Development Environment](./TDD_SETUP.md) and type the following in the file
 
     ```python
     import unittest
@@ -37,7 +37,7 @@ An `AttributeError` is raised when there is a reference an attribute/property/na
     - `assertIsNone` is one of the helper functions inherited from `unittest.TestCase`
     - `self` refers to the `TestAttributeError` class
 
-    If you left `pytest-watch` running from [Setup Test Driven Development Project](./TDD_SETUP.md) you should see the following in the terminal
+    If you left `pytest-watch` running from [Setup Test Driven Development Environment](./TDD_SETUP.md) you should see the following in the terminal
     ```shell
     ImportError while importing test module '/<PATH_TO_PROJECT_NAME>/project_name/tests/test_attribute_error.py'.
     Hint: make sure your test modules/packages have valid python names.
@@ -239,7 +239,7 @@ def test_defining_variables_to_solve_attribute_errors(self):
 ```
 
 Repeat the pattern until all tests pass.
-- What's your solution to the last two tests? They are similar to the test for failure in [Setup Test Driven Development Project](./TDD_SETUP.md)
+- What's your solution to the last two tests? They are similar to the test for failure in [Setup Test Driven Development Environment](./TDD_SETUP.md)
 - did you update `module.py` this way?
     ```
     true = True
