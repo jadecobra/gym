@@ -25,19 +25,17 @@ assert True is False
 
 ### Why are asserts important?
 
-When building a program we have certain expectations based on given inputs. To test these expectations we can add `assert` statements to the program or place them in tests.
-
-These tests also help catch bugs that break previous tested behavior when introduced, and answer the following questions
+When building a program we have certain expectations based on given inputs. To test these expectations we can add `assert` statements to the program or place them in tests. They also help catch bugs that break previous tested behavior when introduced, and answer the following questions
 - What is similar?
 - What is different?
 
-A difference between our expectations and reality (the result of our programs) gives us a clue about what changes are needed to make them match.
+A difference between our expectations and reality (the result of our programs),gives us a clue about what changes are needed to make them match.
 
 ## AssertionError with None
 
 ### <span style="color:red">**RED**</span>: make it fail
 
-We will create a new file in the `tests` folder named `test_assertion_error.py`. In this file, we will add a test named `test_assertion_errors_with_none` and use the python `assert` keyword to trigger an `AssertionError` so we can become more familiar with the exception
+We will create a new file in the `tests` folder named `test_assertion_error.py`. In this file, we will add a test named `test_assertion_errors_with_none` and use the python `assert` keyword to trigger an `AssertionError` so we can become more familiar with it
 
 ```python
 import unittest
@@ -190,7 +188,7 @@ update `test_assertion_errors_with_false`
 and the terminal now displays passing tests
 
 ### <span style="color:red">**RED**</span>: make it fail
-let's try the same test using the similar `unittest.TestCase` method by adding this line to `test_assertion_errors_with_false`
+let's try the same test using the equivalent `unittest.TestCase` method by adding this line to `test_assertion_errors_with_false`
 
 ```python
         self.assertFalse(True)
@@ -199,7 +197,7 @@ the terminal updates to show a failure
 ```python
 E       AssertionError: True is not false
 ```
-this test is familiar, it was the first failing test we wrote from [TDD Setup](./TDD_SETUP.md)
+this test is familiar, it was the first failing test we wrote during [TDD Setup](./TDD_SETUP.md)
 
 ### <span style="color:green">**GREEN**</span>: make it pass
 we will update `test_assertion_errors_with_false` to make it pass
@@ -239,12 +237,12 @@ the terminal shows passing tests
 
 ### <span style="color:red">**RED**</span>: make it fail
 
-let's try the above test with the `unittest.TestCase` equivalent method, update `test_assertion_errors_with_true`
+let's try the above test with the `unittest.TestCase` equivalent method by updating `test_assertion_errors_with_true`
 
 ```python
         self.assertTrue(False)
 ```
-the terminal updates to show
+the terminal shows a failure
 ```python
 E       AssertionError: False is not true
 ```
@@ -264,9 +262,7 @@ This was one of the options to solve the failing test in [TDD Setup](./TDD_SETUP
 - `True` is not `None`
 - `False` is not `None`
 
-We could sum up the above statements this way - in python `True`, `False` and `None` are different.
-
-Understanding these differences helps us write useful programs. They show how python behaves and form our core truths - a foundation of predictable expectations of the language.
+We could sum up the above statements this way - in python `True`, `False` and `None` are different. Understanding these differences helps us write useful programs. They show how python behaves and form our core truths - a foundation of predictable expectations of the language.
 
 ## AssertionError with Equality
 
