@@ -8,7 +8,7 @@ In this chapter we will explore the [AssertionError](https://docs.python.org/3/l
 
 ---
 
-## What is an Assertion?
+## What is an AssertionError?
 
 An `AssertionError` is raised when the result of an `assert` statement is `False`.
 We encountered this when we wrote the first failing test in [Setup TDD](./TDD_SETUP.md)
@@ -23,21 +23,21 @@ which is similar to this
 assert True is False
 ```
 
-## Why are asserts important?
+### Why are asserts important?
 
 When building a program we have certain expectations based on given inputs. To test these expectations we can add `assert` statements to the program or place them in tests.
 
-These tests help catch bugs that break previous tested behavior when introduced, and help us answer the following questions
+These tests also help catch bugs that break previous tested behavior when introduced, and help us answer the following questions
 - What is similar?
 - What is different?
 
-A difference in our expectations and reality (the result of our programs) gives us a clue as to what changes need to be made to make them match.
+A difference between our expectations and reality (the result of our programs) gives us a clue as to what changes are needed to make them match.
 
 ## AssertionError with None
 
 ### <span style="color:red">**RED**</span>: make it fail
 
-We will create a new file in the `tests` folder named `test_assertion_error.py`. In this file, we will add a test named `test_assertion_errors_with_none` that uses the python `assert` keyword to initially trigger an `AssertionError` which will help us become more familiar with the exception.
+We will create a new file in the `tests` folder named `test_assertion_error.py`. In this file, we will add a test named `test_assertion_errors_with_none` that uses the python `assert` keyword to intentionally trigger an `AssertionError` which will help us become more familiar with the exception
 
 ```python
 import unittest
@@ -80,7 +80,7 @@ We can also use `assert` methods from the `unittest.TestCase` class to make asse
     ```python
             self.assertIsNone(False)
     ```
-    the terminal updates to show a similar, though more descriptive error
+    the terminal updates to show a similar but more descriptive error
     ```python
     E       AssertionError: False is not None
 
@@ -187,10 +187,10 @@ update `test_assertion_errors_with_false`
 ```python
         assert False is False
 ```
-and the terminal updates to show passing tests
+and the terminal now displays passing tests
 
 ### <span style="color:red">**RED**</span>: make it fail
-let's try the same test with the equivalent `unittest` method by updating `test_assertion_errors_with_false` with
+let's try the same test using the equivalent `unittest` method by adding this line to `test_assertion_errors_with_false`
 
 ```python
         self.assertFalse(True)
@@ -202,7 +202,7 @@ E       AssertionError: True is not false
 this test is familiar, it was the first failing test we wrote from [TDD Setup](./TDD_SETUP.md)
 
 ### <span style="color:green">**GREEN**</span>: make it pass
-update `test_assertion_error_with_false` to make it pass
+we will update `test_assertion_errors_with_false` to make it pass
 ```python
         self.assertFalse(False)
 ```
@@ -251,7 +251,7 @@ E       AssertionError: False is not true
 
 ### <span style="color:green">**GREEN**</span>: make it pass
 
-we update `test_assertion_error_with_false` to make it pass
+we update `test_assertion_errors_with_false` to make it pass
 ```python
         self.assertTrue(True)
 ```
@@ -266,7 +266,7 @@ This was one of the options to solve the failing test in [TDD Setup](./TDD_SETUP
 
 We could sum up the above statements this way - in python `True`, `False` and `None` are different.
 
-Understanding these differences helps write useful programs. They show how python behaves and form our core truths - a foundation of predictable expectations of the language.
+Understanding these differences helps us write useful programs. They show how python behaves and form our core truths - a foundation of predictable expectations of the language.
 
 ## AssertionError with Equality
 
@@ -274,7 +274,7 @@ We can also make assertions of equality, where we compare if two things are the 
 
 ### <span style="color:red">**RED**</span>: make it fail
 
-we add a new test to `TestAssertionError` in `test_assertion_errors.py`
+we add a new test to `TestAssertionError` in `test_assertion_error.py`
 
 ```python
     def test_assertion_errors_with_equality(self):
@@ -301,7 +301,7 @@ the terminal displays passing tests because `False` is not equal to `None`
 ### <span style="color:orange">**REFACTOR**</span>: make it better
 
 - #### <span style="color:red">**RED**</span>: make it fail
-    update `test_assertion_errors_with_equality` with the `unittest` equivalent method
+    update `test_assertion_errors_with_equality` with the equivalent `unittest` method
     ```python
             self.assertEqual(False, None)
     ```
@@ -311,9 +311,10 @@ the terminal displays passing tests because `False` is not equal to `None`
     ```
     The `assertEqual` method from `unittest.TestCase` checks if the two given inputs, `False` and `None` are equal. We look at function signatures in [TypeError](./TYPE_ERROR.md) to get a better understanding of passing inputs to functions.
 
-    We could imagine that in a file named `unittest.py` there is a definition that means something like the code below. We could also [look at the real definition of the assertEqual method](https://github.com/python/cpython/blob/f1f85a42eafd31720cf905c5407ca3e043946698/Lib/unittest/case.py#L868)
+    For now, we could imagine that in a file named `unittest.py` there is a definition that means something like the code below. We could also [look at the real definition of the assertEqual method](https://github.com/python/cpython/blob/f1f85a42eafd31720cf905c5407ca3e043946698/Lib/unittest/case.py#L868)
     ```python
     class TestCase(object):
+    
         def assertEqual(self, positional_argument_1, positional_argument_2):
             assert positional_argument_1 == positional_argument_2
     ```
@@ -324,9 +325,7 @@ the terminal displays passing tests because `False` is not equal to `None`
     ```python
         self.assertNotEqual(False, None)
     ```
-    the terminal now shows all tests are passing
-
-    We have learned that in python
+    the terminal now shows all tests are passing. We have learned that in python
     - `True` is `True`
     - `True` is not `False`
     - `False` is `False`
@@ -336,25 +335,25 @@ the terminal displays passing tests because `False` is not equal to `None`
     - `False` is not `None` and `False` is not equal to `None`
 
 - #### <span style="color:red">**RED**</span>: make it fail
-    update `test_assertion_errors_with_equality`
+    we add a new line to `test_assertion_errors_with_equality`
     ```python
             assert True == None
     ```
-    the terminal updates to show
+    and the terminal shows
     ```python
     E       assert True == None
     ```
 - #### <span style="color:green">**GREEN**</span>: make it pass
-    update `test_assertion_errors_with_equality` to make it pass
+    update the line we added in `test_assertion_errors_with_equality` to make it pass
     ```python
             assert True != None
     ```
 - #### <span style="color:red">**RED**</span>: make it fail
-    update `test_assertion_errors_with_equality` using the equivalent `unittest` method
+    add the equivalent `unittest` method to `test_assertion_errors_with_equality` 
     ```python
             self.assertEqual(True, None)
     ```
-    the terminal updates to show
+    the terminal now shows
     ```python
     E       AssertionError: True != None
     ```
@@ -363,7 +362,7 @@ the terminal displays passing tests because `False` is not equal to `None`
     ```python
             self.assertNotEqual(True, None)
     ```
-    the terminal updates to show passing tests and we can update what we know about python to say
+    the terminal updates to show passing tests and we can now say we know that in python
     - `True` is `True`
     - `True` is not `False`
     - `False` is `False`
@@ -372,9 +371,9 @@ the terminal displays passing tests because `False` is not equal to `None`
     - `True` is not `None` and `True` is not equal to `None`
     - `False` is not `None` and `False` is not equal to `None`
 
-There is a pattern here, let's update the test with the other cases from our statement above
+There is a pattern here, let's update the test with the other cases from our statement above in the same manner
 - #### <span style="color:red">**RED**</span>: make it fail
-    update `test_assertion_errors_with_equality`
+    add the tests below to `test_assertion_errors_with_equality`
 
     ```python
             assert True != True
@@ -402,7 +401,7 @@ There is a pattern here, let's update the test with the other cases from our sta
     - `True` is not `None` and `True` is not equal to `None`
     - `False` is not `None` and `False` is not equal to `None`
 
-***WELL DONE!*** Your magic powers are growing. You now know
+***WELL DONE!*** Your magic powers are growing. From our experiments you now know
 - how to test for equality
 - how to test if something is `None` or not
 - how to test if something is `False` or not
