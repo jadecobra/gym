@@ -371,7 +371,7 @@ the terminal displays passing tests because `False` is not equal to `None`
     - `True` is not `None` and `True` is not equal to `None`
     - `False` is not `None` and `False` is not equal to `None`
 
-There is a pattern here, let's update the test with the other cases from our statement above in the same manner
+    There is a pattern here, let's update the test with the other cases from our statement above in the same manner
 - #### <span style="color:red">**RED**</span>: make it fail
     add the tests below to `test_assertion_errors_with_equality`
 
