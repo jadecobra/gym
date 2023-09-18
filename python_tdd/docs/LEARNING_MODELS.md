@@ -4,7 +4,7 @@ Congratulations! You have journeyed with me through some exercises to help you g
 
 ## Prerequisites
 
-- [Setup Test Driven Development Environment](./TDD_SETUP.md)
+- [Setup a Test Driven Development Environment](./TDD_SETUP.md)
 
 ---
 

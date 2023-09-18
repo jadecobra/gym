@@ -13,7 +13,7 @@ Reviewing what we know so far
 
 ## Prerequisites
 
-- [Setup Test Driven Development Environment](./TDD_SETUP.md)
+- [Setup a Test Driven Development Environment](./TDD_SETUP.md)
 
 ---
 

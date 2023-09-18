@@ -4,7 +4,7 @@ In this chapter we will explore the [AssertionError](https://docs.python.org/3/l
 
 ### Prerequisites
 
-- [Setup Test Driven Development Environment](./TDD_SETUP.md)
+- [Setup a Test Driven Development Environment](./TDD_SETUP.md)
 
 ---
 

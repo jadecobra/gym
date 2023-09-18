@@ -4,7 +4,7 @@ We will continue to step through learning conditional statements in python using
 
 ## Prerequisites
 
-- [Setup Test Driven Development Environment](./TDD_SETUP.md)
+- [Setup a Test Driven Development Environment](./TDD_SETUP.md)
 
 ---
 

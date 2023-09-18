@@ -4,7 +4,7 @@ We will cover `list comprehensions` in python using Test Driven Development
 
 ## Prerequisites
 
-- [Setup Test Driven Development Environment](./TDD_SETUP.md)
+- [Setup a Test Driven Development Environment](./TDD_SETUP.md)
 
 ---
 

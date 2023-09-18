@@ -4,7 +4,7 @@ We will step through creating a Person Factory in python using Test Driven Devel
 
 ## Prerequisites
 
-- [Setup Test Driven Development Environment](./TDD_SETUP.md)
+- [Setup a Test Driven Development Environment](./TDD_SETUP.md)
 
 ---
 
