@@ -11,7 +11,7 @@ In this chapter we will explore the [AssertionError](https://docs.python.org/3/l
 ## What is an AssertionError?
 
 An `AssertionError` is an Exception that is raised when the result of an `assert` statement is `False`.
-We encountered this when we wrote the first failing test in [Setup TDD](./TDD_SETUP.md)
+We encountered this when we wrote the first failing test below in [Setup TDD](./TDD_SETUP.md)
 
 ```python
         self.assertFalse(True)
@@ -29,13 +29,13 @@ When building a program we have certain expectations based on given inputs. To t
 - What is similar?
 - What is different?
 
-A difference between our expectations and reality (the result of our programs),gives us a clue about what changes are needed to make them match.
+A difference between our expectations and reality (the result of our programs), gives us a clue about what changes are needed to make them match.
 
 ## AssertionError with None
 
 ### <span style="color:red">**RED**</span>: make it fail
 
-We will create a new file in the `tests` folder named `test_assertion_error.py`. In this file, we will add a test named `test_assertion_errors_with_none` and use the python `assert` keyword to trigger an `AssertionError` so we can become more familiar with it
+We will create a new file in the `tests` folder named `test_assertion_error.py`. In this file, we add a test named `test_assertion_errors_with_none` which uses the python `assert` keyword to intentionally trigger an `AssertionError` to get familiar with it
 
 ```python
 import unittest
@@ -159,9 +159,9 @@ We can also use some methods from the `unittest.TestCase` class to make assertio
     - `True` is not `None`
     - `False` is not `None`
 
-Which of these `assert` statements do you prefer when testing `None`?
-- `assert x is None`
-- `self.assertIsNone(x)`
+> Which of these `assert` statements do you prefer when testing `None`?
+> - `assert x is None`
+> - `self.assertIsNone(x)`
 
 ## AssertionError with False
 
@@ -197,7 +197,7 @@ the terminal updates to show a failure
 ```python
 E       AssertionError: True is not false
 ```
-this test is familiar, it was the first failing test we wrote during [TDD Setup](./TDD_SETUP.md)
+this is familiar, it was the first failing test we wrote in [TDD Setup](./TDD_SETUP.md)
 
 ### <span style="color:green">**GREEN**</span>: make it pass
 we will update `test_assertion_errors_with_false` to make it pass
@@ -310,7 +310,7 @@ the terminal displays passing tests because `False` is not equal to `None`
     For now, we could imagine that in a file named `unittest.py` there is a definition which means something like the code below. We could also [look at the real definition of the assertEqual method](https://github.com/python/cpython/blob/f1f85a42eafd31720cf905c5407ca3e043946698/Lib/unittest/case.py#L868)
     ```python
     class TestCase(object):
-    
+
         def assertEqual(self, positional_argument_1, positional_argument_2):
             assert positional_argument_1 == positional_argument_2
     ```
@@ -345,7 +345,7 @@ the terminal displays passing tests because `False` is not equal to `None`
             assert True != None
     ```
 - #### <span style="color:red">**RED**</span>: make it fail
-    add the equivalent `unittest.TestCase` method to `test_assertion_errors_with_equality` 
+    add the equivalent `unittest.TestCase` method to `test_assertion_errors_with_equality`
     ```python
             self.assertEqual(True, None)
     ```
