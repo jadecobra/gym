@@ -13,8 +13,8 @@ class Test$($projectName)(TestCase):
 "@
 $testSetup |  Out-File $("tests/test_$($projectName).py") -Encoding UTF8
 
-python -m venv ".$projectName"
-.$projectName/scripts/activate
-pip install -U pip
-pip install sniffer macFSevents
-sniffer
+python -m venv .venv
+.venv/scripts/activate
+pip install --upgrade pip
+pip install pytest-watch
+pytest-watch
