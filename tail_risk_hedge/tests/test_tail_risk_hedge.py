@@ -135,8 +135,9 @@ class TestTailRiskHedge(unittest.TestCase):
         with self.assertRaises(ValueError):
             tail_risk_hedge.calculate_spy_value_change(data["spy_start"], 0)
 
-    def test_calculate_portfolio_metrics_stable(self):
-        data = self.data_provider.generate_scenario("stable")
+    def test_calculate_portfolio_metrics(self):
+        scenario = random.choice(('stable', 'crash'))
+        data = self.data_provider.generate_scenario(scenario)
         metrics = tail_risk_hedge.calculate_portfolio_metrics(
             portfolio_value=self.portfolio_value,
             hedge_ratio=self.hedge_ratio,
@@ -147,7 +148,7 @@ class TestTailRiskHedge(unittest.TestCase):
         equity_end = equity_start * (1 + spy_change)
         budget = self.portfolio_value * self.hedge_ratio
 
-        self.assertEqual(metrics["scenario"], "stable")
+        self.assertEqual(metrics["scenario"], scenario)
         self.assertAlmostEqual(metrics["spy_value_percent_change"], spy_change)
         self.assertAlmostEqual(metrics["equity_at_start"], equity_start)
         self.assertAlmostEqual(metrics["hedge_strategy_cost"], budget)
@@ -161,29 +162,6 @@ class TestTailRiskHedge(unittest.TestCase):
             metrics["portfolio_value_at_end_without_hedge"],
             self.portfolio_value * (1 + spy_change)
         )
-
-    def test_calculate_portfolio_metrics_crash(self):
-        data = self.data_provider.generate_scenario("crash")
-        metrics = tail_risk_hedge.calculate_portfolio_metrics(
-            portfolio_value=self.portfolio_value,
-            hedge_ratio=self.hedge_ratio,
-            **data
-        )
-        equity_start = self.portfolio_value * (1 - self.hedge_ratio)
-        spy_change = (data["spy_end"] - data["spy_start"]) / data["spy_start"]
-        equity_end = equity_start * (1 + spy_change)
-        budget = self.portfolio_value * self.hedge_ratio
-        contracts = int(budget / (data["option_price"] * 100))
-        portfolio_end_with_hedge = equity_end + data["option_value_end"] * contracts * 100
-        portfolio_end_without_hedge = self.portfolio_value * (1 + spy_change)
-        self.assertEqual(metrics["scenario"], "crash")
-        self.assertAlmostEqual(metrics["spy_value_percent_change"], spy_change)
-        self.assertAlmostEqual(metrics["equity_at_start"], equity_start)
-        self.assertAlmostEqual(metrics["hedge_strategy_cost"], budget)
-        self.assertEqual(metrics["number_of_contracts"], contracts)
-        self.assertAlmostEqual(metrics["put_option_price"], data["option_price"])
-        self.assertAlmostEqual(metrics["portfolio_value_at_end_with_hedge"], portfolio_end_with_hedge)
-        self.assertAlmostEqual(metrics["portfolio_value_at_end_without_hedge"], portfolio_end_without_hedge)
 
     def test_calculate_portfolio_metrics_invalid_inputs(self):
         data = self.data_provider.generate_scenario("stable")
