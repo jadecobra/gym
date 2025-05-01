@@ -1,19 +1,19 @@
-import yfinance as yf
-import pandas as pd
+import yfinance
 import random
-import math
 import os
 import pickle
 import time
-import numpy as np
-from datetime import datetime, timedelta
+import numpy
+import datetime
+
 
 class YahooFinanceDataProvider:
+
     def __init__(self, ticker="SPY", seed=None, cache_file="spy_cache.pkl", cache_duration=86400):
         if seed is not None:
             random.seed(seed)
         self.ticker = ticker
-        self.spy = yf.Ticker(ticker)
+        self.spy = yfinance.Ticker(ticker)
         self.cache_file = cache_file
         self.cache_duration = cache_duration
         self.historical_data = self._load_data()
@@ -54,20 +54,20 @@ class YahooFinanceDataProvider:
         if len(self.historical_data) < lookback:
             return 0.2
         closes = self.historical_data['Close'].tail(lookback)
-        log_returns = np.log(closes / closes.shift(1)).dropna()
-        volatility = np.std(log_returns) * np.sqrt(252)
+        log_returns = numpy.log(closes / closes.shift(1)).dropna()
+        volatility = numpy.std(log_returns) * numpy.sqrt(252)
         return max(0.1, min(0.5, volatility))
 
     def _fetch_option_chain(self, spy_start):
         try:
             expirations = self.spy.options
-            target_date = datetime.now() + timedelta(days=60)
+            target_date = datetime.datetime.now() + datetime.timedelta(days=60)
             target_date = target_date.date()
 
             closest_expiry = None
             min_diff = float('inf')
             for exp in expirations:
-                exp_date = datetime.strptime(exp, '%Y-%m-%d').date()
+                exp_date = datetime.datetime.strptime(exp, '%Y-%m-%d').date()
                 diff = abs((exp_date - target_date).days)
                 if diff < min_diff:
                     min_diff = diff
@@ -78,15 +78,15 @@ class YahooFinanceDataProvider:
 
             opt_chain = self.spy.option_chain(closest_expiry)
             puts = opt_chain.puts
-            otm_puts = puts[
+            out_of_the_money_puts = puts[
                 (puts['strike'] <= spy_start * 0.9) &
                 (puts['strike'] >= spy_start * 0.7)
             ]
 
-            if otm_puts.empty:
+            if out_of_the_money_puts.empty:
                 raise ValueError("No OTM put options available")
 
-            return otm_puts, closest_expiry
+            return out_of_the_money_puts, closest_expiry
         except Exception as e:
             print(f"Warning: Failed to fetch option chain: {e}")
             return None, None
@@ -101,17 +101,17 @@ class YahooFinanceDataProvider:
         start_idx = random.randint(0, max_idx)
         spy_start = self.historical_data.loc[start_idx, 'Close']
 
-        otm_puts, expiry_date = self._fetch_option_chain(spy_start)
+        out_of_the_money_puts, put_expiration_date = self._fetch_option_chain(spy_start)
 
-        if otm_puts is None or otm_puts.empty:
+        if out_of_the_money_puts is None or out_of_the_money_puts.empty:
             volatility = self._estimate_implied_volatility()
             if scenario_type == "crash":
                 volatility *= 1.5
             strike_price = spy_start * random.uniform(0.7, 0.9)
             option_price = max(0.5, min(10, volatility * spy_start * 0.01))
-            expiry_date = (datetime.now() + timedelta(days=60)).strftime('%Y-%m-%d')
+            put_expiration_date = (datetime.datetime.now() + datetime.timedelta(days=60)).strftime('%Y-%m-%d')
         else:
-            put = otm_puts.sample(n=1).iloc[0]
+            put = out_of_the_money_puts.sample(n=1).iloc[0]
             strike_price = put['strike']
             option_price = put['lastPrice']
             if option_price <= 0:
@@ -136,7 +136,7 @@ class YahooFinanceDataProvider:
             "strike_price": strike_price,
             "option_price": option_price,
             "option_value_end": option_value_end,
-            "expiry_date": expiry_date
+            "expiry_date": put_expiration_date
         }
 
 def calculate_equity_value(portfolio_value, equity_ratio):

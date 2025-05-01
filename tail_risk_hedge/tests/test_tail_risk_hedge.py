@@ -7,8 +7,6 @@ import re
 
 class TestTailRiskHedge(unittest.TestCase):
 
-    maxDiff = None
-
     def setUp(self):
         self.portfolio_value = random.uniform(10000, 1000000)
         self.hedge_ratio = random.uniform(0.01, 0.05)
@@ -38,22 +36,21 @@ class TestTailRiskHedge(unittest.TestCase):
         self.assertTrue(time.time() - cache_mtime < 60, "Cache not refreshed")
 
     def test_implied_volatility(self):
-        vol = self.data_provider._estimate_implied_volatility(lookback=60)
-        self.assertGreaterEqual(vol, 0.1)
-        self.assertLessEqual(vol, 0.5)
+        self.assertTrue(0.1 <= self.data_provider._estimate_implied_volatility(lookback=60) <= 0.5)
+
+    def test_implied_volatility_with_historical_data(self):
         self.data_provider.historical_data = self.data_provider.historical_data.iloc[:10]
-        vol = self.data_provider._estimate_implied_volatility(lookback=60)
-        self.assertEqual(vol, 0.2)
+        self.assertEqual(self.data_provider._estimate_implied_volatility(lookback=60), 0.2)
 
     def test_option_chain_fetch(self):
         spy_start = self.data_provider.historical_data['Close'].iloc[-1]
-        otm_puts, expiry_date = self.data_provider._fetch_option_chain(spy_start)
-        if otm_puts is not None:
-            self.assertFalse(otm_puts.empty)
-            self.assertTrue((otm_puts['strike'] <= spy_start * 0.9).all())
-            self.assertTrue((otm_puts['strike'] >= spy_start * 0.7).all())
-            self.assertTrue((otm_puts['lastPrice'] >= 0).all())
-            self.assertTrue(bool(re.match(r'\d{4}-\d{2}-\d{2}', expiry_date)))
+        out_of_the_money_puts, put_expiration_date = self.data_provider._fetch_option_chain(spy_start)
+        if out_of_the_money_puts is not None:
+            self.assertFalse(out_of_the_money_puts.empty)
+            self.assertTrue((out_of_the_money_puts['strike'] <= spy_start * 0.9).all())
+            self.assertTrue((out_of_the_money_puts['strike'] >= spy_start * 0.7).all())
+            self.assertTrue((out_of_the_money_puts['lastPrice'] >= 0).all())
+            self.assertTrue(bool(re.match(r'\d{4}-\d{2}-\d{2}', put_expiration_date)))
 
     def test_option_strategy_format(self):
         data = self.data_provider.generate_scenario("stable")
