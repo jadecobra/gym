@@ -82,7 +82,6 @@ class YahooFinanceDataProvider:
             raise ValueError("No suitable option expiration found")
         else:
             return pandas.Timestamp(closest_expiration_date, unit='s').strftime('%Y-%m-%d')
-            return closest_expiration_date
 
     def _fetch_option_chain(self, spy_start):
         target_date = (datetime.datetime.now() + datetime.timedelta(days=60)).date()
@@ -105,15 +104,16 @@ class YahooFinanceDataProvider:
             else:
                 return out_of_the_money_puts, closest_expiration_date
 
-    @staticmethod
-    def get_start_index(length):
-        if length < 0:
+    # @staticmethod
+    def get_start_index(self):
+        length = len(self.historical_data)
+        if length-40 < 0:
             raise ValueError("Insufficient historical data")
         else:
             return random.randint(0, length)
 
     def generate_scenario(self, scenario_type="stable"):
-        start_index = self.get_start_index(len(self.historical_data)-40)
+        start_index = self.get_start_index()
         spy_start = self.historical_data.loc[start_index, 'Close']
 
         out_of_the_money_puts, put_expiration_date = self._fetch_option_chain(spy_start)
