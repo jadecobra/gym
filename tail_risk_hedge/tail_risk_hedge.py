@@ -79,27 +79,24 @@ class YahooFinanceDataProvider:
 
     def _fetch_option_chain(self, spy_start):
         target_date = (datetime.datetime.now() + datetime.timedelta(days=60)).date()
-        # raise Exception(self.ticker_data.option_chain().puts)
         closest_expiration_date = self.get_closest_expiration_date(
             self.ticker_data.options, target_date
         )
-        # raise Exception(closest_expiration_date)
-        # option_chain = self.ticker_data.option_chain()
-        option_chain = self.ticker_data.option_chain(closest_expiration_date)
         try:
+            option_chain = self.ticker_data.option_chain(closest_expiration_date)
+        except yfinance.exceptions.YFRateLimitError as error:
+            print(f"Warning: Failed to fetch option chain: {error}")
+            return None, None
+        else:
             puts = option_chain.puts
             out_of_the_money_puts = puts[
                 (puts['strike'] <= spy_start * 0.9) &
                 (puts['strike'] >= spy_start * 0.7)
             ]
-
             if out_of_the_money_puts.empty:
                 raise ValueError("No OTM put options available")
-
-            return out_of_the_money_puts, closest_expiration_date
-        except Exception as e:
-            print(f"Warning: Failed to fetch option chain: {e}")
-            return None, None
+            else:
+                return out_of_the_money_puts, closest_expiration_date
 
     @staticmethod
     def get_start_index(length):
