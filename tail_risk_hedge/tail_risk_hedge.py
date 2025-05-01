@@ -91,15 +91,19 @@ class YahooFinanceDataProvider:
             print(f"Warning: Failed to fetch option chain: {e}")
             return None, None
 
+    @staticmethod
+    def get_start_index(length):
+        if length < 0:
+            raise ValueError("Insufficient historical data")
+        else:
+            return random.randint(0, length)
+
     def generate_scenario(self, scenario_type="stable"):
         if self.historical_data.empty:
             raise ValueError("No historical data available")
 
-        max_idx = len(self.historical_data) - 40
-        if max_idx < 0:
-            raise ValueError("Insufficient historical data")
-        start_idx = random.randint(0, max_idx)
-        spy_start = self.historical_data.loc[start_idx, 'Close']
+        start_index = self.get_start_index(len(self.historical_data)-40)
+        spy_start = self.historical_data.loc[start_index, 'Close']
 
         out_of_the_money_puts, put_expiration_date = self._fetch_option_chain(spy_start)
 
@@ -118,12 +122,12 @@ class YahooFinanceDataProvider:
                 option_price = put.get('bid', 0.5) or 0.5
 
         if scenario_type == "stable":
-            end_idx = random.randint(start_idx + 1, start_idx + 40)
+            end_idx = random.randint(start_index + 1, start_index + 40)
             spy_end = self.historical_data.loc[end_idx, 'Close']
             if spy_end > spy_start * 1.2 or spy_end < spy_start * 0.9:
                 spy_end = spy_start * random.uniform(0.95, 1.1)
         else:
-            end_idx = random.randint(start_idx + 1, start_idx + 40)
+            end_idx = random.randint(start_index + 1, start_index + 40)
             spy_end = self.historical_data.loc[end_idx, 'Close']
             if spy_end > spy_start * 0.9:
                 spy_end = spy_start * random.uniform(0.6, 0.9)
@@ -145,13 +149,15 @@ def calculate_equity_value(portfolio_value, equity_ratio):
     return portfolio_value * equity_ratio
 
 def calculate_hedge_budget(portfolio_value, hedge_ratio):
+    'return the total amount to spend on the strategy'
     if portfolio_value < 0:
         raise ValueError("Portfolio value cannot be negative")
     if hedge_ratio < 0:
         raise ValueError("Hedge ratio cannot be negative")
     return portfolio_value * hedge_ratio
 
-def calculate_contracts(hedge_budget, option_price):
+def calculate_number_of_contracts_to_purchase(hedge_budget, option_price):
+    'return number of contracts to purchase based on the hedge budget'
     if option_price <= 0:
         raise ValueError("Option price must be positive")
     if hedge_budget < 0:
@@ -177,7 +183,7 @@ def calculate_portfolio_metrics(*, portfolio_value, hedge_ratio, spy_start, spy_
     equity_ratio = 1 - hedge_ratio
     equity_start = calculate_equity_value(portfolio_value, equity_ratio)
     hedge_budget = calculate_hedge_budget(portfolio_value, hedge_ratio)
-    contracts = calculate_contracts(hedge_budget, option_price)
+    contracts = calculate_number_of_contracts_to_purchase(hedge_budget, option_price)
     spy_change = calculate_spy_value_change(spy_start, spy_end)
     equity_end = equity_start * (1 + spy_change)
     option_payoff = calculate_option_payoff(strike_price, spy_end, option_value_end)
