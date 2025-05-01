@@ -60,8 +60,8 @@ class YahooFinanceDataProvider:
             return 0.2
         closes = self.historical_data['Close'].tail(lookback)
         log_returns = numpy.log(closes / closes.shift(1)).dropna()
-        volatility = numpy.std(log_returns) * numpy.sqrt(252)
-        return max(0.1, min(0.5, volatility))
+        implied_volatility = numpy.std(log_returns) * numpy.sqrt(252)
+        return max(0.1, min(0.5, implied_volatility))
 
     @staticmethod
     def get_date_difference(date1, date2):
