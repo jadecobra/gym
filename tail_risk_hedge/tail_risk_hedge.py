@@ -17,9 +17,11 @@ class YahooFinanceDataProvider:
         self.ticker_data = yfinance.Ticker(ticker)
         self.cache_file = cache_file
         self.cache_duration = cache_duration
-        self.historical_data = self._load_data()
         self.risk_free_rate = 0.04
         self.time_to_expiry = 2 / 12
+        self.historical_data = self._load_data()
+        if self.historical_data.empty:
+            raise ValueError("No historical data available")
 
     def _load_data(self):
         if self._is_cache_valid():
@@ -106,9 +108,6 @@ class YahooFinanceDataProvider:
             return random.randint(0, length)
 
     def generate_scenario(self, scenario_type="stable"):
-        if self.historical_data.empty:
-            raise ValueError("No historical data available")
-
         start_index = self.get_start_index(len(self.historical_data)-40)
         spy_start = self.historical_data.loc[start_index, 'Close']
 
