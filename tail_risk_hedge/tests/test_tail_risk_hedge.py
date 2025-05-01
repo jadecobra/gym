@@ -1,9 +1,9 @@
-import unittest
-import random
-import tail_risk_hedge
 import os
-import time
+import random
 import re
+import tail_risk_hedge
+import time
+import unittest
 
 class TestTailRiskHedge(unittest.TestCase):
 

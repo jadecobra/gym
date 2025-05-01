@@ -1,10 +1,11 @@
-import yfinance
-import random
-import os
-import pickle
-import time
-import numpy
 import datetime
+import numpy
+import os
+import pandas
+import pickle
+import random
+import time
+import yfinance
 
 
 class YahooFinanceDataProvider:
@@ -59,11 +60,11 @@ class YahooFinanceDataProvider:
         return max(0.1, min(0.5, volatility))
 
     @staticmethod
-    def get_expiration_date(options, target_date):
+    def get_closest_expiration_date(expiration_dates, target_date):
         closest_expiration_date = None
         minimum_difference = float('inf')
 
-        for expiration_date in options:
+        for expiration_date in expiration_dates:
             expiration_date = datetime.datetime.strptime(expiration_date, '%Y-%m-%d').date()
             number_of_days = abs((expiration_date - target_date).days)
             if number_of_days < minimum_difference:
@@ -73,14 +74,19 @@ class YahooFinanceDataProvider:
         if not closest_expiration_date:
             raise ValueError("No suitable option expiration found")
         else:
+            return pandas.Timestamp(closest_expiration_date, unit='s').strftime('%Y-%m-%d')
             return closest_expiration_date
 
     def _fetch_option_chain(self, spy_start):
         target_date = (datetime.datetime.now() + datetime.timedelta(days=60)).date()
-        closest_expiration_date = self.get_expiration_date(self.ticker_data.options, target_date)
-
+        # raise Exception(self.ticker_data.option_chain().puts)
+        closest_expiration_date = self.get_closest_expiration_date(
+            self.ticker_data.options, target_date
+        )
+        # raise Exception(closest_expiration_date)
+        # option_chain = self.ticker_data.option_chain()
+        option_chain = self.ticker_data.option_chain(closest_expiration_date)
         try:
-            option_chain = self.ticker_data.option_chain(closest_expiration_date)
             puts = option_chain.puts
             out_of_the_money_puts = puts[
                 (puts['strike'] <= spy_start * 0.9) &
