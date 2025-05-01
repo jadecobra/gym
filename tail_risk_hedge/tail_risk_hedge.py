@@ -64,13 +64,16 @@ class YahooFinanceDataProvider:
         return max(0.1, min(0.5, volatility))
 
     @staticmethod
-    def get_closest_expiration_date(expiration_dates, target_date):
-        closest_expiration_date = None
-        minimum_difference = float('inf')
+    def get_date_difference(date1, date2):
+        return abs((date1 - date2).days)
+
+    def get_closest_expiration_date(self, expiration_dates, target_date):
+        closest_expiration_date = datetime.datetime.strptime(expiration_dates[0], '%Y-%m-%d').date()
+        minimum_difference = self.get_date_difference(closest_expiration_date, target_date)
 
         for expiration_date in expiration_dates:
             expiration_date = datetime.datetime.strptime(expiration_date, '%Y-%m-%d').date()
-            number_of_days = abs((expiration_date - target_date).days)
+            number_of_days = self.get_date_difference(expiration_date, target_date)
             if number_of_days < minimum_difference:
                 minimum_difference = number_of_days
                 closest_expiration_date = expiration_date
