@@ -58,26 +58,30 @@ class YahooFinanceDataProvider:
         volatility = numpy.std(log_returns) * numpy.sqrt(252)
         return max(0.1, min(0.5, volatility))
 
+    @staticmethod
+    def get_expiration_date(options, target_date):
+        closest_expiration_date = None
+        minimum_difference = float('inf')
+
+        for expiration_date in options:
+            expiration_date = datetime.datetime.strptime(expiration_date, '%Y-%m-%d').date()
+            number_of_days = abs((expiration_date - target_date).days)
+            if number_of_days < minimum_difference:
+                minimum_difference = number_of_days
+                closest_expiration_date = expiration_date
+
+        if not closest_expiration_date:
+            raise ValueError("No suitable option expiration found")
+        else:
+            return closest_expiration_date
+
     def _fetch_option_chain(self, spy_start):
+        target_date = (datetime.datetime.now() + datetime.timedelta(days=60)).date()
+        closest_expiration_date = self.get_expiration_date(self.ticker_data.options, target_date)
+
         try:
-            expirations = self.ticker_data.options
-            target_date = datetime.datetime.now() + datetime.timedelta(days=60)
-            target_date = target_date.date()
-
-            closest_expiry = None
-            min_diff = float('inf')
-            for exp in expirations:
-                exp_date = datetime.datetime.strptime(exp, '%Y-%m-%d').date()
-                diff = abs((exp_date - target_date).days)
-                if diff < min_diff:
-                    min_diff = diff
-                    closest_expiry = exp
-
-            if not closest_expiry:
-                raise ValueError("No suitable option expiration found")
-
-            opt_chain = self.ticker_data.option_chain(closest_expiry)
-            puts = opt_chain.puts
+            option_chain = self.ticker_data.option_chain(closest_expiration_date)
+            puts = option_chain.puts
             out_of_the_money_puts = puts[
                 (puts['strike'] <= spy_start * 0.9) &
                 (puts['strike'] >= spy_start * 0.7)
@@ -86,7 +90,7 @@ class YahooFinanceDataProvider:
             if out_of_the_money_puts.empty:
                 raise ValueError("No OTM put options available")
 
-            return out_of_the_money_puts, closest_expiry
+            return out_of_the_money_puts, closest_expiration_date
         except Exception as e:
             print(f"Warning: Failed to fetch option chain: {e}")
             return None, None
