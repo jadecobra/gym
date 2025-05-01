@@ -13,7 +13,7 @@ class YahooFinanceDataProvider:
         if seed is not None:
             random.seed(seed)
         self.ticker = ticker
-        self.spy = yfinance.Ticker(ticker)
+        self.ticker_data = yfinance.Ticker(ticker)
         self.cache_file = cache_file
         self.cache_duration = cache_duration
         self.historical_data = self._load_data()
@@ -38,7 +38,7 @@ class YahooFinanceDataProvider:
         return cache_age < self.cache_duration
 
     def _fetch_historical_data(self):
-        data = self.spy.history(period="1y", interval="1d")
+        data = self.ticker_data.history(period="1y", interval="1d")
         if data.empty:
             raise ValueError("No historical data retrieved from Yahoo Finance")
         return data[['Open', 'High', 'Low', 'Close']].reset_index()
@@ -60,7 +60,7 @@ class YahooFinanceDataProvider:
 
     def _fetch_option_chain(self, spy_start):
         try:
-            expirations = self.spy.options
+            expirations = self.ticker_data.options
             target_date = datetime.datetime.now() + datetime.timedelta(days=60)
             target_date = target_date.date()
 
@@ -76,7 +76,7 @@ class YahooFinanceDataProvider:
             if not closest_expiry:
                 raise ValueError("No suitable option expiration found")
 
-            opt_chain = self.spy.option_chain(closest_expiry)
+            opt_chain = self.ticker_data.option_chain(closest_expiry)
             puts = opt_chain.puts
             out_of_the_money_puts = puts[
                 (puts['strike'] <= spy_start * 0.9) &

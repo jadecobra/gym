@@ -1,6 +1,7 @@
 TODO
 
 * fix calculate_option_payoff - currently does not use strike_price but accepts it as input
+* use calculated risk-free rate - 30 year treasury
 * number of contracts to buy at what strike price with what expiration date
 * expiration date of contracts
 * how can we test this is in the real world?
