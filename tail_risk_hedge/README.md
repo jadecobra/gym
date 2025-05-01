@@ -1,10 +1,10 @@
-# TODO
-# explicitly state option strategy
-# - number of contracts to buy at what strike price with what expiration date
-# - expiration date of contracts
-# how can we test this is in the real world?
-# how to roll the options?
-# remove cap of 0.1-0.5, the test can include extremes
+TODO
+
+* number of contracts to buy at what strike price with what expiration date
+* expiration date of contracts
+* how can we test this is in the real world?
+* how to roll the options?
+* remove cap of 0.1-0.5, the test can include extremes
 
 
 DONE
@@ -12,3 +12,4 @@ DONE
 * calculate hedge
 * display metrics
 * add validation
+* explicitly state option strategy
