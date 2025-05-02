@@ -142,16 +142,7 @@ class YahooFinanceDataProvider:
             if option_price <= 0:
                 option_price = put.get('bid', 0.5) or 0.5
 
-        if scenario_type == "stable":
-            end_idx = random.randint(start_index + 1, start_index + 40)
-            spy_end = self.historical_data.loc[end_idx, 'Close']
-            if spy_end > spy_start * 1.2 or spy_end < spy_start * 0.9:
-                spy_end = spy_start * random.uniform(0.95, 1.1)
-        else:
-            end_idx = random.randint(start_index + 1, start_index + 40)
-            spy_end = self.historical_data.loc[end_idx, 'Close']
-            if spy_end > spy_start * 0.9:
-                spy_end = spy_start * random.uniform(0.6, 0.9)
+        spy_end = self.get_spy_end(scenario_type, start_index, spy_start)
 
         return {
             "spy_start": spy_start,
