@@ -7,42 +7,51 @@ import random
 import time
 import yfinance
 
-
 class YahooFinanceDataProvider:
 
     def __init__(
         self, ticker='SPY', seed=None, cache_file='price_cache.pkl',
-        cache_duration=86400
+        put_options_cache_file='put_options_cache.pkl', cache_duration=86400
     ):
         if seed is not None:
             random.seed(seed)
         self.ticker = ticker
         self.ticker_data = yfinance.Ticker(ticker)
         self.cache_file = cache_file
+        self.put_options_cache_file = put_options_cache_file
         self.cache_duration = cache_duration
         self.risk_free_rate = 0.04
         self.time_to_expiry = 2 / 12
         self.historical_data = self._load_data()
+        self.put_options_cache = self._load_put_options_cache()
 
     def _load_data(self):
-        if self._is_cache_valid():
+        if self._is_cache_valid(self.cache_file):
             try:
                 with open(self.cache_file, 'rb') as f:
                     return pickle.load(f)
             except (FileNotFoundError, pickle.PickleError):
                 pass
-
-        data = self._fetch_historical_data()
-        self._save_cache(data)
-        if data.empty:
-            raise ValueError('No historical data available')
         else:
+            data = self._fetch_historical_data()
+            self._save_cache(data, self.cache_file)
+            if data.empty:
+                raise ValueError('No historical data available')
             return data
 
-    def _is_cache_valid(self):
-        if not os.path.exists(self.cache_file):
+    def _load_put_options_cache(self):
+        if self._is_cache_valid(self.put_options_cache_file):
+            try:
+                with open(self.put_options_cache_file, 'rb') as f:
+                    return pickle.load(f)
+            except (FileNotFoundError, pickle.PickleError):
+                pass
+        return None
+
+    def _is_cache_valid(self, cache_file):
+        if not os.path.exists(cache_file):
             return False
-        cache_age = time.time() - os.path.getmtime(self.cache_file)
+        cache_age = time.time() - os.path.getmtime(cache_file)
         return cache_age < self.cache_duration
 
     def _fetch_historical_data(self):
@@ -51,12 +60,12 @@ class YahooFinanceDataProvider:
             raise ValueError('No historical data retrieved from Yahoo Finance')
         return data[['Open', 'High', 'Low', 'Close']].reset_index()
 
-    def _save_cache(self, data):
+    def _save_cache(self, data, cache_file):
         try:
-            with open(self.cache_file, 'wb') as f:
+            with open(cache_file, 'wb') as f:
                 pickle.dump(data, f)
         except OSError as e:
-            print(f'Warning: Failed to save cache: {e}')
+            print(f'Warning: Failed to save cache to {cache_file}: {e}')
 
     def _estimate_implied_volatility(self, lookback=60):
         if len(self.historical_data) < lookback:
@@ -83,36 +92,50 @@ class YahooFinanceDataProvider:
 
         if not closest_expiration_date:
             raise ValueError('No suitable option expiration found')
-        else:
-            return pandas.Timestamp(closest_expiration_date, unit='s').strftime('%Y-%m-%d')
+            return pandas.Timestamp(
+                closest_expiration_date, unit='s'
+            ).strftime('%Y-%m-%d')
 
     def _fetch_option_chain(self, price_at_start):
-        target_date = (datetime.datetime.now() + datetime.timedelta(days=60)).date()
+        # Check if valid cache exists for the price range
+        if self.put_options_cache is not None:
+            cached_puts, cached_expiry, cached_price_range = self.put_options_cache
+            if (price_at_start * 0.7 <= cached_price_range[1] and
+                price_at_start * 0.9 >= cached_price_range[0]):
+                return cached_puts, cached_expiry
+
+        target_date = (
+            datetime.datetime.now() + datetime.timedelta(days=60)
+        ).date()
         closest_expiration_date = self.get_closest_expiration_date(
             self.ticker_data.options, target_date
         )
+
         try:
             option_chain = self.ticker_data.option_chain(closest_expiration_date)
         except yfinance.exceptions.YFRateLimitError as error:
             print(f'Warning: Failed to fetch option chain: {error}')
             return None, None
-        else:
-            puts = option_chain.puts
-            out_of_the_money_puts = puts[
-                (puts['strike'] <= price_at_start * 0.9) &
-                (puts['strike'] >= price_at_start * 0.7)
-            ]
-            if out_of_the_money_puts.empty:
-                raise ValueError('No OTM put options available')
-            else:
-                return out_of_the_money_puts, closest_expiration_date
+
+        puts = option_chain.puts
+        out_of_the_money_puts = puts[
+            (puts['strike'] <= price_at_start * 0.9) &
+            (puts['strike'] >= price_at_start * 0.7)
+        ]
+        if out_of_the_money_puts.empty:
+            return None, None
+
+        # Cache the filtered puts, expiry, and price range
+        price_range = (price_at_start * 0.7, price_at_start * 0.9)
+        self.put_options_cache = (out_of_the_money_puts, closest_expiration_date, price_range)
+        self._save_cache(self.put_options_cache, self.put_options_cache_file)
+        return out_of_the_money_puts, closest_expiration_date
 
     def get_start_index(self):
         length = len(self.historical_data)
         if length-40 < 0:
             raise ValueError('Insufficient historical data')
-        else:
-            return random.randint(0, length)
+        return random.randint(0, length-40)
 
     def get_price_at_end(self, scenario_type, start_index, price_at_start):
         end_idx = random.randint(start_index + 1, start_index + 40)
@@ -164,7 +187,6 @@ def calculate_equity_value(portfolio_value, equity_ratio):
     return portfolio_value * equity_ratio
 
 def calculate_insurance_budget(portfolio_value, insurance_ratio):
-    'return the total amount to spend on the strategy'
     if portfolio_value < 0:
         raise ValueError('Portfolio value cannot be negative')
     if insurance_ratio < 0:
@@ -172,7 +194,6 @@ def calculate_insurance_budget(portfolio_value, insurance_ratio):
     return portfolio_value * insurance_ratio
 
 def calculate_number_of_contracts_to_purchase(insurance_budget, option_price):
-    'return number of contracts to purchase based on the insurance budget'
     if option_price <= 0:
         raise ValueError('Option price must be positive')
     if insurance_budget < 0:
@@ -190,8 +211,9 @@ def calculate_price_value_change(price_at_start, price_at_end):
     return (price_at_end - price_at_start) / price_at_start
 
 def calculate_portfolio_metrics(
-        *, portfolio_value=0, insurance_ratio=0.1, price_at_start=0, price_at_end=0, strike_price=0, option_value_end=0, option_price=0, expiry_date=0
-    ):
+        *, portfolio_value=0, insurance_ratio=0.1, price_at_start=0, price_at_end=0,
+        strike_price=0, option_value_end=0, option_price=0, expiry_date=0
+):
     if portfolio_value < 0:
         raise ValueError('Portfolio value cannot be negative')
     if insurance_ratio < 0:
@@ -238,6 +260,6 @@ def calculate_portfolio_metrics(
         'portfolio_profit_loss_with_insurance': round(portfolio_end_with_insurance - portfolio_value, 2),
         'portfolio_profit_loss_without_insurance': round(portfolio_end_without_insurance - portfolio_value, 2),
         'difference_between_portfolio_profit_with_insurance_and_without_insurance': round(
-            portfolio_end_with_insurance - portfolio_end_without_insurance
-        , 2),
+            portfolio_end_with_insurance - portfolio_end_without_insurance, 2
+        ),
     }
