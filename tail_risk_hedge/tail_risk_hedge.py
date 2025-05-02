@@ -10,7 +10,10 @@ import yfinance
 
 class YahooFinanceDataProvider:
 
-    def __init__(self, ticker="SPY", seed=None, cache_file="spy_cache.pkl", cache_duration=86400):
+    def __init__(
+        self, ticker="SPY", seed=None, cache_file="spy_cache.pkl",
+        cache_duration=86400
+    ):
         if seed is not None:
             random.seed(seed)
         self.ticker = ticker
@@ -200,11 +203,11 @@ def calculate_portfolio_metrics(
     contracts = calculate_number_of_contracts_to_purchase(
         insurance_budget, option_price
     )
-    spy_change = calculate_spy_value_change(price_at_start, price_at_end)
-    equity_end = equity_start * (1 + spy_change)
+    price_change = calculate_spy_value_change(price_at_start, price_at_end)
+    equity_end = equity_start * (1 + price_change)
     option_payoff = calculate_option_payoff(strike_price, price_at_end, option_value_end)
     portfolio_end_with_insurance = equity_end + (option_payoff * contracts * 100)
-    portfolio_end_without_insurance = portfolio_value * (1 + spy_change)
+    portfolio_end_without_insurance = portfolio_value * (1 + price_change)
     portfolio_change_with_insurance = (
         (portfolio_end_with_insurance - portfolio_value) / portfolio_value
     )
@@ -219,7 +222,7 @@ def calculate_portfolio_metrics(
         "scenario": scenario,
         "spy_value_at_start": price_at_start,
         "spy_value_at_end": price_at_end,
-        "spy_value_percent_change": spy_change,
+        "spy_value_percent_change": price_change,
         "equity_at_start": equity_start,
         "equity_at_end": equity_end,
         "insurance_strategy_cost": insurance_budget,

@@ -7,9 +7,9 @@ def print_metrics(metrics):
 # Stable scenario (original example)
 stable_metrics = tail_risk_hedge.calculate_portfolio_metrics(
     portfolio_value=100000,
-    hedge_ratio=0.01,
+    insurance_ratio=0.01,
     price_at_start=500,
-    spy_end=525,
+    price_at_end=525,
     strike_price=400,
     option_value_end=0,
     option_price=1,
@@ -21,9 +21,9 @@ print_metrics(stable_metrics)
 # Crash scenario
 crash_metrics = tail_risk_hedge.calculate_portfolio_metrics(
     portfolio_value=100000,
-    hedge_ratio=0.01,
+    insurance_ratio=0.01,
     price_at_start=500,
-    spy_end=350,
+    price_at_end=350,
     strike_price=400,
     option_value_end=50,
     option_price=1,
@@ -38,7 +38,7 @@ crash_data = data_provider.generate_scenario("crash")
 
 stable_metrics = tail_risk_hedge.calculate_portfolio_metrics(
     portfolio_value=100000,
-    hedge_ratio=0.01,
+    insurance_ratio=0.01,
     **stable_data
 )
 print("Dynamic Stable Scenario:")
@@ -46,7 +46,7 @@ print_metrics(stable_metrics)
 
 crash_metrics = tail_risk_hedge.calculate_portfolio_metrics(
     portfolio_value=100000,
-    hedge_ratio=0.01,
+    insurance_ratio=0.01,
     **crash_data
 )
 print("\nDynamic Crash Scenario:")
