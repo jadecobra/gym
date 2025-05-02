@@ -104,7 +104,6 @@ class YahooFinanceDataProvider:
             else:
                 return out_of_the_money_puts, closest_expiration_date
 
-    # @staticmethod
     def get_start_index(self):
         length = len(self.historical_data)
         if length-40 < 0:
@@ -115,6 +114,7 @@ class YahooFinanceDataProvider:
     def get_spy_end(self, scenario_type, start_index, spy_start):
         end_idx = random.randint(start_index + 1, start_index + 40)
         spy_end = self.historical_data.loc[end_idx, 'Close']
+
         if scenario_type != 'stable' and spy_end > spy_start * 0.9:
             spy_end = spy_start * random.uniform(0.6, 0.9)
         else:
@@ -129,12 +129,14 @@ class YahooFinanceDataProvider:
         out_of_the_money_puts, put_expiration_date = self._fetch_option_chain(spy_start)
 
         if out_of_the_money_puts is None or out_of_the_money_puts.empty:
+            put_expiration_date = (
+                datetime.datetime.now() + datetime.timedelta(days=60)
+            ).strftime('%Y-%m-%d')
+            strike_price = spy_start * random.uniform(0.7, 0.9)
             volatility = self._estimate_implied_volatility()
             if scenario_type == "crash":
                 volatility *= 1.5
-            strike_price = spy_start * random.uniform(0.7, 0.9)
             option_price = max(0.5, min(10, volatility * spy_start * 0.01))
-            put_expiration_date = (datetime.datetime.now() + datetime.timedelta(days=60)).strftime('%Y-%m-%d')
         else:
             put = out_of_the_money_puts.sample(n=1).iloc[0]
             strike_price = put['strike']
