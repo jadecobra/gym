@@ -203,7 +203,7 @@ def calculate_portfolio_metrics(
     spy_change = calculate_spy_value_change(price_at_start, price_at_end)
     equity_end = equity_start * (1 + spy_change)
     option_payoff = calculate_option_payoff(strike_price, price_at_end, option_value_end)
-    portfolio_end_with_insurance = equity_end + option_payoff * contracts * 100
+    portfolio_end_with_insurance = equity_end + (option_payoff * contracts * 100)
     portfolio_end_without_insurance = portfolio_value * (1 + spy_change)
     portfolio_change_with_insurance = (
         (portfolio_end_with_insurance - portfolio_value) / portfolio_value
