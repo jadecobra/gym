@@ -220,23 +220,24 @@ def calculate_portfolio_metrics(
 
     return {
         'scenario': scenario,
-        'price_value_at_start': f'${price_at_start:.2f}',
-        'price_value_at_end': f'${price_at_end:.2f}',
+        'price_value_at_start': round(price_at_start, 2),
+        'price_value_at_end': round(price_at_end, 2),
         'price_value_percent_change': round(price_change, 2),
-        'equity_at_start': f'${equity_start:.2f}',
-        'equity_at_end': f'${equity_end:.2f}',
-        'insurance_strategy_cost': f'${insurance_budget:.2f}',
+        'equity_at_start': round(equity_start, 2),
+        'equity_at_end': round(equity_end, 2),
+        'insurance_strategy_cost': round(insurance_budget, 2),
         'insurance_strategy_cost_as_percentage_of_portfolio': insurance_ratio,
         'number_of_contracts': contracts,
-        'put_option_price': f'${option_price:.2f}',
+        'put_option_price': round(option_price, 2),
         'option_strategy': option_strategy,
         'portfolio_value_at_start': portfolio_value,
-        'portfolio_value_at_end_with_insurance': f'${portfolio_end_with_insurance:.2f}',
-        'portfolio_value_at_end_without_insurance': f'${portfolio_end_without_insurance:.2f}',
-        'portfolio_value_percent_change_with_insurance': f'${portfolio_change_with_insurance:.2f}',
-        'portfolio_value_percent_change_without_insurance': f'${portfolio_change_without_insurance:.2f}',
-        'portfolio_profit_loss_with_insurance': f'${portfolio_end_with_insurance-portfolio_value:.2f}',
-        'portfolio_profit_loss_without_insurance': f'${portfolio_end_without_insurance-portfolio_value:.2f}',
-        'difference_between_portfolio_profit_with_insurance_and_without_insurance': f'${
-            portfolio_end_with_insurance - portfolio_end_without_insurance:.2f}',
+        'portfolio_value_at_end_with_insurance': round(portfolio_end_with_insurance, 2),
+        'portfolio_value_at_end_without_insurance': round(portfolio_end_without_insurance, 2),
+        'portfolio_value_percent_change_with_insurance': round(portfolio_change_with_insurance, 2),
+        'portfolio_value_percent_change_without_insurance': round(portfolio_change_without_insurance, 2),
+        'portfolio_profit_loss_with_insurance': round(portfolio_end_with_insurance - portfolio_value, 2),
+        'portfolio_profit_loss_without_insurance': round(portfolio_end_without_insurance - portfolio_value, 2),
+        'difference_between_portfolio_profit_with_insurance_and_without_insurance': round(
+            portfolio_end_with_insurance - portfolio_end_without_insurance
+        , 2),
     }

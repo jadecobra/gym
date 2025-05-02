@@ -165,14 +165,15 @@ class TestTailRiskHedge(unittest.TestCase):
         )
         self.assertEqual(metrics["scenario"], scenario)
         self.assertAlmostEqual(
-            metrics["price_value_percent_change"], f'${price_change:.2f}'
+            metrics["price_value_percent_change"], round(price_change, 2)
         )
-        self.assertAlmostEqual(metrics["equity_at_start"], f'${equity_start:.2f}')
-        self.assertAlmostEqual(metrics["insurance_strategy_cost"], f'${insurance_budget:.2f}')
+        self.assertAlmostEqual(metrics["equity_at_start"], round(equity_start, 2))
+        self.assertAlmostEqual(metrics["insurance_strategy_cost"], round(insurance_budget, 2))
         self.assertAlmostEqual(metrics["put_option_price"], data["option_price"])
         self.assertAlmostEqual(
             metrics["portfolio_value_at_end_with_insurance"],
-            f'${equity_end+(option_payoff*contracts * 100):.2f}'
+            # equity_end
+            round(equity_end + (option_payoff * contracts * 100), 2)
         )
         self.assertEqual(
             metrics["number_of_contracts"],
@@ -180,7 +181,7 @@ class TestTailRiskHedge(unittest.TestCase):
         )
         self.assertAlmostEqual(
             metrics["portfolio_value_at_end_without_insurance"],
-            f'${self.portfolio_value*(1 + price_change):.2f}'
+            round(self.portfolio_value * (1 + price_change), 2)
         )
 
     def test_calculate_portfolio_metrics_invalid_inputs(self):
