@@ -112,6 +112,16 @@ class YahooFinanceDataProvider:
         else:
             return random.randint(0, length)
 
+    def get_spy_end(self, scenario_type, start_index, spy_start):
+        end_idx = random.randint(start_index + 1, start_index + 40)
+        spy_end = self.historical_data.loc[end_idx, 'Close']
+        if scenario_type != 'stable' and spy_end > spy_start * 0.9:
+            spy_end = spy_start * random.uniform(0.6, 0.9)
+        else:
+            if spy_end > spy_start * 1.2 or spy_end < spy_start * 0.9:
+                spy_end = spy_start * random.uniform(0.95, 1.1)
+        return spy_end
+
     def generate_scenario(self, scenario_type="stable"):
         start_index = self.get_start_index()
         spy_start = self.historical_data.loc[start_index, 'Close']
@@ -143,14 +153,12 @@ class YahooFinanceDataProvider:
             if spy_end > spy_start * 0.9:
                 spy_end = spy_start * random.uniform(0.6, 0.9)
 
-        option_value_end = 0 if scenario_type == "stable" else max(0, strike_price - spy_end)
-
         return {
             "spy_start": spy_start,
             "spy_end": spy_end,
             "strike_price": strike_price,
             "option_price": option_price,
-            "option_value_end": option_value_end,
+            "option_value_end": 0 if scenario_type == "stable" else max(0, strike_price - spy_end),
             "expiry_date": put_expiration_date
         }
 
