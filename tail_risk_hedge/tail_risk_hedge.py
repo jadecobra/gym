@@ -172,7 +172,6 @@ class YahooFinanceDataProvider:
             'price_at_end': price_at_end,
             'strike_price': strike_price,
             'option_price': option_price,
-            'option_value_end': 0 if scenario_type == 'stable' else max(0, strike_price - price_at_end),
             'expiry_date': put_expiration_date
         }
 
@@ -195,10 +194,12 @@ def calculate_number_of_contracts_to_purchase(insurance_budget, option_price):
         raise ValueError('insurance budget cannot be negative')
     return int(insurance_budget / (option_price * 100))
 
-def calculate_option_payoff(strike_price, price_at_end, option_value_end):
+def calculate_option_payoff(strike_price, price_at_end):
     if price_at_end < 0:
         raise ValueError('price end price cannot be negative')
-    return max(0, option_value_end)
+    if strike_price < 0:
+        raise ValueError('strike price cannot be negative')
+    return max(0, strike_price - price_at_end)
 
 def calculate_price_value_change(price_at_start, price_at_end):
     if price_at_end <= 0:
@@ -207,8 +208,8 @@ def calculate_price_value_change(price_at_start, price_at_end):
 
 def calculate_portfolio_metrics(
         *, portfolio_value=0, insurance_ratio=0.1, price_at_start=0, price_at_end=0,
-        strike_price=0, option_value_end=0, option_price=0, expiry_date=0
-):
+        strike_price=0, option_price=0, expiry_date=0
+    ):
     if portfolio_value < 0:
         raise ValueError('Portfolio value cannot be negative')
     if insurance_ratio < 0:
@@ -222,7 +223,7 @@ def calculate_portfolio_metrics(
     )
     price_change = calculate_price_value_change(price_at_start, price_at_end)
     equity_end = equity_start * (1 + price_change)
-    option_payoff = calculate_option_payoff(strike_price, price_at_end, option_value_end)
+    option_payoff = calculate_option_payoff(strike_price, price_at_end)
     portfolio_end_with_insurance = equity_end + (option_payoff * contracts * 100)
     portfolio_end_without_insurance = portfolio_value * (1 + price_change)
     portfolio_change_with_insurance = (

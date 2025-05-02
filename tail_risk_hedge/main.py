@@ -18,7 +18,6 @@ print_metrics(
         price_at_start=500,
         price_at_end=525,
         strike_price=400,
-        option_value_end=0,
         option_price=1,
         expiry_date="2025-07-18"
     )
@@ -32,15 +31,13 @@ print_metrics(
         price_at_start=500,
         price_at_end=350,
         strike_price=400,
-        option_value_end=50,
         option_price=1,
         expiry_date="2025-07-18"
     )
 )
 
 data_provider = tail_risk_hedge.YahooFinanceDataProvider(
-    seed=42, cache_file="price_cache.pkl",
-    put_options_cache_file="put_options_cache.pkl"
+    seed=42, cache_file="price_cache.pkl", put_options_cache_file="put_options_cache.pkl"
 )
 
 print_header("dynamic stable")

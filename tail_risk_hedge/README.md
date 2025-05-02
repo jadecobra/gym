@@ -1,6 +1,7 @@
 TODO
 
-* fix calculate_option_payoff - currently does not use strike_price but accepts it as input
+* abstract test_calculate_option_payoff_stable and test_calculate_option_payoff_crash
+* abstract _load_data and _load_put_options_cache
 * fix getting options expiration date
 * use calculated risk-free rate - 30 year treasury
 * refactor _estimate_implied_volatility to reflect real world
@@ -20,6 +21,7 @@ TODO
 
 
 DONE
+* fix calculate_option_payoff
 * cache options data info
 * simulate options pricing
 * calculate hedge
