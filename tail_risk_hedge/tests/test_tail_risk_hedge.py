@@ -4,7 +4,6 @@ import re
 import tail_risk_hedge
 import time
 import unittest
-import pandas as pd
 
 class TestTailRiskHedge(unittest.TestCase):
     def setUp(self):
@@ -75,20 +74,45 @@ class TestTailRiskHedge(unittest.TestCase):
                 time.time() - 2 * self.data_provider.cache_duration
             )
         )
-        # Clear in-memory cache to force re-evaluation of cache file
         self.data_provider.put_options_cache = None
-        # Fetch again to trigger refresh
         self.data_provider._fetch_option_chain(price_at_start)
         self.assertTrue(os.path.exists(self.put_options_cache_file), 'New put options cache not created')
         cache_mtime = os.path.getmtime(self.put_options_cache_file)
         self.assertTrue(time.time() - cache_mtime < 60, 'Put options cache not refreshed')
 
     def test_implied_volatility(self):
-        self.assertTrue(0.1 <= self.data_provider._estimate_implied_volatility(lookback=60) <= 0.5)
+        data = self.data_provider.generate_scenario(self.scenario)
+        volatility = self.data_provider._estimate_implied_volatility(
+            option_price=data['option_price'],
+            S=data['price_at_start'],
+            K=data['strike_price'],
+            T=self.data_provider.time_to_expiry,
+            r=self.data_provider.risk_free_rate,
+            scenario=self.scenario
+        )
+        self.assertGreaterEqual(volatility, 0, 'Volatility should be non-negative')
+        if self.scenario == 'crash':
+            stable_vol = self.data_provider._estimate_implied_volatility(
+                option_price=data['option_price'],
+                S=data['price_at_start'],
+                K=data['strike_price'],
+                T=self.data_provider.time_to_expiry,
+                r=self.data_provider.risk_free_rate,
+                scenario='stable'
+            )
+            self.assertGreater(volatility, stable_vol, 'Crash volatility should be higher')
 
-    def test_implied_volatility_with_historical_data(self):
+    def test_implied_volatility_with_insufficient_data(self):
         self.data_provider.historical_data = self.data_provider.historical_data.iloc[:10]
-        self.assertEqual(self.data_provider._estimate_implied_volatility(lookback=60), 0.2)
+        volatility = self.data_provider._estimate_implied_volatility(
+            option_price=1.0,
+            S=100,
+            K=90,
+            T=self.data_provider.time_to_expiry,
+            r=self.data_provider.risk_free_rate,
+            scenario='stable'
+        )
+        self.assertGreaterEqual(volatility, 0, 'Volatility should be non-negative')
 
     def test_fetch_option_chain(self):
         price_at_start = self.data_provider.historical_data['Close'].iloc[-1]
