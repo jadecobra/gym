@@ -10,7 +10,7 @@ class TestTailRiskHedge(unittest.TestCase):
     def setUp(self):
         self.portfolio_value = random.uniform(10000, 1000000)
         self.insurance_ratio = random.uniform(0.01, 0.05)
-        self.cache_file = "test_spy_cache.pkl"
+        self.cache_file = "test_price_cache.pkl"
         self.data_provider = tail_risk_hedge.YahooFinanceDataProvider(
             seed=42, cache_file=self.cache_file
         )
@@ -130,21 +130,21 @@ class TestTailRiskHedge(unittest.TestCase):
                 data["option_value_end"]
             )
 
-    def test_calculate_spy_value_change_stable(self):
+    def test_calculate_price_value_change_stable(self):
         data = self.data_provider.generate_scenario("stable")
         self.assertAlmostEqual(
-            tail_risk_hedge.calculate_spy_value_change(data["price_at_start"], data["price_at_end"]),
+            tail_risk_hedge.calculate_price_value_change(data["price_at_start"], data["price_at_end"]),
             (data["price_at_end"] - data["price_at_start"]) / data["price_at_start"]
         )
 
-    def test_calculate_spy_value_change_crash(self):
+    def test_calculate_price_value_change_crash(self):
         data = self.data_provider.generate_scenario("crash")
         self.assertAlmostEqual(
-            tail_risk_hedge.calculate_spy_value_change(data["price_at_start"], data["price_at_end"]),
+            tail_risk_hedge.calculate_price_value_change(data["price_at_start"], data["price_at_end"]),
             (data["price_at_end"] - data["price_at_start"]) / data["price_at_start"]
         )
         with self.assertRaises(ValueError):
-            tail_risk_hedge.calculate_spy_value_change(data["price_at_start"], 0)
+            tail_risk_hedge.calculate_price_value_change(data["price_at_start"], 0)
 
     def test_calculate_portfolio_metrics(self):
         scenario = random.choice(('stable', 'crash'))
@@ -154,24 +154,34 @@ class TestTailRiskHedge(unittest.TestCase):
             insurance_ratio=self.insurance_ratio,
             **data
         )
-        spy_change = (data["price_at_end"] - data["price_at_start"]) / data["price_at_start"]
+        price_change = (data["price_at_end"] - data["price_at_start"]) / data["price_at_start"]
         equity_start = self.portfolio_value * (1 - self.insurance_ratio)
-        equity_end = equity_start * (1 + spy_change)
-        budget = self.portfolio_value * self.insurance_ratio
-
+        equity_end = equity_start * (1 + price_change)
+        insurance_budget = self.portfolio_value * self.insurance_ratio
+        option_payoff = tail_risk_hedge.calculate_option_payoff(
+            data['strike_price'], data['price_at_end'], data['option_value_end'])
+        contracts = tail_risk_hedge.calculate_number_of_contracts_to_purchase(
+            insurance_budget, data['option_price']
+        )
         self.assertEqual(metrics["scenario"], scenario)
-        self.assertAlmostEqual(metrics["spy_value_percent_change"], spy_change)
-        self.assertAlmostEqual(metrics["equity_at_start"], equity_start)
-        self.assertAlmostEqual(metrics["insurance_strategy_cost"], budget)
+        self.assertAlmostEqual(
+            metrics["price_value_percent_change"], round(price_change, 2)
+        )
+        self.assertAlmostEqual(metrics["equity_at_start"], round(equity_start, 2))
+        self.assertAlmostEqual(metrics["insurance_strategy_cost"], round(insurance_budget, 2))
         self.assertAlmostEqual(metrics["put_option_price"], data["option_price"])
-        self.assertAlmostEqual(metrics["portfolio_value_at_end_with_insurance"], equity_end)
+        self.assertAlmostEqual(
+            metrics["portfolio_value_at_end_with_insurance"],
+            # equity_end
+            round(equity_end + (option_payoff * contracts * 100), 2)
+        )
         self.assertEqual(
             metrics["number_of_contracts"],
-            int(budget / (data["option_price"] * 100))
+            int(insurance_budget / (data["option_price"] * 100))
         )
         self.assertAlmostEqual(
             metrics["portfolio_value_at_end_without_insurance"],
-            self.portfolio_value * (1 + spy_change)
+            round(self.portfolio_value * (1 + price_change), 2)
         )
 
     def test_calculate_portfolio_metrics_invalid_inputs(self):

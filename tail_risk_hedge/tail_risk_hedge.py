@@ -11,7 +11,7 @@ import yfinance
 class YahooFinanceDataProvider:
 
     def __init__(
-        self, ticker="SPY", seed=None, cache_file="spy_cache.pkl",
+        self, ticker='SPY', seed=None, cache_file='price_cache.pkl',
         cache_duration=86400
     ):
         if seed is not None:
@@ -35,7 +35,7 @@ class YahooFinanceDataProvider:
             data = self._fetch_historical_data()
             self._save_cache(data)
         if data.empty:
-            raise ValueError("No historical data available")
+            raise ValueError('No historical data available')
         else:
             return data
 
@@ -46,9 +46,9 @@ class YahooFinanceDataProvider:
         return cache_age < self.cache_duration
 
     def _fetch_historical_data(self):
-        data = self.ticker_data.history(period="1y", interval="1d")
+        data = self.ticker_data.history(period='1y', interval='1d')
         if data.empty:
-            raise ValueError("No historical data retrieved from Yahoo Finance")
+            raise ValueError('No historical data retrieved from Yahoo Finance')
         return data[['Open', 'High', 'Low', 'Close']].reset_index()
 
     def _save_cache(self, data):
@@ -56,7 +56,7 @@ class YahooFinanceDataProvider:
             with open(self.cache_file, 'wb') as f:
                 pickle.dump(data, f)
         except OSError as e:
-            print(f"Warning: Failed to save cache: {e}")
+            print(f'Warning: Failed to save cache: {e}')
 
     def _estimate_implied_volatility(self, lookback=60):
         if len(self.historical_data) < lookback:
@@ -82,7 +82,7 @@ class YahooFinanceDataProvider:
                 closest_expiration_date = expiration_date
 
         if not closest_expiration_date:
-            raise ValueError("No suitable option expiration found")
+            raise ValueError('No suitable option expiration found')
         else:
             return pandas.Timestamp(closest_expiration_date, unit='s').strftime('%Y-%m-%d')
 
@@ -94,7 +94,7 @@ class YahooFinanceDataProvider:
         try:
             option_chain = self.ticker_data.option_chain(closest_expiration_date)
         except yfinance.exceptions.YFRateLimitError as error:
-            print(f"Warning: Failed to fetch option chain: {error}")
+            print(f'Warning: Failed to fetch option chain: {error}')
             return None, None
         else:
             puts = option_chain.puts
@@ -103,14 +103,14 @@ class YahooFinanceDataProvider:
                 (puts['strike'] >= price_at_start * 0.7)
             ]
             if out_of_the_money_puts.empty:
-                raise ValueError("No OTM put options available")
+                raise ValueError('No OTM put options available')
             else:
                 return out_of_the_money_puts, closest_expiration_date
 
     def get_start_index(self):
         length = len(self.historical_data)
         if length-40 < 0:
-            raise ValueError("Insufficient historical data")
+            raise ValueError('Insufficient historical data')
         else:
             return random.randint(0, length)
 
@@ -125,7 +125,7 @@ class YahooFinanceDataProvider:
                 price_at_end = price_at_start * random.uniform(0.95, 1.1)
         return price_at_end
 
-    def generate_scenario(self, scenario_type="stable"):
+    def generate_scenario(self, scenario_type='stable'):
         start_index = self.get_start_index()
         price_at_start = self.historical_data.loc[start_index, 'Close']
 
@@ -137,7 +137,7 @@ class YahooFinanceDataProvider:
             ).strftime('%Y-%m-%d')
             strike_price = price_at_start * random.uniform(0.7, 0.9)
             volatility = self._estimate_implied_volatility()
-            if scenario_type == "crash":
+            if scenario_type == 'crash':
                 volatility *= 1.5
             option_price = max(0.5, min(10, volatility * price_at_start * 0.01))
         else:
@@ -150,52 +150,52 @@ class YahooFinanceDataProvider:
         price_at_end = self.get_price_at_end(scenario_type, start_index, price_at_start)
 
         return {
-            "price_at_start": price_at_start,
-            "price_at_end": price_at_end,
-            "strike_price": strike_price,
-            "option_price": option_price,
-            "option_value_end": 0 if scenario_type == "stable" else max(0, strike_price - price_at_end),
-            "expiry_date": put_expiration_date
+            'price_at_start': price_at_start,
+            'price_at_end': price_at_end,
+            'strike_price': strike_price,
+            'option_price': option_price,
+            'option_value_end': 0 if scenario_type == 'stable' else max(0, strike_price - price_at_end),
+            'expiry_date': put_expiration_date
         }
 
 def calculate_equity_value(portfolio_value, equity_ratio):
     if portfolio_value < 0:
-        raise ValueError("Portfolio value cannot be negative")
+        raise ValueError('Portfolio value cannot be negative')
     return portfolio_value * equity_ratio
 
 def calculate_insurance_budget(portfolio_value, insurance_ratio):
     'return the total amount to spend on the strategy'
     if portfolio_value < 0:
-        raise ValueError("Portfolio value cannot be negative")
+        raise ValueError('Portfolio value cannot be negative')
     if insurance_ratio < 0:
-        raise ValueError("insurance ratio cannot be negative")
+        raise ValueError('insurance ratio cannot be negative')
     return portfolio_value * insurance_ratio
 
 def calculate_number_of_contracts_to_purchase(insurance_budget, option_price):
     'return number of contracts to purchase based on the insurance budget'
     if option_price <= 0:
-        raise ValueError("Option price must be positive")
+        raise ValueError('Option price must be positive')
     if insurance_budget < 0:
-        raise ValueError("insurance budget cannot be negative")
+        raise ValueError('insurance budget cannot be negative')
     return int(insurance_budget / (option_price * 100))
 
 def calculate_option_payoff(strike_price, price_at_end, option_value_end):
     if price_at_end < 0:
-        raise ValueError("SPY end price cannot be negative")
+        raise ValueError('price end price cannot be negative')
     return max(0, option_value_end)
 
-def calculate_spy_value_change(price_at_start, price_at_end):
+def calculate_price_value_change(price_at_start, price_at_end):
     if price_at_end <= 0:
-        raise ValueError("SPY end price must be positive")
+        raise ValueError('price end price must be positive')
     return (price_at_end - price_at_start) / price_at_start
 
 def calculate_portfolio_metrics(
         *, portfolio_value=0, insurance_ratio=0.1, price_at_start=0, price_at_end=0, strike_price=0, option_value_end=0, option_price=0, expiry_date=0
     ):
     if portfolio_value < 0:
-        raise ValueError("Portfolio value cannot be negative")
+        raise ValueError('Portfolio value cannot be negative')
     if insurance_ratio < 0:
-        raise ValueError("insurance ratio cannot be negative")
+        raise ValueError('insurance ratio cannot be negative')
 
     equity_ratio = 1 - insurance_ratio
     equity_start = calculate_equity_value(portfolio_value, equity_ratio)
@@ -203,7 +203,7 @@ def calculate_portfolio_metrics(
     contracts = calculate_number_of_contracts_to_purchase(
         insurance_budget, option_price
     )
-    price_change = calculate_spy_value_change(price_at_start, price_at_end)
+    price_change = calculate_price_value_change(price_at_start, price_at_end)
     equity_end = equity_start * (1 + price_change)
     option_payoff = calculate_option_payoff(strike_price, price_at_end, option_value_end)
     portfolio_end_with_insurance = equity_end + (option_payoff * contracts * 100)
@@ -215,29 +215,29 @@ def calculate_portfolio_metrics(
         (portfolio_end_without_insurance - portfolio_value) / portfolio_value
     )
 
-    scenario = "stable" if price_at_end >= strike_price else "crash"
-    option_strategy = f"buy {contracts} put contracts at {strike_price} strike price to expire on {expiry_date}"
+    scenario = 'stable' if price_at_end >= strike_price else 'crash'
+    option_strategy = f'buy {contracts} put contracts at {strike_price} strike price to expire on {expiry_date}'
 
     return {
-        "scenario": scenario,
-        "spy_value_at_start": price_at_start,
-        "spy_value_at_end": price_at_end,
-        "spy_value_percent_change": price_change,
-        "equity_at_start": equity_start,
-        "equity_at_end": equity_end,
-        "insurance_strategy_cost": insurance_budget,
-        "insurance_strategy_cost_as_percentage_of_portfolio": insurance_ratio,
-        "number_of_contracts": contracts,
-        "put_option_price": option_price,
-        "option_strategy": option_strategy,
-        "portfolio_value_at_start": portfolio_value,
-        "portfolio_value_at_end_with_insurance": portfolio_end_with_insurance,
-        "portfolio_value_at_end_without_insurance": portfolio_end_without_insurance,
-        "portfolio_value_percent_change_with_insurance": portfolio_change_with_insurance,
-        "portfolio_value_percent_change_without_insurance": portfolio_change_without_insurance,
-        "portfolio_profit_loss_with_insurance": portfolio_end_with_insurance - portfolio_value,
-        "portfolio_profit_loss_without_insurance": portfolio_end_without_insurance - portfolio_value,
-        "difference_between_portfolio_profit_with_insurance_and_without_insurance": (
+        'scenario': scenario,
+        'price_value_at_start': round(price_at_start, 2),
+        'price_value_at_end': round(price_at_end, 2),
+        'price_value_percent_change': round(price_change, 2),
+        'equity_at_start': round(equity_start, 2),
+        'equity_at_end': round(equity_end, 2),
+        'insurance_strategy_cost': round(insurance_budget, 2),
+        'insurance_strategy_cost_as_percentage_of_portfolio': insurance_ratio,
+        'number_of_contracts': contracts,
+        'put_option_price': round(option_price, 2),
+        'option_strategy': option_strategy,
+        'portfolio_value_at_start': portfolio_value,
+        'portfolio_value_at_end_with_insurance': round(portfolio_end_with_insurance, 2),
+        'portfolio_value_at_end_without_insurance': round(portfolio_end_without_insurance, 2),
+        'portfolio_value_percent_change_with_insurance': round(portfolio_change_with_insurance, 2),
+        'portfolio_value_percent_change_without_insurance': round(portfolio_change_without_insurance, 2),
+        'portfolio_profit_loss_with_insurance': round(portfolio_end_with_insurance - portfolio_value, 2),
+        'portfolio_profit_loss_without_insurance': round(portfolio_end_without_insurance - portfolio_value, 2),
+        'difference_between_portfolio_profit_with_insurance_and_without_insurance': round(
             portfolio_end_with_insurance - portfolio_end_without_insurance
-        ),
+        , 2),
     }

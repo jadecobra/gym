@@ -32,7 +32,7 @@ crash_metrics = tail_risk_hedge.calculate_portfolio_metrics(
 print("\nCrash Scenario:")
 print_metrics(crash_metrics)
 
-data_provider = tail_risk_hedge.YahooFinanceDataProvider(seed=42, cache_file="spy_cache.pkl")
+data_provider = tail_risk_hedge.YahooFinanceDataProvider(seed=42, cache_file="price_cache.pkl")
 stable_data = data_provider.generate_scenario("stable")
 crash_data = data_provider.generate_scenario("crash")
 

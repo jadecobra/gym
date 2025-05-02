@@ -11,6 +11,8 @@ TODO
 * how can we test this is in the real world?
 * how to roll the options?
 * remove cap of 0.1-0.5, the test can include extremes
+* round final display
+* use Decimals instead of floats
 
 
 DONE
