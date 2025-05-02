@@ -98,8 +98,12 @@ class YahooFinanceDataProvider:
 
         return option_values[0]
 
+    def objective(self, sigma, price_at_start, strike_price, time_to_expiry, risk_free_rate, option_price):
+        tree_price = self._binomial_tree_price(price_at_start, strike_price, time_to_expiry, risk_free_rate, sigma)
+        return tree_price - option_price if tree_price is not None else 1e10
+
     def _estimate_implied_volatility(
-        self, option_price, S, K, T, r, scenario='stable', lookback=60
+        self, option_price, price_at_start, strike_price, time_to_expiry, risk_free_rate, scenario='stable', lookback=60
     ):
         """Estimate implied volatility using binomial tree and bisection."""
         # Try VIX first if available
@@ -111,18 +115,18 @@ class YahooFinanceDataProvider:
         except Exception as e:
             print(f'Warning: Failed to fetch VIX: {e}')
 
-        # Fallback to binomial tree
-        def objective(sigma):
-            tree_price = self._binomial_tree_price(S, K, T, r, sigma)
-            return tree_price - option_price if tree_price is not None else 1e10
-
+        # Use bisection to find sigma where tree price matches market price
         try:
-            # Use bisection to find sigma where tree price matches market price
-            sigma = scipy.optimize.bisect(objective, 0.01, 2.0, xtol=1e-4)
+            sigma = scipy.optimize.bisect(
+                self.objective(
+                    sigma, price_at_start, strike_price, time_to_expiry,
+                    risk_free_rate, option_price
+                ), 0.01, 2.0, xtol=1e-4
+            )
             return sigma if scenario != 'crash' else sigma * 1.5
         except Exception as e:
-            print(f'Warning: Binomial tree failed: {e}')
             # Fallback to historical volatility
+            print(f'Warning: Binomial tree failed: {e}')
             if len(self.historical_data) < lookback:
                 return 0.2
             closes = self.historical_data['Close'].tail(lookback)
@@ -209,10 +213,10 @@ class YahooFinanceDataProvider:
             strike_price = price_at_start * random.uniform(0.7, 0.9)
             option_price = max(0.5, min(10, self._estimate_implied_volatility(
                 option_price=1.0,  # Placeholder for synthetic pricing
-                S=price_at_start,
-                K=strike_price,
-                T=self.time_to_expiry,
-                r=self.risk_free_rate,
+                price_at_start=price_at_start,
+                strike_price=strike_price,
+                time_to_expiry=self.time_to_expiry,
+                risk_free_rate=self.risk_free_rate,
                 scenario=scenario
             ) * price_at_start * 0.01))
         else:

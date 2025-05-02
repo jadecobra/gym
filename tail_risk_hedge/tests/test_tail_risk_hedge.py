@@ -13,7 +13,8 @@ class TestTailRiskHedge(unittest.TestCase):
         self.cache_file = 'test_price_cache.pkl'
         self.put_options_cache_file = 'test_put_options_cache.pkl'
         self.data_provider = tail_risk_hedge.YahooFinanceDataProvider(
-            seed=42, cache_file=self.cache_file, put_options_cache_file=self.put_options_cache_file
+            seed=42, cache_file=self.cache_file,
+            put_options_cache_file=self.put_options_cache_file
         )
 
     def tearDown(self):
@@ -84,20 +85,20 @@ class TestTailRiskHedge(unittest.TestCase):
         data = self.data_provider.generate_scenario(self.scenario)
         volatility = self.data_provider._estimate_implied_volatility(
             option_price=data['option_price'],
-            S=data['price_at_start'],
-            K=data['strike_price'],
-            T=self.data_provider.time_to_expiry,
-            r=self.data_provider.risk_free_rate,
+            price_at_start=data['price_at_start'],
+            strike_price=data['strike_price'],
+            time_to_expiry=self.data_provider.time_to_expiry,
+            risk_free_rate=self.data_provider.risk_free_rate,
             scenario=self.scenario
         )
         self.assertGreaterEqual(volatility, 0, 'Volatility should be non-negative')
         if self.scenario == 'crash':
             stable_vol = self.data_provider._estimate_implied_volatility(
                 option_price=data['option_price'],
-                S=data['price_at_start'],
-                K=data['strike_price'],
-                T=self.data_provider.time_to_expiry,
-                r=self.data_provider.risk_free_rate,
+                price_at_start=data['price_at_start'],
+                strike_price=data['strike_price'],
+                time_to_expiry=self.data_provider.time_to_expiry,
+                risk_free_rate=self.data_provider.risk_free_rate,
                 scenario='stable'
             )
             self.assertGreater(volatility, stable_vol, 'Crash volatility should be higher')
@@ -106,10 +107,10 @@ class TestTailRiskHedge(unittest.TestCase):
         self.data_provider.historical_data = self.data_provider.historical_data.iloc[:10]
         volatility = self.data_provider._estimate_implied_volatility(
             option_price=1.0,
-            S=100,
-            K=90,
-            T=self.data_provider.time_to_expiry,
-            r=self.data_provider.risk_free_rate,
+            price_at_start=100,
+            strike_price=90,
+            time_to_expiry=self.data_provider.time_to_expiry,
+            risk_free_rate=self.data_provider.risk_free_rate,
             scenario='stable'
         )
         self.assertGreaterEqual(volatility, 0, 'Volatility should be non-negative')
