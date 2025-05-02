@@ -71,14 +71,11 @@ class TestTailRiskHedge(unittest.TestCase):
             **data
         )
         strategy = metrics["option_strategy"]
+        expected = f'buy {metrics["number_of_contracts"]} put contracts at {data["strike_price"]} strike price to expire on {data["expiry_date"]}'
+        self.assertEqual(strategy, expected, f"Invalid option strategy: {strategy}")
         self.assertTrue(
             bool(re.match(r'buy \d+ put contracts at \d+(\.\d+)? strike price to expire on \d{4}-\d{2}-\d{2}', strategy)),
-            f"Invalid option strategy format: {strategy}"
-        )
-        self.assertEqual(strategy.split()[1], str(metrics["number_of_contracts"]))
-        self.assertEqual(
-            strategy,
-            f'buy {metrics["number_of_contracts"]} put contracts at {data["strike_price"]} strike price to expire on {data["expiry_date"]}'
+            f"Invalid format: {strategy}"
         )
 
     def test_calculate_equity_value(self):

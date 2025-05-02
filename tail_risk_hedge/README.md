@@ -15,7 +15,8 @@ TODO
 * use Decimals instead of floats
 * get VIX data from internet add to metrics
 * Add support for multiple expiration dates or strike price ranges.
-
+* optimize tests
+* optimize code
 
 
 DONE
