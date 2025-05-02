@@ -50,12 +50,12 @@ class TestTailRiskHedge(unittest.TestCase):
         self.assertEqual(self.data_provider._estimate_implied_volatility(lookback=60), 0.2)
 
     def test_fetch_option_chain(self):
-        spy_start = self.data_provider.historical_data['Close'].iloc[-1]
-        out_of_the_money_puts, put_expiration_date = self.data_provider._fetch_option_chain(spy_start)
+        price_at_start = self.data_provider.historical_data['Close'].iloc[-1]
+        out_of_the_money_puts, put_expiration_date = self.data_provider._fetch_option_chain(price_at_start)
         if out_of_the_money_puts is not None:
             self.assertFalse(out_of_the_money_puts.empty)
-            self.assertTrue((out_of_the_money_puts['strike'] <= spy_start * 0.9).all())
-            self.assertTrue((out_of_the_money_puts['strike'] >= spy_start * 0.7).all())
+            self.assertTrue((out_of_the_money_puts['strike'] <= price_at_start * 0.9).all())
+            self.assertTrue((out_of_the_money_puts['strike'] >= price_at_start * 0.7).all())
             self.assertTrue((out_of_the_money_puts['lastPrice'] >= 0).all())
             self.assertTrue(bool(re.match(r'\d{4}-\d{2}-\d{2}', put_expiration_date)))
         else:
@@ -113,14 +113,14 @@ class TestTailRiskHedge(unittest.TestCase):
     def test_calculate_option_payoff_stable(self):
         data = self.data_provider.generate_scenario("stable")
         payoff = tail_risk_hedge.calculate_option_payoff(
-            data["strike_price"], data["spy_end"], data["option_value_end"]
+            data["strike_price"], data["price_at_end"], data["option_value_end"]
         )
         self.assertEqual(payoff, 0)
 
     def test_calculate_option_payoff_crash(self):
         data = self.data_provider.generate_scenario("crash")
         payoff = tail_risk_hedge.calculate_option_payoff(
-            data["strike_price"], data["spy_end"], data["option_value_end"]
+            data["strike_price"], data["price_at_end"], data["option_value_end"]
         )
         self.assertEqual(payoff, data["option_value_end"])
         with self.assertRaises(ValueError):
@@ -133,18 +133,18 @@ class TestTailRiskHedge(unittest.TestCase):
     def test_calculate_spy_value_change_stable(self):
         data = self.data_provider.generate_scenario("stable")
         self.assertAlmostEqual(
-            tail_risk_hedge.calculate_spy_value_change(data["spy_start"], data["spy_end"]),
-            (data["spy_end"] - data["spy_start"]) / data["spy_start"]
+            tail_risk_hedge.calculate_spy_value_change(data["price_at_start"], data["price_at_end"]),
+            (data["price_at_end"] - data["price_at_start"]) / data["price_at_start"]
         )
 
     def test_calculate_spy_value_change_crash(self):
         data = self.data_provider.generate_scenario("crash")
         self.assertAlmostEqual(
-            tail_risk_hedge.calculate_spy_value_change(data["spy_start"], data["spy_end"]),
-            (data["spy_end"] - data["spy_start"]) / data["spy_start"]
+            tail_risk_hedge.calculate_spy_value_change(data["price_at_start"], data["price_at_end"]),
+            (data["price_at_end"] - data["price_at_start"]) / data["price_at_start"]
         )
         with self.assertRaises(ValueError):
-            tail_risk_hedge.calculate_spy_value_change(data["spy_start"], 0)
+            tail_risk_hedge.calculate_spy_value_change(data["price_at_start"], 0)
 
     def test_calculate_portfolio_metrics(self):
         scenario = random.choice(('stable', 'crash'))
@@ -154,7 +154,7 @@ class TestTailRiskHedge(unittest.TestCase):
             hedge_ratio=self.hedge_ratio,
             **data
         )
-        spy_change = (data["spy_end"] - data["spy_start"]) / data["spy_start"]
+        spy_change = (data["price_at_end"] - data["price_at_start"]) / data["price_at_start"]
         equity_start = self.portfolio_value * (1 - self.hedge_ratio)
         equity_end = equity_start * (1 + spy_change)
         budget = self.portfolio_value * self.hedge_ratio

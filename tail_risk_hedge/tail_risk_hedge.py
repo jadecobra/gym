@@ -83,7 +83,7 @@ class YahooFinanceDataProvider:
         else:
             return pandas.Timestamp(closest_expiration_date, unit='s').strftime('%Y-%m-%d')
 
-    def _fetch_option_chain(self, spy_start):
+    def _fetch_option_chain(self, price_at_start):
         target_date = (datetime.datetime.now() + datetime.timedelta(days=60)).date()
         closest_expiration_date = self.get_closest_expiration_date(
             self.ticker_data.options, target_date
@@ -96,8 +96,8 @@ class YahooFinanceDataProvider:
         else:
             puts = option_chain.puts
             out_of_the_money_puts = puts[
-                (puts['strike'] <= spy_start * 0.9) &
-                (puts['strike'] >= spy_start * 0.7)
+                (puts['strike'] <= price_at_start * 0.9) &
+                (puts['strike'] >= price_at_start * 0.7)
             ]
             if out_of_the_money_puts.empty:
                 raise ValueError("No OTM put options available")
@@ -111,32 +111,32 @@ class YahooFinanceDataProvider:
         else:
             return random.randint(0, length)
 
-    def get_spy_end(self, scenario_type, start_index, spy_start):
+    def get_price_at_end(self, scenario_type, start_index, price_at_start):
         end_idx = random.randint(start_index + 1, start_index + 40)
-        spy_end = self.historical_data.loc[end_idx, 'Close']
+        price_at_end = self.historical_data.loc[end_idx, 'Close']
 
-        if scenario_type != 'stable' and spy_end > spy_start * 0.9:
-            spy_end = spy_start * random.uniform(0.6, 0.9)
+        if scenario_type != 'stable' and price_at_end > price_at_start * 0.9:
+            price_at_end = price_at_start * random.uniform(0.6, 0.9)
         else:
-            if spy_end > spy_start * 1.2 or spy_end < spy_start * 0.9:
-                spy_end = spy_start * random.uniform(0.95, 1.1)
-        return spy_end
+            if price_at_end > price_at_start * 1.2 or price_at_end < price_at_start * 0.9:
+                price_at_end = price_at_start * random.uniform(0.95, 1.1)
+        return price_at_end
 
     def generate_scenario(self, scenario_type="stable"):
         start_index = self.get_start_index()
-        spy_start = self.historical_data.loc[start_index, 'Close']
+        price_at_start = self.historical_data.loc[start_index, 'Close']
 
-        out_of_the_money_puts, put_expiration_date = self._fetch_option_chain(spy_start)
+        out_of_the_money_puts, put_expiration_date = self._fetch_option_chain(price_at_start)
 
         if out_of_the_money_puts is None or out_of_the_money_puts.empty:
             put_expiration_date = (
                 datetime.datetime.now() + datetime.timedelta(days=60)
             ).strftime('%Y-%m-%d')
-            strike_price = spy_start * random.uniform(0.7, 0.9)
+            strike_price = price_at_start * random.uniform(0.7, 0.9)
             volatility = self._estimate_implied_volatility()
             if scenario_type == "crash":
                 volatility *= 1.5
-            option_price = max(0.5, min(10, volatility * spy_start * 0.01))
+            option_price = max(0.5, min(10, volatility * price_at_start * 0.01))
         else:
             put = out_of_the_money_puts.sample(n=1).iloc[0]
             strike_price = put['strike']
@@ -144,14 +144,14 @@ class YahooFinanceDataProvider:
             if option_price <= 0:
                 option_price = put.get('bid', 0.5) or 0.5
 
-        spy_end = self.get_spy_end(scenario_type, start_index, spy_start)
+        price_at_end = self.get_price_at_end(scenario_type, start_index, price_at_start)
 
         return {
-            "spy_start": spy_start,
-            "spy_end": spy_end,
+            "price_at_start": price_at_start,
+            "price_at_end": price_at_end,
             "strike_price": strike_price,
             "option_price": option_price,
-            "option_value_end": 0 if scenario_type == "stable" else max(0, strike_price - spy_end),
+            "option_value_end": 0 if scenario_type == "stable" else max(0, strike_price - price_at_end),
             "expiry_date": put_expiration_date
         }
 
@@ -176,17 +176,17 @@ def calculate_number_of_contracts_to_purchase(hedge_budget, option_price):
         raise ValueError("Hedge budget cannot be negative")
     return int(hedge_budget / (option_price * 100))
 
-def calculate_option_payoff(strike_price, spy_end, option_value_end):
-    if spy_end < 0:
+def calculate_option_payoff(strike_price, price_at_end, option_value_end):
+    if price_at_end < 0:
         raise ValueError("SPY end price cannot be negative")
     return max(0, option_value_end)
 
-def calculate_spy_value_change(spy_start, spy_end):
-    if spy_end <= 0:
+def calculate_spy_value_change(price_at_start, price_at_end):
+    if price_at_end <= 0:
         raise ValueError("SPY end price must be positive")
-    return (spy_end - spy_start) / spy_start
+    return (price_at_end - price_at_start) / price_at_start
 
-def calculate_portfolio_metrics(*, portfolio_value, hedge_ratio, spy_start, spy_end, strike_price, option_value_end, option_price, expiry_date):
+def calculate_portfolio_metrics(*, portfolio_value=0, hedge_ratio=0.1, price_at_start=0, price_at_end=0, strike_price=0, option_value_end=0, option_price=0, expiry_date=0):
     if portfolio_value < 0:
         raise ValueError("Portfolio value cannot be negative")
     if hedge_ratio < 0:
@@ -196,21 +196,21 @@ def calculate_portfolio_metrics(*, portfolio_value, hedge_ratio, spy_start, spy_
     equity_start = calculate_equity_value(portfolio_value, equity_ratio)
     hedge_budget = calculate_hedge_budget(portfolio_value, hedge_ratio)
     contracts = calculate_number_of_contracts_to_purchase(hedge_budget, option_price)
-    spy_change = calculate_spy_value_change(spy_start, spy_end)
+    spy_change = calculate_spy_value_change(price_at_start, price_at_end)
     equity_end = equity_start * (1 + spy_change)
-    option_payoff = calculate_option_payoff(strike_price, spy_end, option_value_end)
+    option_payoff = calculate_option_payoff(strike_price, price_at_end, option_value_end)
     portfolio_end_with_hedge = equity_end + option_payoff * contracts * 100
     portfolio_end_without_hedge = portfolio_value * (1 + spy_change)
     portfolio_change_with_hedge = (portfolio_end_with_hedge - portfolio_value) / portfolio_value
     portfolio_change_without_hedge = (portfolio_end_without_hedge - portfolio_value) / portfolio_value
 
-    scenario = "stable" if spy_end >= strike_price else "crash"
+    scenario = "stable" if price_at_end >= strike_price else "crash"
     option_strategy = f"buy {contracts} put contracts at {strike_price} strike price to expire on {expiry_date}"
 
     return {
         "scenario": scenario,
-        "spy_value_at_start": spy_start,
-        "spy_value_at_end": spy_end,
+        "spy_value_at_start": price_at_start,
+        "spy_value_at_end": price_at_end,
         "spy_value_percent_change": spy_change,
         "equity_at_start": equity_start,
         "equity_at_end": equity_end,

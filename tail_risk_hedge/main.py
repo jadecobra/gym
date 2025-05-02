@@ -8,7 +8,7 @@ def print_metrics(metrics):
 stable_metrics = tail_risk_hedge.calculate_portfolio_metrics(
     portfolio_value=100000,
     hedge_ratio=0.01,
-    spy_start=500,
+    price_at_start=500,
     spy_end=525,
     strike_price=400,
     option_value_end=0,
@@ -22,7 +22,7 @@ print_metrics(stable_metrics)
 crash_metrics = tail_risk_hedge.calculate_portfolio_metrics(
     portfolio_value=100000,
     hedge_ratio=0.01,
-    spy_start=500,
+    price_at_start=500,
     spy_end=350,
     strike_price=400,
     option_value_end=50,
