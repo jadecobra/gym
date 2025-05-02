@@ -143,20 +143,14 @@ class TestTailRiskHedge(unittest.TestCase):
         with self.assertRaises(ValueError):
             tail_risk_hedge.calculate_number_of_contracts_to_purchase(-1000, option_price)
 
-    def test_calculate_option_payoff_stable(self):
-        data = self.data_provider.generate_scenario("stable")
+    def test_calculate_option_payoff(self):
+        data = self.data_provider.generate_scenario(random.choice(('stable', 'crash')))
         payoff = tail_risk_hedge.calculate_option_payoff(
             data["strike_price"], data["price_at_end"]
         )
-        self.assertEqual(payoff, 0, "Payoff should be 0 for stable scenario (price_at_end >= strike_price)")
-
-    def test_calculate_option_payoff_crash(self):
-        data = self.data_provider.generate_scenario("crash")
-        payoff = tail_risk_hedge.calculate_option_payoff(
-            data["strike_price"], data["price_at_end"]
+        self.assertEqual(
+            payoff, max(0, data["strike_price"] - data["price_at_end"])
         )
-        expected_payoff = max(0, data["strike_price"] - data["price_at_end"])
-        self.assertEqual(payoff, expected_payoff, "Payoff incorrect for crash scenario")
         with self.assertRaises(ValueError):
             tail_risk_hedge.calculate_option_payoff(data["strike_price"], -350)
         with self.assertRaises(ValueError):

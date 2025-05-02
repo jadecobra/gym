@@ -18,6 +18,7 @@ TODO
 * optimize tests
 * optimize code
 * Support caching multiple expiration dates
+* calculate the insurance strategy cost that would be profitable between 1-3%
 
 
 DONE
