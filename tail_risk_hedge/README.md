@@ -1,5 +1,6 @@
 TODO
 
+* cache VIX data
 * refactor _estimate_implied_volatility to reflect real world
 * fix getting options expiration date
 * use calculated risk-free rate - 30 year treasury

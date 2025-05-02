@@ -4,8 +4,10 @@ import os
 import pandas
 import pickle
 import random
+import scipy
 import time
 import yfinance
+
 
 class YahooFinanceDataProvider:
     def __init__(
@@ -65,13 +67,68 @@ class YahooFinanceDataProvider:
         except OSError as e:
             print(f'Warning: Failed to save cache to {cache_file}: {e}')
 
-    def _estimate_implied_volatility(self, lookback=60):
-        if len(self.historical_data) < lookback:
-            return 0.2
-        closes = self.historical_data['Close'].tail(lookback)
-        log_returns = numpy.log(closes / closes.shift(1)).dropna()
-        implied_volatility = numpy.std(log_returns) * numpy.sqrt(252)
-        return max(0.1, min(0.5, implied_volatility))
+    def _binomial_tree_price(self, S, K, T, r, sigma, N=100):
+        """Calculate put option price using a binomial tree."""
+        dt = T / N
+        u = numpy.exp(sigma * numpy.sqrt(dt))
+        d = 1 / u
+        p = (numpy.exp(r * dt) - d) / (u - d)
+        if not 0 <= p <= 1:
+            return None  # Invalid probabilities
+        discount = numpy.exp(-r * dt)
+
+        # Initialize asset prices at maturity
+        stock_prices = numpy.zeros(N + 1)
+        stock_prices[0] = S * (d ** N)
+        for i in range(1, N + 1):
+            stock_prices[i] = stock_prices[i - 1] * u / d
+
+        # Initialize option values at maturity (put option)
+        option_values = numpy.maximum(0, K - stock_prices)
+
+        # Backward induction
+        for step in range(N - 1, -1, -1):
+            for i in range(step + 1):
+                option_values[i] = discount * (
+                    p * option_values[i + 1] + (1 - p) * option_values[i]
+                )
+                # Early exercise for American option
+                stock_price = S * (u ** (step - i)) * (d ** i)
+                option_values[i] = max(option_values[i], K - stock_price)
+
+        return option_values[0]
+
+    def _estimate_implied_volatility(
+        self, option_price, S, K, T, r, scenario='stable', lookback=60
+    ):
+        """Estimate implied volatility using binomial tree and bisection."""
+        # Try VIX first if available
+        try:
+            vix_data = yfinance.Ticker('^VIX').history(period='1d')
+            if not vix_data.empty:
+                vix = vix_data['Close'].iloc[-1] / 100  # Convert to decimal
+                return vix if scenario != 'crash' else vix * 1.5
+        except Exception as e:
+            print(f'Warning: Failed to fetch VIX: {e}')
+
+        # Fallback to binomial tree
+        def objective(sigma):
+            tree_price = self._binomial_tree_price(S, K, T, r, sigma)
+            return tree_price - option_price if tree_price is not None else 1e10
+
+        try:
+            # Use bisection to find sigma where tree price matches market price
+            sigma = scipy.optimize.bisect(objective, 0.01, 2.0, xtol=1e-4)
+            return sigma if scenario != 'crash' else sigma * 1.5
+        except Exception as e:
+            print(f'Warning: Binomial tree failed: {e}')
+            # Fallback to historical volatility
+            if len(self.historical_data) < lookback:
+                return 0.2
+            closes = self.historical_data['Close'].tail(lookback)
+            log_returns = numpy.log(closes / closes.shift(1)).dropna()
+            volatility = numpy.std(log_returns) * numpy.sqrt(252)
+            return volatility if scenario != 'crash' else volatility * 1.5
 
     @staticmethod
     def get_date_difference(date1, date2):
@@ -93,17 +150,14 @@ class YahooFinanceDataProvider:
         return pandas.Timestamp(closest_expiration_date, unit='s').strftime('%Y-%m-%d')
 
     def _fetch_option_chain(self, price_at_start):
-        # Check cache validity explicitly
         if not self._is_cache_valid(self.put_options_cache_file) or self.put_options_cache is None:
             self.put_options_cache = None
         else:
-            # Check if cached data is valid for the price range
             cached_puts, cached_expiry, cached_price_range = self.put_options_cache
             if (price_at_start * 0.7 <= cached_price_range[1] and
                 price_at_start * 0.9 >= cached_price_range[0]):
                 return cached_puts, cached_expiry
 
-        # Fetch new data if cache is invalid or price range doesn't match
         target_date = (datetime.datetime.now() + datetime.timedelta(days=60)).date()
         closest_expiration_date = self.get_closest_expiration_date(
             self.ticker_data.options, target_date
@@ -120,7 +174,6 @@ class YahooFinanceDataProvider:
             out_of_the_money_puts = None
             puts = None
 
-        # Cache the result, even if empty, to avoid repeated failed fetches
         price_range = (price_at_start * 0.7, price_at_start * 0.9)
         self.put_options_cache = (out_of_the_money_puts, closest_expiration_date, price_range)
         self._save_cache(self.put_options_cache, self.put_options_cache_file)
@@ -154,10 +207,14 @@ class YahooFinanceDataProvider:
                 datetime.datetime.now() + datetime.timedelta(days=60)
             ).strftime('%Y-%m-%d')
             strike_price = price_at_start * random.uniform(0.7, 0.9)
-            volatility = self._estimate_implied_volatility()
-            if scenario == 'crash':
-                volatility *= 1.5
-            option_price = max(0.5, min(10, volatility * price_at_start * 0.01))
+            option_price = max(0.5, min(10, self._estimate_implied_volatility(
+                option_price=1.0,  # Placeholder for synthetic pricing
+                S=price_at_start,
+                K=strike_price,
+                T=self.time_to_expiry,
+                r=self.risk_free_rate,
+                scenario=scenario
+            ) * price_at_start * 0.01))
         else:
             put = out_of_the_money_puts.sample(n=1).iloc[0]
             strike_price = put['strike']
