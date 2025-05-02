@@ -5,6 +5,7 @@ def print_metrics(metrics):
         print(f"{key.replace('_', ' ')}: {value}")
 
 # Stable scenario (original example)
+print("Stable Scenario:")
 stable_metrics = tail_risk_hedge.calculate_portfolio_metrics(
     portfolio_value=100000,
     insurance_ratio=0.01,
@@ -15,7 +16,6 @@ stable_metrics = tail_risk_hedge.calculate_portfolio_metrics(
     option_price=1,
     expiry_date="2025-07-18"
 )
-print("Stable Scenario:")
 print_metrics(stable_metrics)
 
 # Crash scenario
@@ -41,7 +41,8 @@ stable_metrics = tail_risk_hedge.calculate_portfolio_metrics(
     insurance_ratio=0.01,
     **stable_data
 )
-print("Dynamic Stable Scenario:")
+
+print("\nDynamic Stable Scenario:")
 print_metrics(stable_metrics)
 
 crash_metrics = tail_risk_hedge.calculate_portfolio_metrics(

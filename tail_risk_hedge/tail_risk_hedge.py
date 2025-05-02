@@ -28,12 +28,12 @@ class YahooFinanceDataProvider:
         if self._is_cache_valid():
             try:
                 with open(self.cache_file, 'rb') as f:
-                    data = pickle.load(f)
+                    return pickle.load(f)
             except (FileNotFoundError, pickle.PickleError):
                 pass
-        else:
-            data = self._fetch_historical_data()
-            self._save_cache(data)
+
+        data = self._fetch_historical_data()
+        self._save_cache(data)
         if data.empty:
             raise ValueError('No historical data available')
         else:
