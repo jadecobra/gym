@@ -1,11 +1,11 @@
 import tail_risk_hedge
 
 
-def print_header(scenario):
+def print_header(scenario, delimiter_length=60):
     print('\n')
-    print('-'*40)
-    print(f'\t\t\t{scenario} scenario')
-    print('-'*40)
+    print('-'*delimiter_length)
+    print(f'\t{scenario} scenario')
+    print('-'*delimiter_length)
 
 
 def print_metrics(metrics):
