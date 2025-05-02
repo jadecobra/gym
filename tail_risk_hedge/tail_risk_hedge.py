@@ -8,7 +8,6 @@ import time
 import yfinance
 
 class YahooFinanceDataProvider:
-
     def __init__(
         self, ticker='SPY', seed=None, cache_file='price_cache.pkl',
         put_options_cache_file='put_options_cache.pkl', cache_duration=86400
@@ -32,12 +31,11 @@ class YahooFinanceDataProvider:
                     return pickle.load(f)
             except (FileNotFoundError, pickle.PickleError):
                 pass
-        else:
-            data = self._fetch_historical_data()
-            self._save_cache(data, self.cache_file)
-            if data.empty:
-                raise ValueError('No historical data available')
-            return data
+        data = self._fetch_historical_data()
+        self._save_cache(data, self.cache_file)
+        if data.empty:
+            raise ValueError('No historical data available')
+        return data
 
     def _load_put_options_cache(self):
         if self._is_cache_valid(self.put_options_cache_file):
@@ -92,9 +90,7 @@ class YahooFinanceDataProvider:
 
         if not closest_expiration_date:
             raise ValueError('No suitable option expiration found')
-            return pandas.Timestamp(
-                closest_expiration_date, unit='s'
-            ).strftime('%Y-%m-%d')
+        return pandas.Timestamp(closest_expiration_date, unit='s').strftime('%Y-%m-%d')
 
     def _fetch_option_chain(self, price_at_start):
         # Check if valid cache exists for the price range
@@ -104,28 +100,22 @@ class YahooFinanceDataProvider:
                 price_at_start * 0.9 >= cached_price_range[0]):
                 return cached_puts, cached_expiry
 
-        target_date = (
-            datetime.datetime.now() + datetime.timedelta(days=60)
-        ).date()
+        target_date = (datetime.datetime.now() + datetime.timedelta(days=60)).date()
         closest_expiration_date = self.get_closest_expiration_date(
             self.ticker_data.options, target_date
         )
-
         try:
             option_chain = self.ticker_data.option_chain(closest_expiration_date)
+            puts = option_chain.puts
+            out_of_the_money_puts = puts[
+                (puts['strike'] <= price_at_start * 0.9) &
+                (puts['strike'] >= price_at_start * 0.7)
+            ]
         except yfinance.exceptions.YFRateLimitError as error:
             print(f'Warning: Failed to fetch option chain: {error}')
-            return None, None
+            out_of_the_money_puts, puts = None, None
 
-        puts = option_chain.puts
-        out_of_the_money_puts = puts[
-            (puts['strike'] <= price_at_start * 0.9) &
-            (puts['strike'] >= price_at_start * 0.7)
-        ]
-        if out_of_the_money_puts.empty:
-            return None, None
-
-        # Cache the filtered puts, expiry, and price range
+        # Cache the result, even if empty, to avoid repeated failed fetches
         price_range = (price_at_start * 0.7, price_at_start * 0.9)
         self.put_options_cache = (out_of_the_money_puts, closest_expiration_date, price_range)
         self._save_cache(self.put_options_cache, self.put_options_cache_file)

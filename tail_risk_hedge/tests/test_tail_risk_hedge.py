@@ -74,6 +74,8 @@ class TestTailRiskHedge(unittest.TestCase):
                 time.time() - 2 * self.data_provider.cache_duration
             )
         )
+        # Clear in-memory cache to force re-evaluation of cache file
+        self.data_provider.put_options_cache = None
         # Fetch again to trigger refresh
         self.data_provider._fetch_option_chain(price_at_start)
         self.assertTrue(os.path.exists(self.put_options_cache_file), "New put options cache not created")
