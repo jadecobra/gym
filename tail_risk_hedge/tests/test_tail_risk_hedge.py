@@ -11,17 +11,19 @@ class TestTailRiskHedge(unittest.TestCase):
         self.portfolio_value = random.uniform(10000, 1000000)
         self.insurance_ratio = random.uniform(0.01, 0.05)
         self.cache_file = "test_price_cache.pkl"
+        self.put_options_cache_file = "test_put_options_cache.pkl"
         self.data_provider = tail_risk_hedge.YahooFinanceDataProvider(
-            seed=42, cache_file=self.cache_file
+            seed=42, cache_file=self.cache_file, put_options_cache_file=self.put_options_cache_file
         )
 
     def tearDown(self):
-        if os.path.exists(self.cache_file):
-            os.remove(self.cache_file)
+        for cache_file in [self.cache_file, self.put_options_cache_file]:
+            if os.path.exists(cache_file):
+                os.remove(cache_file)
 
     def test_cache_usage(self):
         data = self.data_provider._fetch_historical_data()
-        self.data_provider._save_cache(data)
+        self.data_provider._save_cache(data, self.cache_file)
         os.utime(self.cache_file, (time.time(), time.time()))
         self.assertTrue(
             self.data_provider._load_data().equals(data), "Cache not used correctly"
@@ -29,7 +31,7 @@ class TestTailRiskHedge(unittest.TestCase):
 
     def test_cache_refresh(self):
         data = self.data_provider._fetch_historical_data()
-        self.data_provider._save_cache(data)
+        self.data_provider._save_cache(data, self.cache_file)
         os.utime(
             self.cache_file,
             (
@@ -41,6 +43,39 @@ class TestTailRiskHedge(unittest.TestCase):
         self.assertTrue(os.path.exists(self.cache_file), "New cache not created")
         cache_mtime = os.path.getmtime(self.cache_file)
         self.assertTrue(time.time() - cache_mtime < 60, "Cache not refreshed")
+
+    def test_put_options_cache_usage(self):
+        price_at_start = self.data_provider.historical_data['Close'].iloc[-1]
+        puts, expiry = self.data_provider._fetch_option_chain(price_at_start)
+        if puts is not None:
+            self.data_provider._save_cache(
+                (puts, expiry, (price_at_start * 0.7, price_at_start * 0.9)),
+                self.put_options_cache_file
+            )
+            os.utime(self.put_options_cache_file, (time.time(), time.time()))
+            cached_puts, cached_expiry = self.data_provider._fetch_option_chain(price_at_start)
+            self.assertTrue(cached_puts.equals(puts), "Put options cache not used correctly")
+            self.assertEqual(cached_expiry, expiry, "Put options expiry cache not used correctly")
+
+    def test_put_options_cache_refresh(self):
+        price_at_start = self.data_provider.historical_data['Close'].iloc[-1]
+        puts, expiry = self.data_provider._fetch_option_chain(price_at_start)
+        if puts is not None:
+            self.data_provider._save_cache(
+                (puts, expiry, (price_at_start * 0.7, price_at_start * 0.9)),
+                self.put_options_cache_file
+            )
+            os.utime(
+                self.put_options_cache_file,
+                (
+                    time.time() - 2 * self.data_provider.cache_duration,
+                    time.time() - 2 * self.data_provider.cache_duration
+                )
+            )
+            self.data_provider._fetch_option_chain(price_at_start)
+            self.assertTrue(os.path.exists(self.put_options_cache_file), "New put options cache not created")
+            cache_mtime = os.path.getmtime(self.put_options_cache_file)
+            self.assertTrue(time.time() - cache_mtime < 60, "Put options cache not refreshed")
 
     def test_implied_volatility(self):
         self.assertTrue(0.1 <= self.data_provider._estimate_implied_volatility(lookback=60) <= 0.5)
@@ -62,7 +97,6 @@ class TestTailRiskHedge(unittest.TestCase):
             self.assertIsNone(out_of_the_money_puts)
             self.assertIsNone(put_expiration_date)
 
-
     def test_option_strategy_format(self):
         data = self.data_provider.generate_scenario("stable")
         metrics = tail_risk_hedge.calculate_portfolio_metrics(
@@ -71,11 +105,7 @@ class TestTailRiskHedge(unittest.TestCase):
             **data
         )
         self.assertEqual(
-            tail_risk_hedge.calculate_portfolio_metrics(
-                portfolio_value=self.portfolio_value,
-                insurance_ratio=self.insurance_ratio,
-                **data
-            )["option_strategy"],
+            metrics["option_strategy"],
             f'buy {metrics["number_of_contracts"]} put contracts at {data["strike_price"]} strike price to expire on {data["expiry_date"]}'
         )
 
@@ -167,10 +197,9 @@ class TestTailRiskHedge(unittest.TestCase):
         )
         self.assertAlmostEqual(metrics["equity_at_start"], round(equity_start, 2))
         self.assertAlmostEqual(metrics["insurance_strategy_cost"], round(insurance_budget, 2))
-        self.assertAlmostEqual(metrics["put_option_price"], data["option_price"])
+        self.assertAlmostEqual(metrics["put_option_price"], round(data["option_price"], 2))
         self.assertAlmostEqual(
             metrics["portfolio_value_at_end_with_insurance"],
-            # equity_end
             round(equity_end + (option_payoff * contracts * 100), 2)
         )
         self.assertEqual(

@@ -17,6 +17,7 @@ TODO
 * Add support for multiple expiration dates or strike price ranges.
 * optimize tests
 * optimize code
+* Support caching multiple expiration dates
 
 
 DONE
