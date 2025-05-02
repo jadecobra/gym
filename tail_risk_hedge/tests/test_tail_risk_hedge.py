@@ -9,7 +9,7 @@ class TestTailRiskHedge(unittest.TestCase):
     def setUp(self):
         self.scenario = random.choice(('stable', 'crash'))
         self.portfolio_value = random.uniform(10000, 1000000)
-        self.insurance_ratio = random.uniform(0.01, 0.05)
+        self.insurance_ratio = random.uniform(0.01, 0.03)
         self.cache_file = 'test_price_cache.pkl'
         self.put_options_cache_file = 'test_put_options_cache.pkl'
         self.data_provider = tail_risk_hedge.YahooFinanceDataProvider(

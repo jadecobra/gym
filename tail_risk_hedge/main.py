@@ -1,4 +1,5 @@
 import tail_risk_hedge
+import random
 
 def print_header(scenario, delimiter_length=60):
     print('\n')
@@ -13,21 +14,24 @@ def print_metrics(metrics):
 data_provider = tail_risk_hedge.YahooFinanceDataProvider(
     seed=42, cache_file="price_cache.pkl", put_options_cache_file="put_options_cache.pkl"
 )
+portfolio_value = 100000
+insurance_ratio = random.uniform(0.01, 0.03)
 
-print_header("dynamic stable")
+
+print_header("stable")
 print_metrics(
     tail_risk_hedge.calculate_portfolio_metrics(
-        portfolio_value=100000,
-        insurance_ratio=0.01,
+        portfolio_value=portfolio_value,
+        insurance_ratio=insurance_ratio,
         **data_provider.generate_scenario("stable")
     )
 )
 
-print_header("dynamic crash")
+print_header("crash")
 print_metrics(
     tail_risk_hedge.calculate_portfolio_metrics(
-        portfolio_value=100000,
-        insurance_ratio=0.01,
+        portfolio_value=portfolio_value,
+        insurance_ratio=insurance_ratio,
         **data_provider.generate_scenario("crash")
     )
 )
