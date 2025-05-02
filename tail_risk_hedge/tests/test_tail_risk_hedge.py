@@ -9,7 +9,7 @@ class TestTailRiskHedge(unittest.TestCase):
 
     def setUp(self):
         self.portfolio_value = random.uniform(10000, 1000000)
-        self.hedge_ratio = random.uniform(0.01, 0.05)
+        self.insurance_ratio = random.uniform(0.01, 0.05)
         self.cache_file = "test_spy_cache.pkl"
         self.data_provider = tail_risk_hedge.YahooFinanceDataProvider(
             seed=42, cache_file=self.cache_file
@@ -67,7 +67,7 @@ class TestTailRiskHedge(unittest.TestCase):
         data = self.data_provider.generate_scenario("stable")
         metrics = tail_risk_hedge.calculate_portfolio_metrics(
             portfolio_value=self.portfolio_value,
-            hedge_ratio=self.hedge_ratio,
+            insurance_ratio=self.insurance_ratio,
             **data
         )
         strategy = metrics["option_strategy"]
@@ -88,17 +88,17 @@ class TestTailRiskHedge(unittest.TestCase):
         with self.assertRaises(ValueError):
             tail_risk_hedge.calculate_equity_value(-100, 0.99)
 
-    def test_calculate_hedge_budget(self):
-        budget = tail_risk_hedge.calculate_hedge_budget(self.portfolio_value, self.hedge_ratio)
-        self.assertAlmostEqual(budget, self.portfolio_value * self.hedge_ratio)
-        self.assertEqual(tail_risk_hedge.calculate_hedge_budget(0, self.hedge_ratio), 0)
+    def test_calculate_insurance_budget(self):
+        budget = tail_risk_hedge.calculate_insurance_budget(self.portfolio_value, self.insurance_ratio)
+        self.assertAlmostEqual(budget, self.portfolio_value * self.insurance_ratio)
+        self.assertEqual(tail_risk_hedge.calculate_insurance_budget(0, self.insurance_ratio), 0)
         with self.assertRaises(ValueError):
-            tail_risk_hedge.calculate_hedge_budget(self.portfolio_value, -0.01)
+            tail_risk_hedge.calculate_insurance_budget(self.portfolio_value, -0.01)
         with self.assertRaises(ValueError):
-            tail_risk_hedge.calculate_hedge_budget(-100000, self.hedge_ratio)
+            tail_risk_hedge.calculate_insurance_budget(-100000, self.insurance_ratio)
 
     def test_calculate_number_of_contracts_to_purchase(self):
-        hedge_budget = self.portfolio_value * self.hedge_ratio
+        hedge_budget = self.portfolio_value * self.insurance_ratio
         option_price = random.uniform(0.5, 5)
         number_contracts_to_purchase = tail_risk_hedge.calculate_number_of_contracts_to_purchase(hedge_budget, option_price)
         self.assertEqual(number_contracts_to_purchase, int(hedge_budget / (option_price * 100)))
@@ -151,26 +151,26 @@ class TestTailRiskHedge(unittest.TestCase):
         data = self.data_provider.generate_scenario(scenario)
         metrics = tail_risk_hedge.calculate_portfolio_metrics(
             portfolio_value=self.portfolio_value,
-            hedge_ratio=self.hedge_ratio,
+            insurance_ratio=self.insurance_ratio,
             **data
         )
         spy_change = (data["price_at_end"] - data["price_at_start"]) / data["price_at_start"]
-        equity_start = self.portfolio_value * (1 - self.hedge_ratio)
+        equity_start = self.portfolio_value * (1 - self.insurance_ratio)
         equity_end = equity_start * (1 + spy_change)
-        budget = self.portfolio_value * self.hedge_ratio
+        budget = self.portfolio_value * self.insurance_ratio
 
         self.assertEqual(metrics["scenario"], scenario)
         self.assertAlmostEqual(metrics["spy_value_percent_change"], spy_change)
         self.assertAlmostEqual(metrics["equity_at_start"], equity_start)
-        self.assertAlmostEqual(metrics["hedge_strategy_cost"], budget)
+        self.assertAlmostEqual(metrics["insurance_strategy_cost"], budget)
         self.assertAlmostEqual(metrics["put_option_price"], data["option_price"])
-        self.assertAlmostEqual(metrics["portfolio_value_at_end_with_hedge"], equity_end)
+        self.assertAlmostEqual(metrics["portfolio_value_at_end_with_insurance"], equity_end)
         self.assertEqual(
             metrics["number_of_contracts"],
             int(budget / (data["option_price"] * 100))
         )
         self.assertAlmostEqual(
-            metrics["portfolio_value_at_end_without_hedge"],
+            metrics["portfolio_value_at_end_without_insurance"],
             self.portfolio_value * (1 + spy_change)
         )
 
@@ -179,13 +179,13 @@ class TestTailRiskHedge(unittest.TestCase):
         with self.assertRaises(ValueError):
             tail_risk_hedge.calculate_portfolio_metrics(
                 portfolio_value=-self.portfolio_value,
-                hedge_ratio=self.hedge_ratio,
+                insurance_ratio=self.insurance_ratio,
                 **data
             )
         with self.assertRaises(ValueError):
             tail_risk_hedge.calculate_portfolio_metrics(
                 portfolio_value=self.portfolio_value,
-                hedge_ratio=-self.hedge_ratio,
+                insurance_ratio=-self.insurance_ratio,
                 **data
             )
 

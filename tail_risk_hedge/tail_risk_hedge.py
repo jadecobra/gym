@@ -160,21 +160,21 @@ def calculate_equity_value(portfolio_value, equity_ratio):
         raise ValueError("Portfolio value cannot be negative")
     return portfolio_value * equity_ratio
 
-def calculate_hedge_budget(portfolio_value, hedge_ratio):
+def calculate_insurance_budget(portfolio_value, insurance_ratio):
     'return the total amount to spend on the strategy'
     if portfolio_value < 0:
         raise ValueError("Portfolio value cannot be negative")
-    if hedge_ratio < 0:
-        raise ValueError("Hedge ratio cannot be negative")
-    return portfolio_value * hedge_ratio
+    if insurance_ratio < 0:
+        raise ValueError("insurance ratio cannot be negative")
+    return portfolio_value * insurance_ratio
 
-def calculate_number_of_contracts_to_purchase(hedge_budget, option_price):
-    'return number of contracts to purchase based on the hedge budget'
+def calculate_number_of_contracts_to_purchase(insurance_budget, option_price):
+    'return number of contracts to purchase based on the insurance budget'
     if option_price <= 0:
         raise ValueError("Option price must be positive")
-    if hedge_budget < 0:
-        raise ValueError("Hedge budget cannot be negative")
-    return int(hedge_budget / (option_price * 100))
+    if insurance_budget < 0:
+        raise ValueError("insurance budget cannot be negative")
+    return int(insurance_budget / (option_price * 100))
 
 def calculate_option_payoff(strike_price, price_at_end, option_value_end):
     if price_at_end < 0:
@@ -186,23 +186,31 @@ def calculate_spy_value_change(price_at_start, price_at_end):
         raise ValueError("SPY end price must be positive")
     return (price_at_end - price_at_start) / price_at_start
 
-def calculate_portfolio_metrics(*, portfolio_value=0, hedge_ratio=0.1, price_at_start=0, price_at_end=0, strike_price=0, option_value_end=0, option_price=0, expiry_date=0):
+def calculate_portfolio_metrics(
+        *, portfolio_value=0, insurance_ratio=0.1, price_at_start=0, price_at_end=0, strike_price=0, option_value_end=0, option_price=0, expiry_date=0
+    ):
     if portfolio_value < 0:
         raise ValueError("Portfolio value cannot be negative")
-    if hedge_ratio < 0:
-        raise ValueError("Hedge ratio cannot be negative")
+    if insurance_ratio < 0:
+        raise ValueError("insurance ratio cannot be negative")
 
-    equity_ratio = 1 - hedge_ratio
+    equity_ratio = 1 - insurance_ratio
     equity_start = calculate_equity_value(portfolio_value, equity_ratio)
-    hedge_budget = calculate_hedge_budget(portfolio_value, hedge_ratio)
-    contracts = calculate_number_of_contracts_to_purchase(hedge_budget, option_price)
+    insurance_budget = calculate_insurance_budget(portfolio_value, insurance_ratio)
+    contracts = calculate_number_of_contracts_to_purchase(
+        insurance_budget, option_price
+    )
     spy_change = calculate_spy_value_change(price_at_start, price_at_end)
     equity_end = equity_start * (1 + spy_change)
     option_payoff = calculate_option_payoff(strike_price, price_at_end, option_value_end)
-    portfolio_end_with_hedge = equity_end + option_payoff * contracts * 100
-    portfolio_end_without_hedge = portfolio_value * (1 + spy_change)
-    portfolio_change_with_hedge = (portfolio_end_with_hedge - portfolio_value) / portfolio_value
-    portfolio_change_without_hedge = (portfolio_end_without_hedge - portfolio_value) / portfolio_value
+    portfolio_end_with_insurance = equity_end + option_payoff * contracts * 100
+    portfolio_end_without_insurance = portfolio_value * (1 + spy_change)
+    portfolio_change_with_insurance = (
+        (portfolio_end_with_insurance - portfolio_value) / portfolio_value
+    )
+    portfolio_change_without_insurance = (
+        (portfolio_end_without_insurance - portfolio_value) / portfolio_value
+    )
 
     scenario = "stable" if price_at_end >= strike_price else "crash"
     option_strategy = f"buy {contracts} put contracts at {strike_price} strike price to expire on {expiry_date}"
@@ -214,19 +222,19 @@ def calculate_portfolio_metrics(*, portfolio_value=0, hedge_ratio=0.1, price_at_
         "spy_value_percent_change": spy_change,
         "equity_at_start": equity_start,
         "equity_at_end": equity_end,
-        "hedge_strategy_cost": hedge_budget,
-        "hedge_strategy_cost_as_percentage_of_portfolio": hedge_ratio,
+        "insurance_strategy_cost": insurance_budget,
+        "insurance_strategy_cost_as_percentage_of_portfolio": insurance_ratio,
         "number_of_contracts": contracts,
         "put_option_price": option_price,
         "option_strategy": option_strategy,
         "portfolio_value_at_start": portfolio_value,
-        "portfolio_value_at_end_with_hedge": portfolio_end_with_hedge,
-        "portfolio_value_at_end_without_hedge": portfolio_end_without_hedge,
-        "portfolio_value_percent_change_with_hedge": portfolio_change_with_hedge,
-        "portfolio_value_percent_change_without_hedge": portfolio_change_without_hedge,
-        "portfolio_profit_loss_with_hedge": portfolio_end_with_hedge - portfolio_value,
-        "portfolio_profit_loss_without_hedge": portfolio_end_without_hedge - portfolio_value,
-        "difference_between_portfolio_profit_with_hedge_and_without_hedge": (
-            portfolio_end_with_hedge - portfolio_end_without_hedge
+        "portfolio_value_at_end_with_insurance": portfolio_end_with_insurance,
+        "portfolio_value_at_end_without_insurance": portfolio_end_without_insurance,
+        "portfolio_value_percent_change_with_insurance": portfolio_change_with_insurance,
+        "portfolio_value_percent_change_without_insurance": portfolio_change_without_insurance,
+        "portfolio_profit_loss_with_insurance": portfolio_end_with_insurance - portfolio_value,
+        "portfolio_profit_loss_without_insurance": portfolio_end_without_insurance - portfolio_value,
+        "difference_between_portfolio_profit_with_insurance_and_without_insurance": (
+            portfolio_end_with_insurance - portfolio_end_without_insurance
         ),
     }
