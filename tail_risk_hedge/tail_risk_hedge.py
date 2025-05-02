@@ -26,13 +26,23 @@ class YahooFinanceDataProvider:
         self.historical_data = self._load_data()
         self.put_options_cache = self._load_put_options_cache()
 
+    def _is_cache_valid(self, cache_file):
+        if not os.path.exists(cache_file):
+            return False
+        cache_age = time.time() - os.path.getmtime(cache_file)
+        return cache_age < self.cache_duration
+
+    @staticmethod
+    def _load(filename):
+        try:
+            with open(filename, 'rb') as file:
+                return pickle.load(file)
+        except (FileNotFoundError, pickle.PickleError):
+            pass
+
     def _load_data(self):
         if self._is_cache_valid(self.cache_file):
-            try:
-                with open(self.cache_file, 'rb') as f:
-                    return pickle.load(f)
-            except (FileNotFoundError, pickle.PickleError):
-                pass
+            return self._load(self.cache_file)
         data = self._fetch_historical_data()
         self._save_cache(data, self.cache_file)
         if data.empty:
@@ -41,18 +51,8 @@ class YahooFinanceDataProvider:
 
     def _load_put_options_cache(self):
         if self._is_cache_valid(self.put_options_cache_file):
-            try:
-                with open(self.put_options_cache_file, 'rb') as f:
-                    return pickle.load(f)
-            except (FileNotFoundError, pickle.PickleError):
-                pass
+            return self.load(self.put_options_cache_file)
         return None
-
-    def _is_cache_valid(self, cache_file):
-        if not os.path.exists(cache_file):
-            return False
-        cache_age = time.time() - os.path.getmtime(cache_file)
-        return cache_age < self.cache_duration
 
     def _fetch_historical_data(self):
         data = self.ticker_data.history(period='1y', interval='1d')
