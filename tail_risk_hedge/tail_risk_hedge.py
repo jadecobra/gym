@@ -93,13 +93,17 @@ class YahooFinanceDataProvider:
         return pandas.Timestamp(closest_expiration_date, unit='s').strftime('%Y-%m-%d')
 
     def _fetch_option_chain(self, price_at_start):
-        # Check if valid cache exists for the price range
-        if self.put_options_cache is not None:
+        # Check cache validity explicitly
+        if not self._is_cache_valid(self.put_options_cache_file) or self.put_options_cache is None:
+            self.put_options_cache = None
+        else:
+            # Check if cached data is valid for the price range
             cached_puts, cached_expiry, cached_price_range = self.put_options_cache
             if (price_at_start * 0.7 <= cached_price_range[1] and
                 price_at_start * 0.9 >= cached_price_range[0]):
                 return cached_puts, cached_expiry
 
+        # Fetch new data if cache is invalid or price range doesn't match
         target_date = (datetime.datetime.now() + datetime.timedelta(days=60)).date()
         closest_expiration_date = self.get_closest_expiration_date(
             self.ticker_data.options, target_date
@@ -113,7 +117,8 @@ class YahooFinanceDataProvider:
             ]
         except yfinance.exceptions.YFRateLimitError as error:
             print(f'Warning: Failed to fetch option chain: {error}')
-            out_of_the_money_puts, puts = None, None
+            out_of_the_money_puts = None
+            puts = None
 
         # Cache the result, even if empty, to avoid repeated failed fetches
         price_range = (price_at_start * 0.7, price_at_start * 0.9)
