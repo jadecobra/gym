@@ -132,18 +132,18 @@ class YahooFinanceDataProvider:
             raise ValueError('Insufficient historical data')
         return random.randint(0, length-40)
 
-    def get_price_at_end(self, scenario_type, start_index, price_at_start):
+    def get_price_at_end(self, scenario, start_index, price_at_start):
         end_idx = random.randint(start_index + 1, start_index + 40)
         price_at_end = self.historical_data.loc[end_idx, 'Close']
 
-        if scenario_type != 'stable' and price_at_end > price_at_start * 0.9:
+        if scenario != 'stable' and price_at_end > price_at_start * 0.9:
             price_at_end = price_at_start * random.uniform(0.6, 0.9)
         else:
             if price_at_end > price_at_start * 1.2 or price_at_end < price_at_start * 0.9:
                 price_at_end = price_at_start * random.uniform(0.95, 1.1)
         return price_at_end
 
-    def generate_scenario(self, scenario_type='stable'):
+    def generate_scenario(self, scenario='stable'):
         start_index = self.get_start_index()
         price_at_start = self.historical_data.loc[start_index, 'Close']
 
@@ -155,7 +155,7 @@ class YahooFinanceDataProvider:
             ).strftime('%Y-%m-%d')
             strike_price = price_at_start * random.uniform(0.7, 0.9)
             volatility = self._estimate_implied_volatility()
-            if scenario_type == 'crash':
+            if scenario == 'crash':
                 volatility *= 1.5
             option_price = max(0.5, min(10, volatility * price_at_start * 0.01))
         else:
@@ -165,7 +165,7 @@ class YahooFinanceDataProvider:
             if option_price <= 0:
                 option_price = put.get('bid', 0.5) or 0.5
 
-        price_at_end = self.get_price_at_end(scenario_type, start_index, price_at_start)
+        price_at_end = self.get_price_at_end(scenario, start_index, price_at_start)
 
         return {
             'price_at_start': price_at_start,
