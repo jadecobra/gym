@@ -4,9 +4,9 @@ import re
 import tail_risk_hedge
 import time
 import unittest
+import pandas as pd
 
 class TestTailRiskHedge(unittest.TestCase):
-
     def setUp(self):
         self.portfolio_value = random.uniform(10000, 1000000)
         self.insurance_ratio = random.uniform(0.01, 0.05)
@@ -47,35 +47,38 @@ class TestTailRiskHedge(unittest.TestCase):
     def test_put_options_cache_usage(self):
         price_at_start = self.data_provider.historical_data['Close'].iloc[-1]
         puts, expiry = self.data_provider._fetch_option_chain(price_at_start)
+        self.data_provider._save_cache(
+            (puts, expiry, (price_at_start * 0.7, price_at_start * 0.9)),
+            self.put_options_cache_file
+        )
+        os.utime(self.put_options_cache_file, (time.time(), time.time()))
+        cached_puts, cached_expiry = self.data_provider._fetch_option_chain(price_at_start)
         if puts is not None:
-            self.data_provider._save_cache(
-                (puts, expiry, (price_at_start * 0.7, price_at_start * 0.9)),
-                self.put_options_cache_file
-            )
-            os.utime(self.put_options_cache_file, (time.time(), time.time()))
-            cached_puts, cached_expiry = self.data_provider._fetch_option_chain(price_at_start)
             self.assertTrue(cached_puts.equals(puts), "Put options cache not used correctly")
             self.assertEqual(cached_expiry, expiry, "Put options expiry cache not used correctly")
+        else:
+            self.assertIsNone(cached_puts)
+            self.assertEqual(cached_expiry, expiry)
 
     def test_put_options_cache_refresh(self):
         price_at_start = self.data_provider.historical_data['Close'].iloc[-1]
         puts, expiry = self.data_provider._fetch_option_chain(price_at_start)
-        if puts is not None:
-            self.data_provider._save_cache(
-                (puts, expiry, (price_at_start * 0.7, price_at_start * 0.9)),
-                self.put_options_cache_file
+        self.data_provider._save_cache(
+            (puts, expiry, (price_at_start * 0.7, price_at_start * 0.9)),
+            self.put_options_cache_file
+        )
+        os.utime(
+            self.put_options_cache_file,
+            (
+                time.time() - 2 * self.data_provider.cache_duration,
+                time.time() - 2 * self.data_provider.cache_duration
             )
-            os.utime(
-                self.put_options_cache_file,
-                (
-                    time.time() - 2 * self.data_provider.cache_duration,
-                    time.time() - 2 * self.data_provider.cache_duration
-                )
-            )
-            self.data_provider._fetch_option_chain(price_at_start)
-            self.assertTrue(os.path.exists(self.put_options_cache_file), "New put options cache not created")
-            cache_mtime = os.path.getmtime(self.put_options_cache_file)
-            self.assertTrue(time.time() - cache_mtime < 60, "Put options cache not refreshed")
+        )
+        # Fetch again to trigger refresh
+        self.data_provider._fetch_option_chain(price_at_start)
+        self.assertTrue(os.path.exists(self.put_options_cache_file), "New put options cache not created")
+        cache_mtime = os.path.getmtime(self.put_options_cache_file)
+        self.assertTrue(time.time() - cache_mtime < 60, "Put options cache not refreshed")
 
     def test_implied_volatility(self):
         self.assertTrue(0.1 <= self.data_provider._estimate_implied_volatility(lookback=60) <= 0.5)
