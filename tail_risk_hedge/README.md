@@ -1,6 +1,5 @@
 TODO
 
-* cache options data info
 * fix calculate_option_payoff - currently does not use strike_price but accepts it as input
 * fix getting options expiration date
 * use calculated risk-free rate - 30 year treasury
@@ -21,6 +20,7 @@ TODO
 
 
 DONE
+* cache options data info
 * simulate options pricing
 * calculate hedge
 * display metrics

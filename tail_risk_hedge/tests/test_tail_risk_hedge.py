@@ -146,22 +146,21 @@ class TestTailRiskHedge(unittest.TestCase):
     def test_calculate_option_payoff_stable(self):
         data = self.data_provider.generate_scenario("stable")
         payoff = tail_risk_hedge.calculate_option_payoff(
-            data["strike_price"], data["price_at_end"], data["option_value_end"]
+            data["strike_price"], data["price_at_end"]
         )
-        self.assertEqual(payoff, 0)
+        self.assertEqual(payoff, 0, "Payoff should be 0 for stable scenario (price_at_end >= strike_price)")
 
     def test_calculate_option_payoff_crash(self):
         data = self.data_provider.generate_scenario("crash")
         payoff = tail_risk_hedge.calculate_option_payoff(
-            data["strike_price"], data["price_at_end"], data["option_value_end"]
+            data["strike_price"], data["price_at_end"]
         )
-        self.assertEqual(payoff, data["option_value_end"])
+        expected_payoff = max(0, data["strike_price"] - data["price_at_end"])
+        self.assertEqual(payoff, expected_payoff, "Payoff incorrect for crash scenario")
         with self.assertRaises(ValueError):
-            tail_risk_hedge.calculate_option_payoff(
-                data["strike_price"],
-                -350,
-                data["option_value_end"]
-            )
+            tail_risk_hedge.calculate_option_payoff(data["strike_price"], -350)
+        with self.assertRaises(ValueError):
+            tail_risk_hedge.calculate_option_payoff(-100, data["price_at_end"])
 
     def test_calculate_price_value_change_stable(self):
         data = self.data_provider.generate_scenario("stable")
@@ -192,7 +191,7 @@ class TestTailRiskHedge(unittest.TestCase):
         equity_end = equity_start * (1 + price_change)
         insurance_budget = self.portfolio_value * self.insurance_ratio
         option_payoff = tail_risk_hedge.calculate_option_payoff(
-            data['strike_price'], data['price_at_end'], data['option_value_end'])
+            data['strike_price'], data['price_at_end'])
         contracts = tail_risk_hedge.calculate_number_of_contracts_to_purchase(
             insurance_budget, data['option_price']
         )
