@@ -1,22 +1,21 @@
 import tail_risk_hedge
-import random
 
 def print_header(scenario, delimiter_length=60):
-    print('\n')
-    print('-'*delimiter_length)
-    print(f'\t{scenario} scenario')
-    print('-'*delimiter_length)
+    print("\n" + "-" * delimiter_length)
+    print(f"\t{scenario} scenario")
+    print("-" * delimiter_length)
 
 def print_metrics(metrics):
     for key, value in metrics.items():
         print(f"{key.replace('_', ' ')}: {value}")
 
 data_provider = tail_risk_hedge.YahooFinanceDataProvider(
-    seed=42, cache_file="price_cache.pkl", put_options_cache_file="put_options_cache.pkl"
+    cache_file="price_cache.pkl",
+    put_options_cache_file="put_options_cache.pkl",
+    seed=42
 )
 portfolio_value = 100000
-insurance_ratio = random.uniform(0.01, 0.03)
-
+insurance_ratio = 0.01
 
 print_header("stable")
 print_metrics(
