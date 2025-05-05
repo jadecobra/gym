@@ -22,10 +22,10 @@ class YahooFinanceDataProvider:
         self.cache_duration = cache_duration
         self.risk_free_rate = 0.04
         self.time_to_expiry = 2 / 12
-        self.historical_data = self._load_data()
+        self.historical_data = self._load_historical_data()
         self.put_options_cache = self._load_put_options_cache()
 
-    def _load_data(self):
+    def _load_historical_data(self):
         if self._is_cache_valid(self.cache_file):
             try:
                 with open(self.cache_file, 'rb') as f:
@@ -66,24 +66,24 @@ class YahooFinanceDataProvider:
         except OSError as e:
             print(f'Warning: Failed to save cache to {cache_file}: {e}')
 
-    def _binomial_tree_price(self, S, K, T, r, sigma, N=100):
+    def _binomial_tree_price(self, price_at_start, strike_price, time_to_expiry, risk_free_rate, sigma, N=100):
         """Calculate put option price using a binomial tree."""
-        dt = T / N
+        dt = time_to_expiry / N
         u = numpy.exp(sigma * numpy.sqrt(dt))
         d = 1 / u
-        p = (numpy.exp(r * dt) - d) / (u - d)
+        p = (numpy.exp(risk_free_rate * dt) - d) / (u - d)
         if not 0 <= p <= 1:
             return None  # Invalid probabilities
-        discount = numpy.exp(-r * dt)
+        discount = numpy.exp(-risk_free_rate * dt)
 
         # Initialize asset prices at maturity
         stock_prices = numpy.zeros(N + 1)
-        stock_prices[0] = S * (d ** N)
+        stock_prices[0] = price_at_start * (d ** N)
         for i in range(1, N + 1):
             stock_prices[i] = stock_prices[i - 1] * u / d
 
         # Initialize option values at maturity (put option)
-        option_values = numpy.maximum(0, K - stock_prices)
+        option_values = numpy.maximum(0, strike_price - stock_prices)
 
         # Backward induction
         for step in range(N - 1, -1, -1):
@@ -92,8 +92,8 @@ class YahooFinanceDataProvider:
                     p * option_values[i + 1] + (1 - p) * option_values[i]
                 )
                 # Early exercise for American option
-                stock_price = S * (u ** (step - i)) * (d ** i)
-                option_values[i] = max(option_values[i], K - stock_price)
+                stock_price = price_at_start * (u ** (step - i)) * (d ** i)
+                option_values[i] = max(option_values[i], strike_price - stock_price)
 
         return option_values[0]
 
