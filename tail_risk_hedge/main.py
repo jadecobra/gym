@@ -12,6 +12,7 @@ def print_metrics(metrics):
 data_provider = tail_risk_hedge.YahooFinanceDataProvider(
     cache_file="price_cache.pkl",
     put_options_cache_file="put_options_cache.pkl",
+    vix_cache_file="vix_cache.pkl",
     seed=42
 )
 portfolio_value = 100000

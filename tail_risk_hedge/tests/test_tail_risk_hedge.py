@@ -81,15 +81,19 @@ class TestTailRiskHedge(unittest.TestCase):
         self.assertEqual(cached_vol, volatility, "VIX cache not used correctly")
 
     def test_vix_cache_refresh(self):
-        volatility = self.data_provider._get_vix_volatility(scenario="stable")
-        self.data_provider._save_cache(volatility, self.vix_cache_file)
+        # Create an expired cache
+        initial_vol = 0.2
+        self.data_provider._save_cache(initial_vol, self.vix_cache_file)
         os.utime(
             self.vix_cache_file,
             (time.time() - 2 * self.data_provider.cache_duration, time.time() - 2 * self.data_provider.cache_duration)
         )
-        self.data_provider._get_vix_volatility(scenario="stable")
+        # Force refresh by calling _get_vix_volatility
+        new_vol = self.data_provider._get_vix_volatility(scenario="stable")
         self.assertTrue(os.path.exists(self.vix_cache_file), "VIX cache not created")
         self.assertLess(time.time() - os.path.getmtime(self.vix_cache_file), 60, "VIX cache not refreshed")
+        cached_vol = self.data_provider._load_vix_cache()
+        self.assertEqual(cached_vol, new_vol, "VIX cache not updated with new volatility")
 
     def test_calculate_historical_volatility(self):
         volatility = self.data_provider._calculate_historical_volatility(lookback=60)

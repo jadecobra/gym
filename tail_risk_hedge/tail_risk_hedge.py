@@ -8,18 +8,20 @@ import time
 import yfinance
 
 class YahooFinanceDataProvider:
-    def __init__(self, *, ticker="SPY", seed=None, cache_file="price_cache.pkl", put_options_cache_file="put_options_cache.pkl", cache_duration=86400):
+    def __init__(self, *, ticker="SPY", seed=None, cache_file="price_cache.pkl", put_options_cache_file="put_options_cache.pkl", vix_cache_file="vix_cache.pkl", cache_duration=86400):
         if seed is not None:
             random.seed(seed)
         self.ticker = ticker
         self.ticker_data = yfinance.Ticker(ticker)
         self.cache_file = cache_file
         self.put_options_cache_file = put_options_cache_file
+        self.vix_cache_file = vix_cache_file
         self.cache_duration = cache_duration
         self.risk_free_rate = 0.04
         self.time_to_expiry = 2 / 12
         self.historical_data = self._load_historical_data()
         self.put_options_cache = self._load_put_options_cache()
+        self.vix_cache = self._load_vix_cache()
 
     def _load_historical_data(self):
         if self._is_cache_valid(self.cache_file):
@@ -38,6 +40,15 @@ class YahooFinanceDataProvider:
         if self._is_cache_valid(self.put_options_cache_file):
             try:
                 with open(self.put_options_cache_file, "rb") as f:
+                    return pickle.load(f)
+            except (FileNotFoundError, pickle.PickleError):
+                pass
+        return None
+
+    def _load_vix_cache(self):
+        if self._is_cache_valid(self.vix_cache_file):
+            try:
+                with open(self.vix_cache_file, "rb") as f:
                     return pickle.load(f)
             except (FileNotFoundError, pickle.PickleError):
                 pass
@@ -63,14 +74,20 @@ class YahooFinanceDataProvider:
             print(f"Warning: Failed to save cache to {cache_file}: {e}")
 
     def _get_vix_volatility(self, scenario="stable"):
+        if self.vix_cache is not None:
+            volatility = self.vix_cache
+            return volatility if scenario != "crash" else volatility * 1.5
+
         try:
             vix_data = yfinance.Ticker("^VIX").history(period="1d")
             if not vix_data.empty:
-                vix = vix_data["Close"].iloc[-1] / 100
-                return vix if scenario != "crash" else vix * 1.5
+                volatility = vix_data["Close"].iloc[-1] / 100
+                self.vix_cache = volatility
+                self._save_cache(volatility, self.vix_cache_file)
+                return volatility if scenario != "crash" else volatility * 1.5
         except Exception as e:
             print(f"Warning: Failed to fetch VIX: {e}")
-        return 0.2
+        return 0.2 if scenario != "crash" else 0.3
 
     def _calculate_historical_volatility(self, lookback=60):
         if len(self.historical_data) < lookback:

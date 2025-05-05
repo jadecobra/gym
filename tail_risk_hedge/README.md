@@ -1,5 +1,6 @@
 TODO
 
+* abstract _load_historical_data, _load_put_options_cache and _load_vix_cache
 * implement cache manager for unified cache handling across data sources - VIX, options, historical data
 * cache VIX data
 * replace option_price=1.0 with more robust default to improve realism
