@@ -27,7 +27,8 @@ class TestTailRiskHedge(unittest.TestCase):
         self.data_provider._save_cache(data, self.cache_file)
         os.utime(self.cache_file, (time.time(), time.time()))
         self.assertTrue(
-            self.data_provider._load_data().equals(data), 'Cache not used correctly'
+            self.data_provider._load_historical_data().equals(data),
+            'Cache not used correctly'
         )
 
     def test_cache_refresh(self):
@@ -40,7 +41,7 @@ class TestTailRiskHedge(unittest.TestCase):
                 time.time() - 2 * self.data_provider.cache_duration
             )
         )
-        self.data_provider._load_data()
+        self.data_provider._load_historical_data()
         self.assertTrue(os.path.exists(self.cache_file), 'New cache not created')
         cache_mtime = os.path.getmtime(self.cache_file)
         self.assertTrue(time.time() - cache_mtime < 60, 'Cache not refreshed')

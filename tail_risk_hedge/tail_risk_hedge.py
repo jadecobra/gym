@@ -4,10 +4,9 @@ import os
 import pandas
 import pickle
 import random
-import scipy
 import time
 import yfinance
-
+from scipy.optimize import bisect
 
 class YahooFinanceDataProvider:
     def __init__(
@@ -26,23 +25,13 @@ class YahooFinanceDataProvider:
         self.historical_data = self._load_data()
         self.put_options_cache = self._load_put_options_cache()
 
-    def _is_cache_valid(self, cache_file):
-        if not os.path.exists(cache_file):
-            return False
-        cache_age = time.time() - os.path.getmtime(cache_file)
-        return cache_age < self.cache_duration
-
-    @staticmethod
-    def _load(filename):
-        try:
-            with open(filename, 'rb') as file:
-                return pickle.load(file)
-        except (FileNotFoundError, pickle.PickleError):
-            pass
-
     def _load_data(self):
         if self._is_cache_valid(self.cache_file):
-            return self._load(self.cache_file)
+            try:
+                with open(self.cache_file, 'rb') as f:
+                    return pickle.load(f)
+            except (FileNotFoundError, pickle.PickleError):
+                pass
         data = self._fetch_historical_data()
         self._save_cache(data, self.cache_file)
         if data.empty:
@@ -51,8 +40,18 @@ class YahooFinanceDataProvider:
 
     def _load_put_options_cache(self):
         if self._is_cache_valid(self.put_options_cache_file):
-            return self.load(self.put_options_cache_file)
+            try:
+                with open(self.put_options_cache_file, 'rb') as f:
+                    return pickle.load(f)
+            except (FileNotFoundError, pickle.PickleError):
+                pass
         return None
+
+    def _is_cache_valid(self, cache_file):
+        if not os.path.exists(cache_file):
+            return False
+        cache_age = time.time() - os.path.getmtime(cache_file)
+        return cache_age < self.cache_duration
 
     def _fetch_historical_data(self):
         data = self.ticker_data.history(period='1y', interval='1d')
@@ -98,10 +97,6 @@ class YahooFinanceDataProvider:
 
         return option_values[0]
 
-    def objective(self, sigma, price_at_start, strike_price, time_to_expiry, risk_free_rate, option_price):
-        tree_price = self._binomial_tree_price(price_at_start, strike_price, time_to_expiry, risk_free_rate, sigma)
-        return tree_price - option_price if tree_price is not None else 1e10
-
     def _estimate_implied_volatility(
         self, option_price, price_at_start, strike_price, time_to_expiry, risk_free_rate, scenario='stable', lookback=60
     ):
@@ -115,18 +110,18 @@ class YahooFinanceDataProvider:
         except Exception as e:
             print(f'Warning: Failed to fetch VIX: {e}')
 
-        # Use bisection to find sigma where tree price matches market price
+        # Fallback to binomial tree
+        def objective(sigma):
+            tree_price = self._binomial_tree_price(price_at_start, strike_price, time_to_expiry, risk_free_rate, sigma)
+            return tree_price - option_price if tree_price is not None else 1e10
+
         try:
-            sigma = scipy.optimize.bisect(
-                self.objective(
-                    sigma, price_at_start, strike_price, time_to_expiry,
-                    risk_free_rate, option_price
-                ), 0.01, 2.0, xtol=1e-4
-            )
+            # Use bisection to find sigma where tree price matches market price
+            sigma = bisect(objective, 0.01, 2.0, xtol=1e-4)
             return sigma if scenario != 'crash' else sigma * 1.5
         except Exception as e:
-            # Fallback to historical volatility
             print(f'Warning: Binomial tree failed: {e}')
+            # Fallback to historical volatility
             if len(self.historical_data) < lookback:
                 return 0.2
             closes = self.historical_data['Close'].tail(lookback)
