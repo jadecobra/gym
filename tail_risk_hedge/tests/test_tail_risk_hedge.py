@@ -11,14 +11,16 @@ class TestTailRiskHedge(unittest.TestCase):
         self.insurance_ratio = 0.01
         self.cache_file = "test_price_cache.pkl"
         self.put_options_cache_file = "test_put_options_cache.pkl"
+        self.vix_cache_file = "test_vix_cache.pkl"
         self.data_provider = tail_risk_hedge.YahooFinanceDataProvider(
             cache_file=self.cache_file,
             put_options_cache_file=self.put_options_cache_file,
+            vix_cache_file=self.vix_cache_file,
             seed=42
         )
 
     def tearDown(self):
-        for cache_file in [self.cache_file, self.put_options_cache_file]:
+        for cache_file in [self.cache_file, self.put_options_cache_file, self.vix_cache_file]:
             if os.path.exists(cache_file):
                 os.remove(cache_file)
 
@@ -70,6 +72,24 @@ class TestTailRiskHedge(unittest.TestCase):
         self.assertGreaterEqual(volatility, 0)
         crash_vol = self.data_provider._get_vix_volatility(scenario="crash")
         self.assertGreater(crash_vol, volatility)
+
+    def test_vix_cache_usage(self):
+        volatility = self.data_provider._get_vix_volatility(scenario="stable")
+        self.data_provider._save_cache(volatility, self.vix_cache_file)
+        os.utime(self.vix_cache_file, (time.time(), time.time()))
+        cached_vol = self.data_provider._load_vix_cache()
+        self.assertEqual(cached_vol, volatility, "VIX cache not used correctly")
+
+    def test_vix_cache_refresh(self):
+        volatility = self.data_provider._get_vix_volatility(scenario="stable")
+        self.data_provider._save_cache(volatility, self.vix_cache_file)
+        os.utime(
+            self.vix_cache_file,
+            (time.time() - 2 * self.data_provider.cache_duration, time.time() - 2 * self.data_provider.cache_duration)
+        )
+        self.data_provider._get_vix_volatility(scenario="stable")
+        self.assertTrue(os.path.exists(self.vix_cache_file), "VIX cache not created")
+        self.assertLess(time.time() - os.path.getmtime(self.vix_cache_file), 60, "VIX cache not refreshed")
 
     def test_calculate_historical_volatility(self):
         volatility = self.data_provider._calculate_historical_volatility(lookback=60)

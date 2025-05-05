@@ -1,5 +1,6 @@
 TODO
 
+* implement cache manager for unified cache handling across data sources - VIX, options, historical data
 * cache VIX data
 * replace option_price=1.0 with more robust default to improve realism
 * fix getting options expiration date
