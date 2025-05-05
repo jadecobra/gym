@@ -1,6 +1,7 @@
 TODO
 
 * cache VIX data
+* replace option_price=1.0 with more robust default to improve realism
 * fix getting options expiration date
 * use calculated risk-free rate - 30 year treasury
 * increase options duration (what should the ideal duration be?)
