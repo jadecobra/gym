@@ -23,36 +23,46 @@ class YahooFinanceDataProvider:
         self.put_options_cache = self._load_put_options_cache()
         self.vix_cache = self._load_vix_cache()
 
-    def _load_historical_data(self):
-        if self._is_cache_valid(self.cache_file):
+    def _load_cached_data(self, cache_file, fetch_function=None, default_value=None):
+        """
+        Generic method to load data from cache if valid, otherwise fetch new data.
+
+        Args:
+            cache_file: Path to the cache file
+            fetch_function: Function to call if cache is invalid (optional)
+            default_value: Value to return if fetch_function is None and cache is invalid
+
+        Returns:
+            Cached data or newly fetched data or default value
+        """
+        if self._is_cache_valid(cache_file):
             try:
-                with open(self.cache_file, "rb") as f:
+                with open(cache_file, "rb") as f:
                     return pickle.load(f)
             except (FileNotFoundError, pickle.PickleError):
                 pass
-        data = self._fetch_historical_data()
-        self._save_cache(data, self.cache_file)
-        if data.empty:
+
+        if fetch_function is not None:
+            data = fetch_function()
+            self._save_cache(data, cache_file)
+            return data
+
+        return default_value
+
+    def _load_historical_data(self):
+        data = self._load_cached_data(
+            self.cache_file,
+            fetch_function=self._fetch_historical_data
+        )
+        if data is None or data.empty:
             raise ValueError("No historical data available")
         return data
 
     def _load_put_options_cache(self):
-        if self._is_cache_valid(self.put_options_cache_file):
-            try:
-                with open(self.put_options_cache_file, "rb") as f:
-                    return pickle.load(f)
-            except (FileNotFoundError, pickle.PickleError):
-                pass
-        return None
+        return self._load_cached_data(self.put_options_cache_file)
 
     def _load_vix_cache(self):
-        if self._is_cache_valid(self.vix_cache_file):
-            try:
-                with open(self.vix_cache_file, "rb") as f:
-                    return pickle.load(f)
-            except (FileNotFoundError, pickle.PickleError):
-                pass
-        return None
+        return self._load_cached_data(self.vix_cache_file)
 
     def _is_cache_valid(self, cache_file):
         if not os.path.exists(cache_file):
