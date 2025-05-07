@@ -200,6 +200,46 @@ class YahooFinanceDataProvider:
             "expiry_date": expiry_date
         }
 
+def retry_with_backoff(func, max_retries=5, base_delay=1, max_delay=60, jitter=0.1):
+    """
+    Execute a function with exponential backoff retry logic.
+
+    Args:
+        func: Function to execute
+        max_retries: Maximum number of retry attempts
+        base_delay: Initial delay in seconds
+        max_delay: Maximum delay in seconds
+        jitter: Random jitter factor to avoid thundering herd
+
+    Returns:
+        Result of the function if successful
+
+    Raises:
+        Exception: The last exception caught after all retries fail
+    """
+    retries = 0
+    last_exception = None
+
+    while retries <= max_retries:
+        try:
+            return func()
+        except Exception as e:
+            last_exception = e
+
+            # Check if we've reached max retries
+            if retries == max_retries:
+                break
+
+            # Calculate delay with exponential backoff and jitter
+            delay = min(base_delay * (2 ** retries), max_delay)
+            delay *= (1 + random.uniform(-jitter, jitter))
+
+            print(f"Request failed: {str(e)}. Retrying in {delay:.2f} seconds...")
+            time.sleep(delay)
+            retries += 1
+
+    raise last_exception
+
 def calculate_equity_value(portfolio_value, equity_ratio):
     if portfolio_value < 0:
         raise ValueError("Portfolio value cannot be negative")
