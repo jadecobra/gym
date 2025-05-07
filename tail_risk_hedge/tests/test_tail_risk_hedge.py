@@ -5,18 +5,24 @@ import tail_risk_hedge
 import os
 import time
 import re
+import pandas
 
 class TestYahooFinanceDataProvider(unittest.TestCase):
     def setUp(self):
         self.cache_file = "test_cache.pkl"
+        self.put_options_cache_file = "test_put_options_cache.pkl"
+        self.vix_cache_file = "test_vix_cache.pkl"
         self.data_provider = tail_risk_hedge.YahooFinanceDataProvider(
             cache_file=self.cache_file,
+            put_options_cache_file=self.put_options_cache_file,
+            vix_cache_file=self.vix_cache_file,
             seed=42
         )
 
     def tearDown(self):
-        if os.path.exists(self.cache_file):
-            os.remove(self.cache_file)
+        for cache_file in [self.cache_file, self.put_options_cache_file, self.vix_cache_file]:
+            if os.path.exists(cache_file):
+                os.remove(cache_file)
 
     @unittest.mock.patch('yfinance.Ticker')
     def test_backoff_retries(self, mock_ticker):
@@ -43,6 +49,20 @@ class TestYahooFinanceDataProvider(unittest.TestCase):
         mock_ticker.return_value.options = []
         with self.assertRaises(ValueError, msg="No options data available for ticker"):
             self.data_provider._fetch_option_chain(100)
+
+    @unittest.mock.patch('yfinance.Ticker')
+    def test_backoff_retries_fallback_to_cache(self, mock_ticker):
+        # Simulate persistent rate limit error
+        mock_ticker.side_effect = yfinance.exceptions.YFRateLimitError("Rate limited")
+        # Create a valid cache file
+        mock_data = pandas.DataFrame({"Open": [100], "High": [101], "Low": [99], "Close": [100]})
+        self.data_provider._save_cache(mock_data, self.cache_file)
+        os.utime(self.cache_file, (time.time(), time.time()))
+        # Call fetch method, should fallback to cache
+        with unittest.mock.patch('builtins.print') as mock_print:
+            data = self.data_provider._fetch_historical_data()
+            mock_print.assert_called_with("Using cached historical data due to persistent rate limit error")
+        self.assertTrue(data.equals(mock_data))
 
 class TestTailRiskHedge(unittest.TestCase):
     def setUp(self):

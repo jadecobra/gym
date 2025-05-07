@@ -4,15 +4,16 @@ import numpy
 import os
 import pandas
 import pickle
+import requests
 import random
 import time
 import yfinance
-import requests
 
-def backoff_retries(max_retries=3, base_delay=1):
+def backoff_retries(max_retries=3, base_delay=1, cache_type=None):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
+            self = args[0] if args else None  # Instance for accessing cache
             for attempt in range(max_retries):
                 try:
                     return func(*args, **kwargs)
@@ -20,6 +21,18 @@ def backoff_retries(max_retries=3, base_delay=1):
                     if attempt < max_retries - 1:
                         time.sleep(base_delay * (2 ** attempt))
                     else:
+                        if self and cache_type:
+                            try:
+                                cached_data = self._load_cached_data(cache_type)
+                                if cached_data is not None:
+                                    if cache_type == 'historical' and (cached_data.empty or cached_data is None):
+                                        raise ValueError("Cached historical data is empty")
+                                    print(f"Using cached {cache_type} data due to persistent rate limit error")
+                                    return cached_data
+                                else:
+                                    raise ValueError(f"No valid cached {cache_type} data available")
+                            except (FileNotFoundError, pickle.PickleError, ValueError) as e:
+                                raise ValueError(f"Failed to load cached {cache_type} data: {e}")
                         raise
                 except requests.exceptions.RequestException as e:
                     if attempt < max_retries - 1:
@@ -83,7 +96,7 @@ class YahooFinanceDataProvider:
         except OSError as e:
             print(f"Warning: Failed to save cache to {cache_file}: {e}")
 
-    @backoff_retries()
+    @backoff_retries(cache_type='historical')
     def _fetch_historical_data(self):
         time.sleep(0.1)  # Throttle requests
         data = self.ticker_data.history(period="1y", interval="1d")
@@ -91,7 +104,7 @@ class YahooFinanceDataProvider:
             raise ValueError("No historical data retrieved from Yahoo Finance")
         return data[["Open", "High", "Low", "Close"]].reset_index()
 
-    @backoff_retries()
+    @backoff_retries(cache_type='vix')
     def _fetch_vix_data(self):
         time.sleep(0.1)  # Throttle requests
         vix_data = yfinance.Ticker("^VIX").history(period="1d")
@@ -142,7 +155,7 @@ class YahooFinanceDataProvider:
                 closest_date = exp_date
         return pandas.Timestamp(closest_date).strftime("%Y-%m-%d")
 
-    @backoff_retries()
+    @backoff_retries(cache_type='put_options')
     def _fetch_option_chain(self, price_at_start):
         time.sleep(0.1)  # Throttle requests
         cache = self._load_cached_data('put_options')
