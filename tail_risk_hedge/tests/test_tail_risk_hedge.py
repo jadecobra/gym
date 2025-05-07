@@ -6,7 +6,7 @@ import os
 import time
 import re
 import pandas
-import logging
+
 
 class TestYahooFinanceDataProvider(unittest.TestCase):
     def setUp(self):

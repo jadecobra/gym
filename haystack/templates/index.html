@@ -1,0 +1,326 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Analyzer - 10-K Financial Metrics</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+        .jumbotron {
+            background-color: #e9ecef;
+            padding: 2rem;
+            border-radius: 0.3rem;
+            margin-bottom: 2rem;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .spinner-border {
+            display: none;
+            margin: 20px auto;
+        }
+        .metric-card {
+            transition: transform 0.3s;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+        .footer {
+            margin-top: 50px;
+            padding: 20px 0;
+            background-color: #e9ecef;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h1 class="display-4">Stock 10-K Financial Analyzer</h1>
+            <p class="lead">Enter a stock ticker to analyze financial metrics from the latest 10-K filing</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <form id="analyzeForm">
+                            <div class="mb-3">
+                                <label for="ticker" class="form-label">Stock Ticker Symbol</label>
+                                <input type="text" class="form-control" id="ticker" name="ticker" placeholder="e.g. AAPL" required>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Analyze 10-K Data</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="spinner-border text-primary" role="status" id="loading">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+
+        <div id="error-container" class="alert alert-danger mt-3" style="display: none;"></div>
+
+        <div id="results" style="display: none;">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 id="company-header" class="mb-0"></h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Ticker:</strong> <span id="ticker-result"></span></p>
+                            <p><strong>Fiscal Year End:</strong> <span id="fiscal-year"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Filing Date:</strong> <span id="filing-date"></span></p>
+                            <p><a id="source-link" href="#" target="_blank">View Original 10-K Filing</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="mb-4">Key Financial Metrics</h3>
+
+            <div class="row">
+                <!-- Income Statement Metrics -->
+                <div class="col-md-4">
+                    <div class="card metric-card">
+                        <div class="card-header bg-success text-white">
+                            Revenue
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="revenue"></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card metric-card">
+                        <div class="card-header bg-success text-white">
+                            Net Income
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="net-income"></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card metric-card">
+                        <div class="card-header bg-success text-white">
+                            Operating Income
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="operating-income"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <!-- Balance Sheet Metrics -->
+                <div class="col-md-4">
+                    <div class="card metric-card">
+                        <div class="card-header bg-info text-white">
+                            Total Assets
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="total-assets"></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card metric-card">
+                        <div class="card-header bg-info text-white">
+                            Total Liabilities
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="total-liabilities"></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card metric-card">
+                        <div class="card-header bg-info text-white">
+                            Equity
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="equity"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <!-- Financial Ratios -->
+                <div class="col-md-3">
+                    <div class="card metric-card">
+                        <div class="card-header bg-warning text-dark">
+                            Profit Margin
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="profit-margin"></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card metric-card">
+                        <div class="card-header bg-warning text-dark">
+                            Return on Assets
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="return-on-assets"></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card metric-card">
+                        <div class="card-header bg-warning text-dark">
+                            Return on Equity
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="return-on-equity"></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card metric-card">
+                        <div class="card-header bg-warning text-dark">
+                            Debt to Assets Ratio
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="debt-to-assets"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <!-- Cash Position -->
+                <div class="col-md-6">
+                    <div class="card metric-card">
+                        <div class="card-header bg-secondary text-white">
+                            Cash and Equivalents
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="cash"></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card metric-card">
+                        <div class="card-header bg-secondary text-white">
+                            Long-Term Debt
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="long-term-debt"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Note: This app scrapes data from SEC EDGAR 10-K filings. Results may vary based on the format and structure of the filings.</p>
+            <p>© 2025 Stock Analyzer App</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('analyzeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Clear previous results and show loading spinner
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('error-container').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+
+            // Get form data
+            const formData = new FormData(this);
+
+            try {
+                // Send POST request to backend
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                // Hide loading spinner
+                document.getElementById('loading').style.display = 'none';
+
+                if (data.error) {
+                    // Show error message
+                    document.getElementById('error-container').textContent = data.error;
+                    document.getElementById('error-container').style.display = 'block';
+                } else {
+                    // Format numbers with commas and dollar signs
+                    function formatCurrency(value) {
+                        if (value === null || value === undefined) return 'N/A';
+                        return '$' + value.toLocaleString('en-US', {maximumFractionDigits: 0});
+                    }
+
+                    function formatPercentage(value) {
+                        if (value === null || value === undefined) return 'N/A';
+                        return value.toFixed(2) + '%';
+                    }
+
+                    function formatRatio(value) {
+                        if (value === null || value === undefined) return 'N/A';
+                        return value.toFixed(2);
+                    }
+
+                    // Populate results
+                    document.getElementById('company-header').textContent = data.company_name;
+                    document.getElementById('ticker-result').textContent = data.ticker;
+                    document.getElementById('fiscal-year').textContent = data.fiscal_year_end || 'N/A';
+                    document.getElementById('filing-date').textContent = data.filing_date || 'N/A';
+                    document.getElementById('source-link').href = data.source_url;
+
+                    // Financial metrics
+                    document.getElementById('revenue').textContent = formatCurrency(data.revenue);
+                    document.getElementById('net-income').textContent = formatCurrency(data.net_income);
+                    document.getElementById('operating-income').textContent = formatCurrency(data.operating_income);
+                    document.getElementById('total-assets').textContent = formatCurrency(data.total_assets);
+                    document.getElementById('total-liabilities').textContent = formatCurrency(data.total_liabilities);
+                    document.getElementById('equity').textContent = formatCurrency(data.equity);
+                    document.getElementById('cash').textContent = formatCurrency(data.cash_and_equivalents);
+                    document.getElementById('long-term-debt').textContent = formatCurrency(data.long_term_debt);
+
+                    // Ratios
+                    document.getElementById('profit-margin').textContent = formatPercentage(data.profit_margin);
+                    document.getElementById('return-on-assets').textContent = formatPercentage(data.return_on_assets);
+                    document.getElementById('return-on-equity').textContent = formatPercentage(data.return_on_equity);
+                    document.getElementById('debt-to-assets').textContent = formatRatio(data.debt_to_assets_ratio);
+
+                    // Show results
+                    document.getElementById('results').style.display = 'block';
+                }
+            } catch (error) {
+                // Hide loading spinner and show error
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error-container').textContent = 'An error occurred while processing your request. Please try again.';
+                document.getElementById('error-container').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>v
