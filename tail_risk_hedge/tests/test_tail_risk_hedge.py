@@ -1,11 +1,12 @@
+import os
+import pandas
+import pickle
+import re
+import tail_risk_hedge
+import time
 import unittest
 import unittest.mock
 import yfinance
-import tail_risk_hedge
-import os
-import time
-import re
-import pandas
 
 class TestYahooFinanceDataProvider(unittest.TestCase):
     def setUp(self):
@@ -54,15 +55,33 @@ class TestYahooFinanceDataProvider(unittest.TestCase):
     def test_backoff_retries_fallback_to_cache(self, mock_ticker):
         # Simulate persistent rate limit error
         mock_ticker.side_effect = yfinance.exceptions.YFRateLimitError("Rate limited")
-        # Create a valid cache file
+        # Create a valid legacy cache file (no version field)
         mock_data = pandas.DataFrame({"Open": [100], "High": [101], "Low": [99], "Close": [100]})
-        self.data_provider._save_cache(mock_data, self.cache_file)
+        with open(self.cache_file, "wb") as f:
+            pickle.dump(mock_data, f)
         os.utime(self.cache_file, (time.time(), time.time()))
         # Call fetch method, should fallback to cache
         with unittest.mock.patch('builtins.print') as mock_print:
             data = self.data_provider._fetch_historical_data()
             mock_print.assert_called_with("Using cached historical data due to persistent rate limit error")
         self.assertTrue(data.equals(mock_data))
+
+    def test_load_legacy_cache(self):
+        # Create a legacy cache file (no version field)
+        mock_data = pandas.DataFrame({"Open": [100], "High": [101], "Low": [99], "Close": [100]})
+        with open(self.cache_file, "wb") as f:
+            pickle.dump(mock_data, f)
+        os.utime(self.cache_file, (time.time(), time.time()))
+        # Load legacy cache
+        loaded_data = self.data_provider._load_cached_data('historical')
+        self.assertTrue(loaded_data.equals(mock_data))
+        # Create a legacy VIX cache
+        vix_data = 0.2
+        with open(self.vix_cache_file, "wb") as f:
+            pickle.dump(vix_data, f)
+        os.utime(self.vix_cache_file, (time.time(), time.time()))
+        loaded_vix = self.data_provider._load_cached_data('vix')
+        self.assertEqual(loaded_vix, vix_data)
 
 class TestTailRiskHedge(unittest.TestCase):
     def setUp(self):
