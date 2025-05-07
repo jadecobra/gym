@@ -1,3 +1,4 @@
 flask
 beautifulsoup
 pandas
+pytest-watch
