@@ -7,6 +7,7 @@ import pickle
 import random
 import time
 import yfinance
+import requests
 
 def backoff_retries(max_retries=3, base_delay=1):
     def decorator(func):
@@ -20,18 +21,25 @@ def backoff_retries(max_retries=3, base_delay=1):
                         time.sleep(base_delay * (2 ** attempt))
                     else:
                         raise
+                except requests.exceptions.RequestException as e:
+                    if attempt < max_retries - 1:
+                        time.sleep(base_delay * (2 ** attempt))
+                    else:
+                        raise ValueError(f"Network error: {e}")
         return wrapper
     return decorator
 
 class YahooFinanceDataProvider:
-    def __init__(self, *, ticker="SPY", seed=None, cache_file="price_cache.pkl", put_options_cache_file="put_options_cache.pkl", vix_cache_file="vix_cache.pkl", cache_duration=86400):
+    CACHE_VERSION = '1.0'
+
+    def __init__(self, *, ticker="SPY", seed=None, cache_file="price_cache.pkl", put_options_cache_file="put_options_cache.pkl", vix_cache_file="vix_cache.pkl", cache_duration=86400, risk_free_rate=0.04, time_to_expiry=2/12):
         if seed is not None:
             random.seed(seed)
         self.ticker = ticker
         self.ticker_data = yfinance.Ticker(ticker)
         self.cache_duration = cache_duration
-        self.risk_free_rate = 0.04
-        self.time_to_expiry = 2 / 12
+        self.risk_free_rate = risk_free_rate
+        self.time_to_expiry = time_to_expiry
         self.cache_files = {
             'historical': cache_file,
             'put_options': put_options_cache_file,
@@ -46,11 +54,14 @@ class YahooFinanceDataProvider:
         if self._is_cache_valid(cache_file):
             try:
                 with open(cache_file, "rb") as f:
-                    data = pickle.load(f)
+                    cache_data = pickle.load(f)
+                    if cache_data.get('version') != self.CACHE_VERSION:
+                        raise ValueError("Invalid cache version")
+                    data = cache_data['data']
                     if cache_type == 'historical' and (data is None or data.empty):
                         raise ValueError("No historical data available")
                     return data
-            except (FileNotFoundError, pickle.PickleError, ValueError):
+            except (FileNotFoundError, pickle.PickleError, ValueError, KeyError):
                 pass
         if fetch_function is not None:
             data = fetch_function()
@@ -66,13 +77,15 @@ class YahooFinanceDataProvider:
 
     def _save_cache(self, data, cache_file):
         try:
+            cache_data = {'version': self.CACHE_VERSION, 'data': data}
             with open(cache_file, "wb") as f:
-                pickle.dump(data, f)
+                pickle.dump(cache_data, f)
         except OSError as e:
             print(f"Warning: Failed to save cache to {cache_file}: {e}")
 
     @backoff_retries()
     def _fetch_historical_data(self):
+        time.sleep(0.1)  # Throttle requests
         data = self.ticker_data.history(period="1y", interval="1d")
         if data.empty:
             raise ValueError("No historical data retrieved from Yahoo Finance")
@@ -80,6 +93,7 @@ class YahooFinanceDataProvider:
 
     @backoff_retries()
     def _fetch_vix_data(self):
+        time.sleep(0.1)  # Throttle requests
         vix_data = yfinance.Ticker("^VIX").history(period="1d")
         if not vix_data.empty:
             return vix_data["Close"].iloc[-1] / 100
@@ -130,9 +144,12 @@ class YahooFinanceDataProvider:
 
     @backoff_retries()
     def _fetch_option_chain(self, price_at_start):
+        time.sleep(0.1)  # Throttle requests
         cache = self._load_cached_data('put_options')
         if cache and price_at_start * 0.7 <= cache[2][1] and price_at_start * 0.9 >= cache[2][0]:
             return cache[0], cache[1]
+        if not self.ticker_data.options:
+            raise ValueError("No options data available for ticker")
         target_date = (datetime.datetime.now() + datetime.timedelta(days=60)).date()
         expiry_date = self.get_closest_expiration_date(self.ticker_data.options, target_date)
         option_chain = self.ticker_data.option_chain(expiry_date)

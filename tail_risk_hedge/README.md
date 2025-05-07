@@ -1,5 +1,8 @@
 TODO
 
+* Reuse a single scenario for all ratios per iteration could improve consistency
+* Integration tests for end-to-end execution (e.g., running main.main()) are missing, which could catch issues in argument parsing or scenario execution
+* The _fetch_option_chain method assumes ticker_data.options is non-empty, which could fail if no options data is available.
 * add visualization using matplotlib to create charts showing risk-return tradeoff between insurance ratios with pareto frontier to visualize efficient fronter of protection vs cost
 * add comparison mode to run multiple ratios 0.1-0.3, displaying side-by-side compaison
 * implement cache manager for unified cache handling across data sources - VIX, options, historical data
