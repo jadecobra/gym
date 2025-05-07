@@ -27,6 +27,13 @@ class TestYahooFinanceDataProvider(unittest.TestCase):
             self.data_provider._load_historical_data()
             mock_ticker.assert_not_called()  # Ensure cache is used
 
+    def test_backoff_retries(self, mock_ticker):
+        mock_ticker.side_effect = [yfinance.exceptions.YFRateLimitError("Rate limited"), {"Close": [100]}]
+        start_time = time.time()
+        data = self.data_provider._fetch_historical_data()
+        self.assertGreaterEqual(time.time() - start_time, 1)  # Ensure delay
+        self.assertIsNotNone(data)
+
 
 class TestTailRiskHedge(unittest.TestCase):
     def setUp(self):
