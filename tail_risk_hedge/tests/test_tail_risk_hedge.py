@@ -32,6 +32,18 @@ class TestYahooFinanceDataProvider(unittest.TestCase):
         self.data_provider._load_historical_data()
         mock_ticker.assert_not_called()  # Ensure cache is used
 
+    @unittest.mock.patch('yfinance.Ticker')
+    def test_fetch_vix_data_empty(self, mock_ticker):
+        mock_ticker.return_value.history.return_value = pandas.DataFrame()
+        result = self.data_provider._fetch_vix_data()
+        self.assertIsNone(result)
+
+    @unittest.mock.patch('yfinance.Ticker')
+    def test_fetch_option_chain_empty_options(self, mock_ticker):
+        mock_ticker.return_value.options = []
+        with self.assertRaises(ValueError, msg="No options data available for ticker"):
+            self.data_provider._fetch_option_chain(100)
+
 class TestTailRiskHedge(unittest.TestCase):
     def setUp(self):
         self.portfolio_value = 100000
@@ -104,7 +116,7 @@ class TestTailRiskHedge(unittest.TestCase):
         volatility = self.data_provider._get_vix_volatility(scenario="stable")
         self.data_provider._save_cache(volatility, self.vix_cache_file)
         os.utime(self.vix_cache_file, (time.time(), time.time()))
-        cached_vol = self.data_provider._load_vix_cache()
+        cached_vol = self.data_provider._load_cached_data('vix')
         self.assertEqual(cached_vol, volatility, "VIX cache not used correctly")
 
     def test_vix_cache_refresh(self):
@@ -117,7 +129,7 @@ class TestTailRiskHedge(unittest.TestCase):
         new_vol = self.data_provider._get_vix_volatility(scenario="stable")
         self.assertTrue(os.path.exists(self.vix_cache_file), "VIX cache not created")
         self.assertLess(time.time() - os.path.getmtime(self.vix_cache_file), 60, "VIX cache not refreshed")
-        cached_vol = self.data_provider._load_vix_cache()
+        cached_vol = self.data_provider._load_cached_data('vix')
         self.assertEqual(cached_vol, new_vol, "VIX cache not updated with new volatility")
 
     def test_calculate_historical_volatility(self):
