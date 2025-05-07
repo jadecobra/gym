@@ -29,22 +29,28 @@ class YahooFinanceDataProvider:
             random.seed(seed)
         self.ticker = ticker
         self.ticker_data = yfinance.Ticker(ticker)
-        self.cache_file = cache_file
-        self.put_options_cache_file = put_options_cache_file
-        self.vix_cache_file = vix_cache_file
         self.cache_duration = cache_duration
         self.risk_free_rate = 0.04
         self.time_to_expiry = 2 / 12
-        self.historical_data = self._load_historical_data()
-        self.put_options_cache = self._load_put_options_cache()
-        self.vix_cache = self._load_vix_cache()
+        self.cache_files = {
+            'historical': cache_file,
+            'put_options': put_options_cache_file,
+            'vix': vix_cache_file
+        }
+        self.historical_data = self._load_cached_data('historical', self._fetch_historical_data)
+        self.put_options_cache = self._load_cached_data('put_options', default_value=None)
+        self.vix_cache = self._load_cached_data('vix', default_value=None)
 
-    def _load_cached_data(self, cache_file, fetch_function=None, default_value=None):
+    def _load_cached_data(self, cache_type, fetch_function=None, default_value=None):
+        cache_file = self.cache_files[cache_type]
         if self._is_cache_valid(cache_file):
             try:
                 with open(cache_file, "rb") as f:
-                    return pickle.load(f)
-            except (FileNotFoundError, pickle.PickleError):
+                    data = pickle.load(f)
+                    if cache_type == 'historical' and (data is None or data.empty):
+                        raise ValueError("No historical data available")
+                    return data
+            except (FileNotFoundError, pickle.PickleError, ValueError):
                 pass
         if fetch_function is not None:
             data = fetch_function()
@@ -52,30 +58,11 @@ class YahooFinanceDataProvider:
             return data
         return default_value
 
-    def _load_historical_data(self):
-        data = self._load_cached_data(self.cache_file, fetch_function=self._fetch_historical_data)
-        if data is None or data.empty:
-            raise ValueError("No historical data available")
-        return data
-
-    def _load_put_options_cache(self):
-        return self._load_cached_data(self.put_options_cache_file)
-
-    def _load_vix_cache(self):
-        return self._load_cached_data(self.vix_cache_file)
-
     def _is_cache_valid(self, cache_file):
         if not os.path.exists(cache_file):
             return False
         cache_age = time.time() - os.path.getmtime(cache_file)
         return cache_age < self.cache_duration
-
-    @backoff_retries()
-    def _fetch_historical_data(self):
-        data = self.ticker_data.history(period="1y", interval="1d")
-        if data.empty:
-            raise ValueError("No historical data retrieved from Yahoo Finance")
-        return data[["Open", "High", "Low", "Close"]].reset_index()
 
     def _save_cache(self, data, cache_file):
         try:
@@ -85,17 +72,18 @@ class YahooFinanceDataProvider:
             print(f"Warning: Failed to save cache to {cache_file}: {e}")
 
     @backoff_retries()
-    def _get_vix_volatility(self, scenario="stable"):
-        if self.vix_cache is not None:
-            volatility = self.vix_cache
-            return volatility if scenario != "crash" else volatility * 1.5
+    def _fetch_historical_data(self):
+        data = self.ticker_data.history(period="1y", interval="1d")
+        if data.empty:
+            raise ValueError("No historical data retrieved from Yahoo Finance")
+        return data[["Open", "High", "Low", "Close"]].reset_index()
+
+    @backoff_retries()
+    def _fetch_vix_data(self):
         vix_data = yfinance.Ticker("^VIX").history(period="1d")
         if not vix_data.empty:
-            volatility = vix_data["Close"].iloc[-1] / 100
-            self.vix_cache = volatility
-            self._save_cache(volatility, self.vix_cache_file)
-            return volatility if scenario != "crash" else volatility * 1.5
-        return 0.2 if scenario != "crash" else 0.3
+            return vix_data["Close"].iloc[-1] / 100
+        return None
 
     def _calculate_historical_volatility(self, lookback=60):
         if len(self.historical_data) < lookback:
@@ -104,8 +92,19 @@ class YahooFinanceDataProvider:
         log_returns = numpy.log(closes / closes.shift(1)).dropna()
         return numpy.std(log_returns) * numpy.sqrt(252)
 
+    def _get_volatility(self, scenario="stable"):
+        if self.vix_cache is not None:
+            volatility = self.vix_cache
+            return volatility if scenario != "crash" else volatility * 1.5
+        volatility = self._fetch_vix_data()
+        if volatility is not None:
+            self.vix_cache = volatility
+            self._save_cache(volatility, self.cache_files['vix'])
+            return volatility if scenario != "crash" else volatility * 1.5
+        return 0.2 if scenario != "crash" else 0.3
+
     def _estimate_implied_volatility(self, *, option_price, price_at_start, strike_price, time_to_expiry, risk_free_rate, scenario="stable"):
-        volatility = self._get_vix_volatility(scenario)
+        volatility = self._get_volatility(scenario)
         if volatility > 0:
             return volatility
         try:
@@ -117,6 +116,8 @@ class YahooFinanceDataProvider:
         return abs((date1 - date2).days)
 
     def get_closest_expiration_date(self, expiration_dates, target_date):
+        if not expiration_dates:
+            raise ValueError("No expiration dates available")
         closest_date = datetime.datetime.strptime(expiration_dates[0], "%Y-%m-%d").date()
         min_diff = self.get_date_difference(closest_date, target_date)
         for date in expiration_dates:
@@ -125,16 +126,13 @@ class YahooFinanceDataProvider:
             if diff < min_diff:
                 min_diff = diff
                 closest_date = exp_date
-        if not closest_date:
-            raise ValueError("No suitable option expiration found")
         return pandas.Timestamp(closest_date).strftime("%Y-%m-%d")
 
     @backoff_retries()
     def _fetch_option_chain(self, price_at_start):
-        if self._is_cache_valid(self.put_options_cache_file) and self.put_options_cache:
-            cached_puts, cached_expiry, cached_price_range = self.put_options_cache
-            if price_at_start * 0.7 <= cached_price_range[1] and price_at_start * 0.9 >= cached_price_range[0]:
-                return cached_puts, cached_expiry
+        cache = self._load_cached_data('put_options')
+        if cache and price_at_start * 0.7 <= cache[2][1] and price_at_start * 0.9 >= cache[2][0]:
+            return cache[0], cache[1]
         target_date = (datetime.datetime.now() + datetime.timedelta(days=60)).date()
         expiry_date = self.get_closest_expiration_date(self.ticker_data.options, target_date)
         option_chain = self.ticker_data.option_chain(expiry_date)
@@ -142,7 +140,7 @@ class YahooFinanceDataProvider:
         out_of_the_money_puts = puts[(puts["strike"] <= price_at_start * 0.9) & (puts["strike"] >= price_at_start * 0.7)]
         price_range = (price_at_start * 0.7, price_at_start * 0.9)
         self.put_options_cache = (out_of_the_money_puts, expiry_date, price_range)
-        self._save_cache(self.put_options_cache, self.put_options_cache_file)
+        self._save_cache(self.put_options_cache, self.cache_files['put_options'])
         return out_of_the_money_puts, expiry_date
 
     def get_start_index(self):
