@@ -5,6 +5,7 @@ import time
 import random
 import re
 
+
 class TestTailRiskHedge(unittest.TestCase):
     def setUp(self):
         self.portfolio_value = 100000
