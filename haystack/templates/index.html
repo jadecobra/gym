@@ -1,4 +1,3 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,8 +41,8 @@
 <body>
     <div class="container">
         <div class="jumbotron text-center">
-            <h1 class="display-4">Stock 10-K Financial Analyzer</h1>
-            <p class="lead">Enter a stock ticker to analyze financial metrics from the latest 10-K filing</p>
+            <h1 class="display-4">Haystack</h1>
+            <p class="lead">Enter a stock ticker to analyze financial metrics</p>
         </div>
 
         <div class="row justify-content-center">
@@ -92,7 +91,6 @@
             <h3 class="mb-4">Key Financial Metrics</h3>
 
             <div class="row">
-                <!-- Income Statement Metrics -->
                 <div class="col-md-4">
                     <div class="card metric-card">
                         <div class="card-header bg-success text-white">
@@ -128,7 +126,6 @@
             </div>
 
             <div class="row mt-4">
-                <!-- Balance Sheet Metrics -->
                 <div class="col-md-4">
                     <div class="card metric-card">
                         <div class="card-header bg-info text-white">
@@ -164,7 +161,143 @@
             </div>
 
             <div class="row mt-4">
-                <!-- Financial Ratios -->
+                <div class="col-md-6">
+                    <div class="card metric-card">
+                        <div class="card-header bg-secondary text-white">
+                            Cash and Equivalents
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="cash"></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card metric-card">
+                        <div class="card-header bg-secondary text-white">
+                            Long-Term Debt
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="long-term-debt"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card metric-card">
+                        <div class="card-header bg-primary text-white">
+                            Net Income per Share
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="net_income_per_share"></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card metric-card">
+                        <div class="card-header bg-primary text-white">
+                            Equity per Share
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="equity_per_share"></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card metric-card">
+                        <div class="card-header bg-primary text-white">
+                            Assets per Share
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="assets_per_share"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card metric-card">
+                        <div class="card-header bg-primary text-white">
+                            Revenue per Share
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="revenue_per_share"></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card metric-card">
+                        <div class="card-header bg-primary text-white">
+                            FCF per Share
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="fcf_per_share"></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card metric-card">
+                        <div class="card-header bg-primary text-white">
+                            Dividends per Share
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="dividends_per_share"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card metric-card">
+                        <div class="card-header bg-primary text-white">
+                            Cash per Share
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="cash_per_share"></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card metric-card">
+                        <div class="card-header bg-primary text-white">
+                            Liabilities per Share
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="liabilities_per_share"></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card metric-card">
+                        <div class="card-header bg-primary text-white">
+                            Debt per Share
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="debt_per_share"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card metric-card">
+                        <div class="card-header bg-primary text-white">
+                            Net Tangible Assets per Share
+                        </div>
+                        <div class="card-body text-center">
+                            <h3 id="net_tangible_assets_per_share"></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="mb-4 mt-4">Financial Ratios</h3>
+            <div class="row">
                 <div class="col-md-3">
                     <div class="card metric-card">
                         <div class="card-header bg-warning text-dark">
@@ -205,31 +338,6 @@
                         </div>
                         <div class="card-body text-center">
                             <h3 id="debt-to-assets"></h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mt-4">
-                <!-- Cash Position -->
-                <div class="col-md-6">
-                    <div class="card metric-card">
-                        <div class="card-header bg-secondary text-white">
-                            Cash and Equivalents
-                        </div>
-                        <div class="card-body text-center">
-                            <h3 id="cash"></h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="card metric-card">
-                        <div class="card-header bg-secondary text-white">
-                            Long-Term Debt
-                        </div>
-                        <div class="card-body text-center">
-                            <h3 id="long-term-debt"></h3>
                         </div>
                     </div>
                 </div>
@@ -275,7 +383,7 @@
                     // Format numbers with commas and dollar signs
                     function formatCurrency(value) {
                         if (value === null || value === undefined) return 'N/A';
-                        return '$' + value.toLocaleString('en-US', {maximumFractionDigits: 0});
+                        return '$' + value.toLocaleString('en-US', { maximumFractionDigits: 0 });
                     }
 
                     function formatPercentage(value) {
@@ -311,6 +419,18 @@
                     document.getElementById('return-on-equity').textContent = formatPercentage(data.return_on_equity);
                     document.getElementById('debt-to-assets').textContent = formatRatio(data.debt_to_assets_ratio);
 
+                    // Per Share Metrics
+                    document.getElementById('net_income_per_share').textContent = formatCurrency(data.net_income_per_share);
+                    document.getElementById('equity_per_share').textContent = formatCurrency(data.equity_per_share);
+                    document.getElementById('assets_per_share').textContent = formatCurrency(data.total_assets_per_share);
+                    document.getElementById('revenue_per_share').textContent = formatCurrency(data.revenue_per_share);
+                    document.getElementById('fcf_per_share').textContent = formatCurrency(data.fcf_per_share);
+                    document.getElementById('dividends_per_share').textContent = formatCurrency(data.dividends_per_share);
+                    document.getElementById('cash_per_share').textContent = formatCurrency(data.cash_and_equivalents_per_share);
+                    document.getElementById('liabilities_per_share').textContent = formatCurrency(data.total_liabilities_per_share);
+                    document.getElementById('debt_per_share').textContent = formatCurrency(data.long_term_debt_per_share);
+                    document.getElementById('net_tangible_assets_per_share').textContent = formatCurrency(data.net_tangible_assets_per_share);
+
                     // Show results
                     document.getElementById('results').style.display = 'block';
                 }
@@ -323,4 +443,4 @@
         });
     </script>
 </body>
-</html>v
+</html>

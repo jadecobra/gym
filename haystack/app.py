@@ -1,17 +1,58 @@
 import flask
 import requests
-import bs4
 import re
-import pandas
 import json
 import os
 import datetime
+import xbrl
+import time
 
 app = flask.Flask(__name__)
 
+# Configure rate limiting: 5 requests per second, 10 requests per 10 seconds, and 1000 requests per day
+# Using a dictionary to store request timestamps.  Key is the URL, value is a list of timestamps.
+request_log = {}
+rate_limits = {
+    'second': 5,
+    'ten_seconds': 10,
+    'day': 1000
+}
+#Window size for rate limiting
+window_sizes = {
+    'second': 1,
+    'ten_seconds': 10,
+    'day': 24 * 60 * 60
+}
+
+def check_rate_limit(url):
+    """
+    Checks if the request for the given URL exceeds the defined rate limits.
+
+    Args:
+        url (str): The URL being requested.
+
+    Returns:
+        bool: True if the rate limit is exceeded, False otherwise.
+    """
+    now = time.time()
+    if url not in request_log:
+        request_log[url] = []
+
+    for interval_name, limit in rate_limits.items():
+        window_size = window_sizes[interval_name]
+        # Remove requests that are outside the current window
+        request_log[url] = [ts for ts in request_log[url] if now - ts <= window_size]
+        # Check if the number of requests exceeds the limit
+        if len(request_log[url]) >= limit:
+            return True  # Rate limit exceeded
+
+    request_log[url].append(now)  # Log the current request
+    return False  # Rate limit not exceeded
+
+
 class EdgarScraper:
     BASE_URL = "https://www.sec.gov/Archives"
-    HEADERS = {"User-Agent": "Stock Analyzer App email@example.com"}  # Replace with your email
+    HEADERS = {"User-Agent": "Stock Analyzer App email@example.com"}
 
     def __init__(self):
         self.base_url = EdgarScraper.BASE_URL
@@ -20,11 +61,16 @@ class EdgarScraper:
     def _fetch_json(self, url):
         """Atomically fetches JSON data from a URL and returns the parsed JSON or None."""
         try:
+            # Apply rate limiting before making the request
+            if check_rate_limit(url):
+                print(f"Rate limit exceeded for {url}")
+                return None  # Or raise an exception, or retry after a delay
+
             response = requests.get(url, headers=self.headers)
-            response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
+            response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
-            print(f"Error fetching {url}: {e}")  # Log the error
+            print(f"Error fetching {url}: {e}")
             return None
 
     def _extract_text(self, soup):
@@ -45,12 +91,11 @@ class EdgarScraper:
             try:
                 return datetime.datetime.strptime(date_string, fmt).strftime('%Y-%m-%d')
             except (ValueError, TypeError):
-                pass  # Try the next format
+                pass
         return None
 
     def _parse_financial_value(self, value_text):
         """Atomically parses a financial value string to a float."""
-
         if not isinstance(value_text, str):
             return None
 
@@ -71,40 +116,8 @@ class EdgarScraper:
         except (ValueError, TypeError):
             return None
 
-    def _extract_value_from_table(self, soup, keywords):
-        """Atomically extracts a value from a table in the soup."""
-
-        for keyword in keywords:
-            for table in self._find_all_in_soup(soup, 'table'):
-                for row in self._find_all_in_soup(table, 'tr'):
-                    cells = self._find_all_in_soup(row, ['td', 'th'])
-                    for i, cell in enumerate(cells):
-                        if cell.text and keyword.lower() in cell.text.lower():
-                            if i + 1 < len(cells) and cells[i + 1].text:
-                                return self._parse_financial_value(cells[i + 1].text.strip())
-        return None
-
-    def _extract_value_from_text(self, soup, keywords):
-        """Atomically extracts a value from text in the soup."""
-
-        text = self._extract_text(soup)
-        for keyword in keywords:
-            value_match = re.search(r'[\$£€]?\s?(\d{1,3}(?:,\d{3})*(?:\.\d+)?)\s?(?:million|billion|m|b)?', text, re.IGNORECASE)
-            if value_match:
-                return self._parse_financial_value(value_match.group(0))
-        return None
-
-    def _extract_value(self, soup, keywords):
-        """Atomically extracts a financial value from the soup, trying table and text."""
-
-        value = self._extract_value_from_table(soup, keywords)
-        if value is not None:
-            return value
-        return self._extract_value_from_text(soup, keywords)
-
     def search_company(self, ticker):
         """Search for company by ticker and retrieve CIK number."""
-
         companies = self._fetch_json("https://www.sec.gov/files/company_tickers.json")
         if companies is None:
             return None, "Error fetching company tickers"
@@ -121,7 +134,6 @@ class EdgarScraper:
 
     def get_recent_10k_url(self, cik):
         """Get the most recent 10-K filing URL for a company."""
-
         url = f"https://data.sec.gov/submissions/CIK{cik}.json"
         data = self._fetch_json(url)
         if data is None:
@@ -146,13 +158,12 @@ class EdgarScraper:
                     return None, f"Error fetching filing details for {filing_details_url}"
 
                 for filing in details_data.get('directory', {}).get('item', []):
-                    if filing.get('name', '').endswith('.htm') and not filing.get('name', '').startswith('R'):
+                    if filing.get('name', '').endswith('.xml'):  # Look for the XBRL file
                         return f"{self.base_url}/edgar/data/{cik.lstrip('0')}/{accession_number}/{filing['name']}", None
-        return None, "No 10-K filing found"
+        return None, "No 10-K XBRL filing found"
 
     def extract_company_name(self, soup):
         """Atomically extracts the company name from the BeautifulSoup object."""
-
         company_name_tag = self._find_in_soup(soup, 'company-name')
         if company_name_tag:
             return company_name_tag.text
@@ -162,79 +173,94 @@ class EdgarScraper:
             return title_tag.text.split('|')[0].strip()
         return "Unknown"
 
-    def extract_financial_data(self, doc_url):
-        """Extract financial data from 10-K document."""
+    def extract_financial_data(self, xbrl_url):
+        """Extract financial data from 10-K XBRL document."""
+        try:
+            # Apply rate limiting
+            if check_rate_limit(xbrl_url):
+                return None, "Rate limit exceeded"
 
-        response = requests.get(doc_url, headers=self.headers)
-        soup = bs4.BeautifulSoup(response.text, 'html.parser')
+            # Fetch the XBRL data
+            response = requests.get(xbrl_url, headers=self.headers)
+            response.raise_for_status()  # Ensure we got a valid response
 
-        metrics = {
-            'company_name': self.extract_company_name(soup),
-            'revenue': self._extract_value(soup, ['revenue', 'total revenue', 'net revenue']),
-            'net_income': self._extract_value(soup, ['net income', 'net earnings', 'net profit']),
-            'total_assets': self._extract_value(soup, ['total assets']),
-            'total_liabilities': self._extract_value(soup, ['total liabilities']),
-            'cash_and_equivalents': self._extract_value(soup, ['cash and cash equivalents', 'cash and equivalents']),
-            'long_term_debt': self._extract_value(soup, ['long-term debt', 'long term debt']),
-            'operating_income': self._extract_value(soup, ['operating income', 'income from operations']),
-            'fiscal_year_end': self._extract_fiscal_year(soup),
-            'filing_date': self._extract_filing_date(soup)
-        }
+            # Parse the XBRL document
+            xbrl_doc = xbrl.parse(response.content)
 
-        metrics['equity'] = metrics['total_assets'] - metrics['total_liabilities'] if metrics['total_assets'] and metrics['total_liabilities'] else self._extract_value(soup, ['total equity', 'stockholders equity', 'shareholders equity'])
-        metrics['profit_margin'] = round((metrics['net_income'] / metrics['revenue']) * 100, 2) if metrics['revenue'] and metrics['net_income'] else None
-        metrics['return_on_assets'] = round((metrics['net_income'] / metrics['total_assets']) * 100, 2) if metrics['total_assets'] and metrics['net_income'] else None
-        metrics['return_on_equity'] = round((metrics['net_income'] / metrics['equity']) * 100, 2) if metrics['equity'] and metrics['net_income'] else None
-        metrics['debt_to_assets_ratio'] = round(metrics['total_liabilities'] / metrics['total_assets'], 2) if metrics['total_assets'] and metrics['total_liabilities'] else None
+            # Get the GAAP context
+            gapp_context = None
 
-        return metrics, None
+            # Create a dictionary to hold the extracted data
+            metrics = {
+                'company_name': self._get_xbrl_value(xbrl_doc, 'dei:EntityRegistrantName', gapp_context) or "Unknown",
+                'revenue': self._get_xbrl_value(xbrl_doc, 'us-gaap:RevenueFromContractsWithCustomersExcludingAssessedTax', gapp_context) or self._get_xbrl_value(xbrl_doc, 'us-gaap:SalesRevenueNet', gapp_context),
+                'net_income': self._get_xbrl_value(xbrl_doc, 'us-gaap:NetIncomeLoss', gapp_context),
+                'total_assets': self._get_xbrl_value(xbrl_doc, 'us-gaap:Assets', gapp_context),
+                'total_liabilities': self._get_xbrl_value(xbrl_doc, 'us-gaap:Liabilities', gapp_context),
+                'cash_and_equivalents': self._get_xbrl_value(xbrl_doc, 'us-gaap:CashAndCashEquivalentsAtCarryingValue', gapp_context),
+                'long_term_debt': self._get_xbrl_value(xbrl_doc, 'us-gaap:LongTermDebt', gapp_context),
+                'operating_income': self._get_xbrl_value(xbrl_doc, 'us-gaap:OperatingIncomeLoss', gapp_context),
+                'shares_outstanding': self._get_xbrl_value(xbrl_doc, 'dei:EntityCommonStockSharesOutstanding', gapp_context),
+                'fiscal_year_end': self._get_xbrl_value(xbrl_doc, 'dei:DocumentPeriodEndDate', gapp_context),
+                'filing_date': self._get_xbrl_value(xbrl_doc, 'dei:DocumentFilingDate', gapp_context)
+            }
+
+            # Calculate additional metrics
+            metrics['equity'] = metrics['total_assets'] - metrics['total_liabilities'] if metrics['total_assets'] and metrics['total_liabilities'] else None
+            metrics['profit_margin'] = round((metrics['net_income'] / metrics['revenue']) * 100, 2) if metrics['revenue'] and metrics['net_income'] else None
+            metrics['return_on_assets'] = round((metrics['net_income'] / metrics['total_assets']) * 100, 2) if metrics['total_assets'] and metrics['net_income'] else None
+            metrics['return_on_equity'] = round((metrics['net_income'] / metrics['equity']) * 100, 2) if metrics['equity'] and metrics['net_income'] else None
+            metrics['debt_to_assets_ratio'] = round(metrics['total_liabilities'] / metrics['total_assets'], 2) if metrics['total_assets'] and metrics['total_liabilities'] else None
+            metrics['dividends_per_share'] = self._get_xbrl_value(xbrl_doc, 'us-gaap:CommonStockDividendsPerShare', gapp_context)
+            metrics['fcf'] = self._get_xbrl_value(xbrl_doc, 'us-gaap:FreeCashFlow', gapp_context)  # Corrected tag
+            # Per-share metrics
+            shares_outstanding = metrics.get('shares_outstanding')
+            if shares_outstanding:
+                for key in ['net_income', 'equity', 'total_assets', 'revenue', 'cash_and_equivalents', 'total_liabilities',
+                            'long_term_debt']:
+                    if metrics.get(key) is not None:
+                        metrics[f'{key}_per_share'] = round(metrics[key] / shares_outstanding, 2)
+                if metrics.get('fcf') is not None:
+                    metrics['fcf_per_share'] = round(metrics['fcf'] / shares_outstanding, 2)
+            # net tangible assets per share
+            tangible_assets = metrics.get('total_assets') - self._get_xbrl_value(xbrl_doc, 'us-gaap:IntangibleAssetsNet', gapp_context) if metrics.get(
+                'total_assets') is not None else None
+            if tangible_assets is not None and shares_outstanding is not None:
+                metrics['net_tangible_assets_per_share'] = round(
+                    (tangible_assets - metrics.get('total_liabilities', 0)) / shares_outstanding,
+                    2) if metrics.get('total_liabilities') is not None else None
+            else:
+                metrics['net_tangible_assets_per_share'] = None
+            return metrics, None
+
+        except Exception as e:
+            return None, f"Error extracting financial data: {str(e)}"
+
+    def _get_xbrl_value(self, xbrl_doc, tag_name, context_id):
+        """
+        Helper method to safely extract a value from an XBRL document, given a tag name and context.
+        Returns the first non-null value found.
+        """
+        elements = xbrl_doc.find_all(tag_name)  # Find all elements with the tag_name
+        if not elements:
+            return None
+
+        for element in elements:
+            # Check if the context matches.  If context_id is None, we'll accept any context.
+            if context_id is None or element.context_id == context_id:
+                text_content = element.text_content()
+                try:
+                    return self._parse_financial_value(text_content)
+                except ValueError:
+                    return None  # Handle non-numeric content
+        return None
 
     def _extract_fiscal_year(self, soup):
-        """Extract fiscal year from document."""
-
-        text = self._extract_text(soup)
-        fiscal_year_patterns = [
-            r'fiscal\s+year\s+end(?:ed|ing)?\s+(?:on)?\s*(\w+\s+\d{1,2},?\s+\d{4})',
-            r'for\s+the\s+(?:fiscal\s+)?year\s+end(?:ed|ing)?\s+(?:on)?\s*(\w+\s+\d{1,2},?\s+\d{4})',
-            r'(?:as\s+of|ended)\s+(\w+\s+\d{1,2},?\s+\d{4})'
-        ]
-
-        for pattern in fiscal_year_patterns:
-            match = re.search(pattern, text, re.IGNORECASE)
-            if match:
-                date_string = match.group(1).strip()
-                parsed_date = self._parse_date(date_string, ['%B %d, %Y'])
-                if parsed_date:
-                    return parsed_date
-
-        for meta in self._find_all_in_soup(soup, 'meta'):
-            if meta.get('name') == 'documentdate' or meta.get('name') == 'period':
-                date_string = meta.get('content', '')
-                parsed_date = self._parse_date(date_string, ['%Y-%m-%d'])
-                if parsed_date:
-                    return parsed_date
+        """Extract fiscal year from document - Not needed with XBRL"""
         return None
 
     def _extract_filing_date(self, soup):
-        """Extract filing date from document."""
-
-        for meta in self._find_all_in_soup(soup, 'meta'):
-            if meta.get('name') == 'filing-date':
-                return meta.get('content')
-
-        text = self._extract_text(soup)
-        filing_date_patterns = [
-            r'filed(?:\s+on)?:\s*(\w+\s+\d{1,2},?\s+\d{4})',
-            r'date\s+of\s+report[^:]*:\s*(\w+\s+\d{1,2},?\s+\d{4})'
-        ]
-
-        for pattern in filing_date_patterns:
-            match = re.search(pattern, text, re.IGNORECASE)
-            if match:
-                date_string = match.group(1).strip()
-                parsed_date = self._parse_date(date_string, ['%B %d, %Y'])
-                if parsed_date:
-                    return parsed_date
+        """Extract filing date from document -  Not needed with XBRL"""
         return None
 
 # Caching Functions
@@ -247,14 +273,12 @@ def _get_cache_dir():
 
 def save_to_cache(ticker, data):
     """Atomically saves data to a cache file."""
-
     cache_file = os.path.join(_get_cache_dir(), f"{ticker.upper()}.json")
     with open(cache_file, 'w') as f:
         json.dump(data, f)
 
 def load_from_cache(ticker):
     """Atomically loads data from a cache file if it exists, otherwise returns None."""
-
     cache_file = os.path.join(_get_cache_dir(), f"{ticker.upper()}.json")
     if os.path.exists(cache_file):
         with open(cache_file, 'r') as f:
@@ -270,7 +294,6 @@ def index():
 @app.route('/analyze', methods=['POST'])
 def analyze():
     """Atomically analyzes a stock ticker and returns financial data."""
-
     ticker = flask.request.form.get('ticker', '').strip()
     if not ticker:
         return flask.jsonify({"error": "Please enter a valid ticker symbol"})
@@ -284,15 +307,15 @@ def analyze():
     if error:
         return flask.jsonify({"error": error})
 
-    doc_url, error = scraper.get_recent_10k_url(cik)
+    xbrl_url, error = scraper.get_recent_10k_url(cik)  # Changed to get XBRL URL
     if error:
         return flask.jsonify({"error": error})
 
-    metrics, error = scraper.extract_financial_data(doc_url)
+    metrics, error = scraper.extract_financial_data(xbrl_url)  # Pass XBRL URL
     if error:
         return flask.jsonify({"error": error})
 
-    metrics['source_url'] = doc_url
+    metrics['source_url'] = xbrl_url  # changed to xbrl_url
     metrics['ticker'] = ticker.upper()
 
     save_to_cache(ticker, metrics)

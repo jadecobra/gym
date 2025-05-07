@@ -1,4 +1,6 @@
 flask
-beautifulsoup
+beautifulsoup4
 pandas
 pytest-watch
+py-xbrl
+limiter
