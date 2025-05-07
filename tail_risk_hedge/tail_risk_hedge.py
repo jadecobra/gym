@@ -71,10 +71,10 @@ class YahooFinanceDataProvider:
         return cache_age < self.cache_duration
 
     def _fetch_historical_data(self):
-        """Fetch historical data with retry logic."""
-        return retry_with_backoff(
-            lambda: self.ticker_data.history(period="1y", interval="1d")
-        )
+        data = self.ticker_data.history(period="1y", interval="1d")
+        if data.empty:
+            raise ValueError("No historical data retrieved from Yahoo Finance")
+        return data[["Open", "High", "Low", "Close"]].reset_index()
 
     def _save_cache(self, data, cache_file):
         try:
@@ -84,23 +84,17 @@ class YahooFinanceDataProvider:
             print(f"Warning: Failed to save cache to {cache_file}: {e}")
 
     def _get_vix_volatility(self, scenario="stable"):
-        """Get VIX volatility with retry logic."""
         if self.vix_cache is not None:
             volatility = self.vix_cache
             return volatility if scenario != "crash" else volatility * 1.5
 
         try:
-            def fetch_vix():
-                vix_data = yfinance.Ticker("^VIX").history(period="1d")
-                if vix_data.empty:
-                    raise ValueError("Empty VIX data returned")
-                return vix_data
-
-            vix_data = retry_with_backoff(fetch_vix)
-            volatility = vix_data["Close"].iloc[-1] / 100
-            self.vix_cache = volatility
-            self._save_cache(volatility, self.vix_cache_file)
-            return volatility if scenario != "crash" else volatility * 1.5
+            vix_data = yfinance.Ticker("^VIX").history(period="1d")
+            if not vix_data.empty:
+                volatility = vix_data["Close"].iloc[-1] / 100
+                self.vix_cache = volatility
+                self._save_cache(volatility, self.vix_cache_file)
+                return volatility if scenario != "crash" else volatility * 1.5
         except Exception as e:
             print(f"Warning: Failed to fetch VIX: {e}")
         return 0.2 if scenario != "crash" else 0.3
@@ -138,34 +132,10 @@ class YahooFinanceDataProvider:
         return pandas.Timestamp(closest_date).strftime("%Y-%m-%d")
 
     def _fetch_option_chain(self, price_at_start):
-        """Fetch option chain with retry logic."""
         if self._is_cache_valid(self.put_options_cache_file) and self.put_options_cache:
             cached_puts, cached_expiry, cached_price_range = self.put_options_cache
             if price_at_start * 0.7 <= cached_price_range[1] and price_at_start * 0.9 >= cached_price_range[0]:
                 return cached_puts, cached_expiry
-
-        target_date = (datetime.datetime.now() + datetime.timedelta(days=60)).date()
-
-        def get_options():
-            expiry_date = self.get_closest_expiration_date(self.ticker_data.options, target_date)
-            option_chain = self.ticker_data.option_chain(expiry_date)
-            return option_chain, expiry_date
-
-        try:
-            option_chain, expiry_date = retry_with_backoff(get_options)
-            puts = option_chain.puts
-            out_of_the_money_puts = puts[
-                (puts["strike"] <= price_at_start * 0.9) & (puts["strike"] >= price_at_start * 0.7)
-            ]
-        except Exception as e:
-            print(f"Warning: Failed to fetch option chain: {e}")
-            out_of_the_money_puts = None
-            expiry_date = (datetime.datetime.now() + datetime.timedelta(days=60)).strftime("%Y-%m-%d")
-
-        price_range = (price_at_start * 0.7, price_at_start * 0.9)
-        self.put_options_cache = (out_of_the_money_puts, expiry_date, price_range)
-        self._save_cache(self.put_options_cache, self.put_options_cache_file)
-        return out_of_the_money_puts, expiry_date
 
         target_date = (datetime.datetime.now() + datetime.timedelta(days=60)).date()
         expiry_date = self.get_closest_expiration_date(self.ticker_data.options, target_date)
@@ -229,46 +199,6 @@ class YahooFinanceDataProvider:
             "option_price": option_price,
             "expiry_date": expiry_date
         }
-
-def retry_with_backoff(func, max_retries=5, base_delay=1, max_delay=60, jitter=0.1):
-    """
-    Execute a function with exponential backoff retry logic.
-
-    Args:
-        func: Function to execute
-        max_retries: Maximum number of retry attempts
-        base_delay: Initial delay in seconds
-        max_delay: Maximum delay in seconds
-        jitter: Random jitter factor to avoid thundering herd
-
-    Returns:
-        Result of the function if successful
-
-    Raises:
-        Exception: The last exception caught after all retries fail
-    """
-    retries = 0
-    last_exception = None
-
-    while retries <= max_retries:
-        try:
-            return func()
-        except Exception as e:
-            last_exception = e
-
-            # Check if we've reached max retries
-            if retries == max_retries:
-                break
-
-            # Calculate delay with exponential backoff and jitter
-            delay = min(base_delay * (2 ** retries), max_delay)
-            delay *= (1 + random.uniform(-jitter, jitter))
-
-            print(f"Request failed: {str(e)}. Retrying in {delay:.2f} seconds...")
-            time.sleep(delay)
-            retries += 1
-
-    raise last_exception
 
 def calculate_equity_value(portfolio_value, equity_ratio):
     if portfolio_value < 0:
