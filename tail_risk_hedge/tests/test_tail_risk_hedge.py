@@ -1,8 +1,31 @@
+import yfinance
 import unittest
+import unittest.mock
 import tail_risk_hedge
 import os
 import time
 import re
+
+class TestYahooFinanceDataProvider(unittest.TestCase):
+    def setUp(self):
+        self.data_provider = tail_risk_hedge.YahooFinanceDataProvider(
+            cache_file="test_cache.pkl",
+            seed=42
+        )
+
+    @unittest.mock.patch('yfinance.Ticker')
+    def test_rate_limit_retry(self, mock_ticker):
+        mock_ticker.side_effect = [yfinance.exceptions.YFRateLimitError("Rate limited"), {"Close": [100]}]
+        start_time = time.time()
+        data = self.data_provider._fetch_historical_data()
+        self.assertGreaterEqual(time.time() - start_time, 1)  # Ensure retry delay
+        self.assertIsNotNone(data)
+
+    def test_cache_reduces_api_calls(self):
+        self.data_provider._fetch_historical_data()
+        with unittest.mock.patch('yfinance.Ticker') as mock_ticker:
+            self.data_provider._load_historical_data()
+            mock_ticker.assert_not_called()  # Ensure cache is used
 
 
 class TestTailRiskHedge(unittest.TestCase):

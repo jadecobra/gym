@@ -71,10 +71,18 @@ class YahooFinanceDataProvider:
         return cache_age < self.cache_duration
 
     def _fetch_historical_data(self):
-        data = self.ticker_data.history(period="1y", interval="1d")
-        if data.empty:
-            raise ValueError("No historical data retrieved from Yahoo Finance")
-        return data[["Open", "High", "Low", "Close"]].reset_index()
+        retries = 3
+        for attempt in range(retries):
+            try:
+                data = self.ticker_data.history(period="1y", interval="1d")
+                if data.empty:
+                    raise ValueError("No historical data retrieved")
+                return data[["Open", "High", "Low", "Close"]].reset_index()
+            except yfinance.YFRateLimitError:
+                if attempt < retries - 1:
+                    time.sleep(2 ** attempt)  # Exponential backoff: 1s, 2s, 4s
+                else:
+                    raise
 
     def _save_cache(self, data, cache_file):
         try:
