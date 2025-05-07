@@ -2,6 +2,8 @@ import argparse
 import pandas
 import numpy
 import tail_risk_hedge
+import json
+import os
 
 class ResultPrinter:
     @staticmethod
@@ -63,17 +65,27 @@ class ResultPrinter:
                 for ratio, protection in crash_protection.items():
                     print(f"  Insurance Ratio {ratio:.2%}: {protection:.2f}")
 
+def load_config(config_path="config.json"):
+    if os.path.exists(config_path):
+        with open(config_path, 'r') as f:
+            return json.load(f)
+    return {}
+
 def parse_arguments():
+    config = load_config()
     parser = argparse.ArgumentParser(description="Run tail risk hedging scenarios")
-    parser.add_argument("--portfolio", type=float, default=100000, help="Portfolio value (default: 100000)")
-    parser.add_argument("--ratio", type=float, default=0.01, help="Insurance ratio for single scenario (default: 0.01)")
-    parser.add_argument("--scenarios", nargs="+", default=["stable", "crash"], choices=["stable", "crash"], help="Scenarios to run (default: stable crash)")
-    parser.add_argument("--seed", type=int, default=42, help="Random seed (default: 42)")
+    parser.add_argument("--portfolio", type=float, default=config.get('portfolio', 100000), help="Portfolio value (default: 100000)")
+    parser.add_argument("--ratio", type=float, default=config.get('ratio', 0.01), help="Insurance ratio for single scenario (default: 0.01)")
+    parser.add_argument("--scenarios", nargs="+", default=config.get('scenarios', ["stable", "crash"]), choices=["stable", "crash"], help="Scenarios to run (default: stable crash)")
+    parser.add_argument("--seed", type=int, default=config.get('seed', 42), help="Random seed (default: 42)")
     parser.add_argument("--comparison", action="store_true", help="Run comparison mode with multiple insurance ratios")
-    parser.add_argument("--min-ratio", type=float, default=0.01, help="Minimum insurance ratio for comparison (default: 0.01)")
-    parser.add_argument("--max-ratio", type=float, default=0.03, help="Maximum insurance ratio for comparison (default: 0.03)")
-    parser.add_argument("--ratio-steps", type=int, default=5, help="Number of steps between min and max ratio (default: 5)")
-    parser.add_argument("--iterations", type=int, default=10, help="Number of iterations for comparison mode (default: 10)")
+    parser.add_argument("--min-ratio", type=float, default=config.get('min_ratio', 0.01), help="Minimum insurance ratio for comparison (default: 0.01)")
+    parser.add_argument("--max-ratio", type=float, default=config.get('max_ratio', 0.03), help="Maximum insurance ratio for comparison (default: 0.03)")
+    parser.add_argument("--ratio-steps", type=int, default=config.get('ratio_steps', 5), help="Number of steps between min and max ratio (default: 5)")
+    parser.add_argument("--iterations", type=int, default=config.get('iterations', 10), help="Number of iterations for comparison mode (default: 10)")
+    parser.add_argument("--cache-duration", type=int, default=config.get('cache_duration', 86400), help="Cache duration in seconds (default: 86400)")
+    parser.add_argument("--risk-free-rate", type=float, default=config.get('risk_free_rate', 0.04), help="Risk-free rate (default: 0.04)")
+    parser.add_argument("--time-to-expiry", type=float, default=config.get('time_to_expiry', 2/12), help="Time to option expiry in years (default: 2/12)")
     return parser.parse_args()
 
 def run_scenario(data_provider, portfolio_value, insurance_ratio, scenario_type):
@@ -104,7 +116,10 @@ def main():
         cache_file="price_cache.pkl",
         put_options_cache_file="put_options_cache.pkl",
         vix_cache_file="vix_cache.pkl",
-        seed=args.seed
+        seed=args.seed,
+        cache_duration=args.cache_duration,
+        risk_free_rate=args.risk_free_rate,
+        time_to_expiry=args.time_to_expiry
     )
     key_metrics = [
         'portfolio_value_percent_change_with_insurance',
