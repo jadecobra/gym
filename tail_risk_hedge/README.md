@@ -1,8 +1,8 @@
 TODO
 
-* abstract _load_historical_data, _load_put_options_cache and _load_vix_cache
+* add visualization using matplotlib to create charts showing risk-return tradeoff between insurance ratios with pareto frontier to visualize efficient fronter of protection vs cost
+* add comparison mode to run multiple ratios 0.1-0.3, displaying side-by-side compaison
 * implement cache manager for unified cache handling across data sources - VIX, options, historical data
-* cache VIX data
 * replace option_price=1.0 with more robust default to improve realism
 * fix getting options expiration date
 * use calculated risk-free rate - 30 year treasury
@@ -23,6 +23,7 @@ TODO
 
 
 DONE
+* cache VIX data
 * refactor _estimate_implied_volatility to reflect real world
 * fix calculate_option_payoff
 * cache options data info
