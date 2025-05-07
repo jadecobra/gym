@@ -1,6 +1,6 @@
-import yfinance
 import unittest
 import unittest.mock
+import yfinance
 import tail_risk_hedge
 import os
 import time
@@ -8,25 +8,17 @@ import re
 
 class TestYahooFinanceDataProvider(unittest.TestCase):
     def setUp(self):
+        self.cache_file = "test_cache.pkl"
         self.data_provider = tail_risk_hedge.YahooFinanceDataProvider(
-            cache_file="test_cache.pkl",
+            cache_file=self.cache_file,
             seed=42
         )
 
+    def tearDown(self):
+        if os.path.exists(self.cache_file):
+            os.remove(self.cache_file)
+
     @unittest.mock.patch('yfinance.Ticker')
-    def test_rate_limit_retry(self, mock_ticker):
-        mock_ticker.side_effect = [yfinance.exceptions.YFRateLimitError("Rate limited"), {"Close": [100]}]
-        start_time = time.time()
-        data = self.data_provider._fetch_historical_data()
-        self.assertGreaterEqual(time.time() - start_time, 1)  # Ensure retry delay
-        self.assertIsNotNone(data)
-
-    def test_cache_reduces_api_calls(self):
-        self.data_provider._fetch_historical_data()
-        with unittest.mock.patch('yfinance.Ticker') as mock_ticker:
-            self.data_provider._load_historical_data()
-            mock_ticker.assert_not_called()  # Ensure cache is used
-
     def test_backoff_retries(self, mock_ticker):
         mock_ticker.side_effect = [yfinance.exceptions.YFRateLimitError("Rate limited"), {"Close": [100]}]
         start_time = time.time()
@@ -34,6 +26,11 @@ class TestYahooFinanceDataProvider(unittest.TestCase):
         self.assertGreaterEqual(time.time() - start_time, 1)  # Ensure delay
         self.assertIsNotNone(data)
 
+    @unittest.mock.patch('yfinance.Ticker')
+    def test_cache_reduces_api_calls(self, mock_ticker):
+        self.data_provider._fetch_historical_data()
+        self.data_provider._load_historical_data()
+        mock_ticker.assert_not_called()  # Ensure cache is used
 
 class TestTailRiskHedge(unittest.TestCase):
     def setUp(self):
@@ -111,14 +108,12 @@ class TestTailRiskHedge(unittest.TestCase):
         self.assertEqual(cached_vol, volatility, "VIX cache not used correctly")
 
     def test_vix_cache_refresh(self):
-        # Create an expired cache
         initial_vol = 0.2
         self.data_provider._save_cache(initial_vol, self.vix_cache_file)
         os.utime(
             self.vix_cache_file,
             (time.time() - 2 * self.data_provider.cache_duration, time.time() - 2 * self.data_provider.cache_duration)
         )
-        # Force refresh by calling _get_vix_volatility
         new_vol = self.data_provider._get_vix_volatility(scenario="stable")
         self.assertTrue(os.path.exists(self.vix_cache_file), "VIX cache not created")
         self.assertLess(time.time() - os.path.getmtime(self.vix_cache_file), 60, "VIX cache not refreshed")
