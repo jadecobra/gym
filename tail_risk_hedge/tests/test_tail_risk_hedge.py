@@ -1,12 +1,12 @@
-import os
-import pandas
-import pickle
-import re
-import tail_risk_hedge
-import time
 import unittest
 import unittest.mock
 import yfinance
+import tail_risk_hedge
+import os
+import time
+import re
+import pandas
+import logging
 
 class TestYahooFinanceDataProvider(unittest.TestCase):
     def setUp(self):
@@ -61,10 +61,19 @@ class TestYahooFinanceDataProvider(unittest.TestCase):
             pickle.dump(mock_data, f)
         os.utime(self.cache_file, (time.time(), time.time()))
         # Call fetch method, should fallback to cache
-        with unittest.mock.patch('builtins.print') as mock_print:
+        with unittest.mock.patch('tail_risk_hedge.logger.info') as mock_log:
             data = self.data_provider._fetch_historical_data()
-            mock_print.assert_called_with("Using cached historical data due to persistent rate limit error")
+            mock_log.assert_called_with("Using cached historical data due to persistent rate limit error")
         self.assertTrue(data.equals(mock_data))
+        # Test invalid legacy cache (empty DataFrame)
+        with open(self.cache_file, "wb") as f:
+            pickle.dump(pandas.DataFrame(), f)
+        os.utime(self.cache_file, (time.time(), time.time()))
+        with unittest.mock.patch('tail_risk_hedge.logger.warning') as mock_log:
+            data = self.data_provider._fetch_historical_data()
+            mock_log.assert_any_call("No valid cached historical data available, using fallback")
+        self.assertFalse(data.empty)
+        self.assertEqual(len(data), 252)  # Synthetic data length
 
     def test_load_legacy_cache(self):
         # Create a legacy cache file (no version field)
@@ -82,6 +91,13 @@ class TestYahooFinanceDataProvider(unittest.TestCase):
         os.utime(self.vix_cache_file, (time.time(), time.time()))
         loaded_vix = self.data_provider._load_cached_data('vix')
         self.assertEqual(loaded_vix, vix_data)
+        # Test invalid legacy cache (empty historical data)
+        with open(self.cache_file, "wb") as f:
+            pickle.dump(pandas.DataFrame(), f)
+        with unittest.mock.patch('tail_risk_hedge.logger.error') as mock_log:
+            result = self.data_provider._load_cached_data('historical', default_value=None)
+            mock_log.assert_called_with(f"Failed to load cache from {self.cache_file}: No historical data available")
+            self.assertIsNone(result)
 
 class TestTailRiskHedge(unittest.TestCase):
     def setUp(self):

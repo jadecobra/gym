@@ -8,6 +8,11 @@ import requests
 import random
 import time
 import yfinance
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 def backoff_retries(max_retries=3, base_delay=1, cache_type=None):
     def decorator(func):
@@ -27,12 +32,24 @@ def backoff_retries(max_retries=3, base_delay=1, cache_type=None):
                                 if cached_data is not None:
                                     if cache_type == 'historical' and (cached_data.empty or cached_data is None):
                                         raise ValueError("Cached historical data is empty")
-                                    print(f"Using cached {cache_type} data due to persistent rate limit error")
+                                    logger.info(f"Using cached {cache_type} data due to persistent rate limit error")
                                     return cached_data
                                 else:
-                                    raise ValueError(f"No valid cached {cache_type} data available")
+                                    logger.warning(f"No valid cached {cache_type} data available, using fallback")
+                                    if cache_type == 'historical':
+                                        return self._generate_synthetic_historical_data()
+                                    elif cache_type == 'vix':
+                                        return None  # Will trigger default volatility in _get_volatility
+                                    elif cache_type == 'put_options':
+                                        return None, None  # Will trigger synthetic options in generate_scenario
                             except (FileNotFoundError, pickle.PickleError, ValueError) as e:
-                                raise ValueError(f"Failed to load cached {cache_type} data: {e}")
+                                logger.error(f"Failed to load cached {cache_type} data: {e}, using fallback")
+                                if cache_type == 'historical':
+                                    return self._generate_synthetic_historical_data()
+                                elif cache_type == 'vix':
+                                    return None
+                                elif cache_type == 'put_options':
+                                    return None, None
                         raise
                 except requests.exceptions.RequestException as e:
                     if attempt < max_retries - 1:
@@ -64,23 +81,30 @@ class YahooFinanceDataProvider:
 
     def _load_cached_data(self, cache_type, fetch_function=None, default_value=None):
         cache_file = self.cache_files[cache_type]
-        if self._is_cache_valid(cache_file):
-            try:
-                with open(cache_file, "rb") as f:
-                    cache_data = pickle.load(f)
+        if not os.path.exists(cache_file):
+            logger.warning(f"Cache file {cache_file} does not exist")
+            return default_value if fetch_function is None else fetch_function()
+        if not self._is_cache_valid(cache_file):
+            logger.info(f"Cache file {cache_file} is outdated")
+            return default_value if fetch_function is None else fetch_function()
+        try:
+            with open(cache_file, "rb") as f:
+                cache_data = pickle.load(f)
+                # Handle legacy cache (no version field)
+                if not isinstance(cache_data, dict) or 'version' not in cache_data:
+                    data = cache_data
+                else:
                     if cache_data.get('version') != self.CACHE_VERSION:
+                        logger.warning(f"Cache version mismatch in {cache_file}, expected {self.CACHE_VERSION}")
                         raise ValueError("Invalid cache version")
                     data = cache_data['data']
-                    if cache_type == 'historical' and (data is None or data.empty):
-                        raise ValueError("No historical data available")
-                    return data
-            except (FileNotFoundError, pickle.PickleError, ValueError, KeyError):
-                pass
-        if fetch_function is not None:
-            data = fetch_function()
-            self._save_cache(data, cache_file)
-            return data
-        return default_value
+                if cache_type == 'historical' and (data is None or data.empty):
+                    logger.error(f"No valid historical data in {cache_file}")
+                    raise ValueError("No historical data available")
+                return data
+        except (FileNotFoundError, pickle.PickleError, ValueError, KeyError) as e:
+            logger.error(f"Failed to load cache from {cache_file}: {e}")
+            return default_value if fetch_function is None else fetch_function()
 
     def _is_cache_valid(self, cache_file):
         if not os.path.exists(cache_file):
@@ -94,7 +118,20 @@ class YahooFinanceDataProvider:
             with open(cache_file, "wb") as f:
                 pickle.dump(cache_data, f)
         except OSError as e:
-            print(f"Warning: Failed to save cache to {cache_file}: {e}")
+            logger.warning(f"Failed to save cache to {cache_file}: {e}")
+
+    def _generate_synthetic_historical_data(self):
+        logger.info("Generating synthetic historical data as fallback")
+        dates = pandas.date_range(end=datetime.datetime.now(), periods=252, freq='B')
+        prices = [100 + i * 0.1 + random.uniform(-1, 1) for i in range(252)]
+        data = pandas.DataFrame({
+            "Date": dates,
+            "Open": prices,
+            "High": [p + random.uniform(0, 0.5) for p in prices],
+            "Low": [p - random.uniform(0, 0.5) for p in prices],
+            "Close": prices
+        })
+        return data.reset_index(drop=True)
 
     @backoff_retries(cache_type='historical')
     def _fetch_historical_data(self):
@@ -128,6 +165,7 @@ class YahooFinanceDataProvider:
             self.vix_cache = volatility
             self._save_cache(volatility, self.cache_files['vix'])
             return volatility if scenario != "crash" else volatility * 1.5
+        logger.warning("Using default volatility due to unavailable VIX data")
         return 0.2 if scenario != "crash" else 0.3
 
     def _estimate_implied_volatility(self, *, option_price, price_at_start, strike_price, time_to_expiry, risk_free_rate, scenario="stable"):
@@ -137,6 +175,7 @@ class YahooFinanceDataProvider:
         try:
             return self._calculate_historical_volatility()
         except ValueError:
+            logger.warning("Using default implied volatility")
             return 0.2 if scenario != "crash" else 0.3
 
     def get_date_difference(self, date1, date2):
@@ -193,6 +232,7 @@ class YahooFinanceDataProvider:
         price_at_start = self.historical_data.loc[start_index, "Close"]
         puts, expiry_date = self._fetch_option_chain(price_at_start)
         if puts is None or puts.empty:
+            logger.info("Generating synthetic put options data")
             strike_price = price_at_start * random.uniform(0.7, 0.9)
             volatility = self._estimate_implied_volatility(
                 option_price=1.0,
@@ -203,6 +243,7 @@ class YahooFinanceDataProvider:
                 scenario=scenario
             )
             option_price = max(0.5, min(10, volatility * price_at_start * 0.01))
+            expiry_date = (datetime.datetime.now() + datetime.timedelta(days=60)).strftime("%Y-%m-%d")
         else:
             put = puts.sample(n=1).iloc[0]
             strike_price = put["strike"]
