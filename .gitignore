@@ -6,3 +6,4 @@ cross_validation/
 eight_queens_six_lines/
 python_koans/
 module.py
+.aider*
