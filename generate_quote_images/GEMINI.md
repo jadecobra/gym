@@ -1,0 +1,1 @@
+Use Test Driven Development framework, Write test first, see it fail then write only solution that makes test pass, refactor to remove duplication once all tests are passing

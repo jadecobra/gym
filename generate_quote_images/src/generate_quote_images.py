@@ -28,16 +28,17 @@ class QuoteImageGenerator:
 
     def _get_wrapped_text(self, draw, text, font, max_width):
         """Wrap text to fit within a maximum width."""
-        words = text.split(' ')
         lines = []
-        current_line = ''
-        for word in words:
-            if draw.textlength(current_line + ' ' + word, font=font) <= max_width:
-                current_line += ' ' + word
-            else:
-                lines.append(current_line.strip())
-                current_line = word
-        lines.append(current_line.strip())
+        for line in text.split('\n'):
+            words = line.split(' ')
+            current_line = ''
+            for word in words:
+                if draw.textlength(current_line + ' ' + word, font=font) <= max_width:
+                    current_line += ' ' + word
+                else:
+                    lines.append(current_line.strip())
+                    current_line = word
+            lines.append(current_line.strip())
         return '\n'.join(lines)
 
     def _get_text_bbox(self, draw, text, font):
@@ -102,7 +103,7 @@ class QuoteImageGenerator:
 
         text_x = rectangle_x + (rectangle_width - quote_width) / 2
         text_y = rectangle_y + (rectangle_height - quote_height) / 2
-        draw.text((text_x, text_y), wrapped_quote, fill=(255, 255, 255), font=font, align='center')
+        draw.text((text_x, text_y), wrapped_quote, fill=(0, 0, 0), font=font, align='center')
 
         if author:
             author_text = f"- {author}"
@@ -112,7 +113,7 @@ class QuoteImageGenerator:
             author_width = author_bbox[2] - author_bbox[0]
             author_height = author_bbox[3] - author_bbox[1]
             draw.text((image_size[0] - author_width - self.LOGO_MARGIN, image_size[1] - author_height - self.LOGO_MARGIN),
-                        author_text, fill=(255, 255, 255), font=author_font)
+                        author_text, fill=(0, 0, 0), font=author_font)
 
     def _prepare_base_image(self, image_template):
         """Prepare the base image by adding logo and overlay."""
@@ -123,7 +124,7 @@ class QuoteImageGenerator:
         rectangle_width = int(image_size[0] * self.RECTANGLE_WIDTH_PADDING)
         rectangle_height = int(image_size[1] * self.RECTANGLE_HEIGHT_PADDING)
 
-        image, rectangle_x, rectangle_y = self.create_transparent_overlay(image=image, rectangle_width=rectangle_width, rectangle_height=rectangle_height, color=(128, 0, 128, 77), image_size=image_size)
+        image, rectangle_x, rectangle_y = self.create_transparent_overlay(image=image, rectangle_width=rectangle_width, rectangle_height=rectangle_height, color=(255, 255, 255, 230), image_size=image_size)
         draw = ImageDraw.Draw(image)
         return image, draw, rectangle_x, rectangle_y, rectangle_width, rectangle_height, image_size
 
@@ -187,14 +188,18 @@ class QuoteImageGenerator:
 
                     background_name = os.path.splitext(background_image_file)[0]
                     output_dir = os.path.join(self.output_folder, background_name)
-                    zip_filename = f"{background_name}_quotes.zip"
-                    zip_filepath = os.path.join(self.output_folder, zip_filename)
 
-                    with zipfile.ZipFile(zip_filepath, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
-                        generated_images = glob.glob(os.path.join(output_dir, '*.png'))
-                        for image_file in generated_images:
-                            zipf.write(image_file, os.path.basename(image_file))
-                    print(f"Created zip file: {zip_filepath}")
+                    generated_images = glob.glob(os.path.join(output_dir, '*.png'))
+                    if generated_images: # Only create zip if images were generated
+                        zip_filename = f"{background_name}_quotes.zip"
+                        zip_filepath = os.path.join(self.output_folder, zip_filename)
+
+                        with zipfile.ZipFile(zip_filepath, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
+                            for image_file in generated_images:
+                                zipf.write(image_file, os.path.basename(image_file))
+                        print(f"Created zip file: {zip_filepath}")
+                    else:
+                        print(f"No images generated for {background_name}, skipping zip creation.")
 
         except FileNotFoundError:
             print(f"Error: Backgrounds folder {self.backgrounds_folder} not found.")
@@ -204,7 +209,7 @@ if __name__ == "__main__":
         backgrounds_folder="./backgrounds",
         font_path= "./fonts/Quicksand-Medium.ttf",
         output_folder="quote_images",
-        # quotes_csv= "./quotes/test.csv",
-        quotes_csv= "./quotes/views.csv",
+        quotes_csv= "./quotes/test.csv",
+        # quotes_csv= "./quotes/views.csv",
         logo_path="./logo/beyond_the_grind_logo_transparent.png",
     ).generate_images()
