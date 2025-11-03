@@ -14,6 +14,9 @@ class QuoteImageGenerator:
     LOGO_SIZE = (200, 200)
     LOGO_MARGIN = 20
     AUTHOR_FONT_SIZE_MULTIPLIER = 0.6
+    SHADOW_COLOR = (0, 0, 0, 51)  # Black with 20% transparency
+    SHADOW_OFFSET = 2
+    OVERLAY_COLOR = (160, 32, 240, 100) # purple
 
     def __init__(self, backgrounds_folder, fonts_folder, output_folder, quotes_csv, logo_path):
         self.backgrounds_folder = backgrounds_folder
@@ -93,6 +96,12 @@ class QuoteImageGenerator:
         )
         return Image.alpha_composite(image.convert('RGBA'), overlay).convert('RGB'), rectangle_x, rectangle_y
 
+    def _draw_text_with_shadow(self, draw, text, position, font, fill_color, align='left'):
+        """Draw text with a shadow."""
+        x, y = position
+        draw.text((x + self.SHADOW_OFFSET, y + self.SHADOW_OFFSET), text, font=font, fill=self.SHADOW_COLOR, align=align)
+        draw.text(position, text, font=font, fill=fill_color, align=align)
+
     def draw_text_on_image(self, draw, quote, author, optimal_font_size, rectangle_x, rectangle_y, rectangle_width, rectangle_height, image_size, font_path):
         """Draw the quote and author on the image."""
         font = ImageFont.truetype(font_path, optimal_font_size)
@@ -105,14 +114,7 @@ class QuoteImageGenerator:
         text_x = rectangle_x + (rectangle_width - quote_width) / 2
         text_y = rectangle_y + (rectangle_height - quote_height) / 2
 
-        # Draw shadow for quote
-        # shadow_color = (0, 0, 0, 51)  # Black with 20% transparency
-        shadow_color = (0, 0, 0, 255)  # Black with 20% transparency
-        shadow_offset = 2
-        draw.text((text_x + shadow_offset, text_y + shadow_offset), wrapped_quote, fill=shadow_color, font=font, align='center')
-
-        # Draw main quote text
-        draw.text((text_x, text_y), wrapped_quote, fill=(255, 255, 255), font=font, align='center')
+        self._draw_text_with_shadow(draw, wrapped_quote, (text_x, text_y), font, (255, 255, 255), align='center')
 
         if author:
             author_text = f"- {author}"
@@ -122,15 +124,10 @@ class QuoteImageGenerator:
             author_width = author_bbox[2] - author_bbox[0]
             author_height = author_bbox[3] - author_bbox[1]
 
-            # Draw shadow for author
-            shadow_color = (0, 0, 0, 51)  # Black with 20% transparency
-            shadow_offset = 2
-            draw.text((image_size[0] - author_width - self.LOGO_MARGIN + shadow_offset, image_size[1] - author_height - self.LOGO_MARGIN + shadow_offset),
-                        author_text, fill=shadow_color, font=author_font)
+            author_x = image_size[0] - author_width - self.LOGO_MARGIN
+            author_y = image_size[1] - author_height - self.LOGO_MARGIN
 
-            # Draw main author text
-            draw.text((image_size[0] - author_width - self.LOGO_MARGIN, image_size[1] - author_height - self.LOGO_MARGIN),
-                        author_text, fill=(255, 255, 255), font=author_font)
+            self._draw_text_with_shadow(draw, author_text, (author_x, author_y), author_font, (255, 255, 255))
 
     def _prepare_base_image(self, image_template):
         """Prepare the base image by adding logo and overlay."""
@@ -138,23 +135,23 @@ class QuoteImageGenerator:
         image = image_template.copy().convert('RGBA')
         image = self.add_logo(image, image_size)
 
-        # Create a white transparent overlay over the entire background
+        # Create a transparent overlay over the entire background
         image, _, _ = self.create_transparent_overlay(
             image=image,
             rectangle_width=image_size[0],
             rectangle_height=image_size[1],
-            # color=(255, 255, 0, 76), # yellow
-            # color=(255, 255, 255, 76), # white
-            color=(160, 32, 240, 76), # purple
+            color=self.OVERLAY_COLOR,
             image_size=image_size
         )
 
         rectangle_width = int(image_size[0] * self.RECTANGLE_WIDTH_PADDING)
         rectangle_height = int(image_size[1] * self.RECTANGLE_HEIGHT_PADDING)
 
-        # The original transparent overlay for the text area (now fully transparent)
-        # This part is kept for consistency with the original structure, but its fill is (255, 255, 255, 0)
-        image, rectangle_x, rectangle_y = self.create_transparent_overlay(image=image, rectangle_width=rectangle_width, rectangle_height=rectangle_height, color=(255, 255, 255, 0), image_size=image_size)
+        # The original transparent overlay for the text area is now part of the main overlay
+        # so we just calculate the rectangle coordinates
+        rectangle_x = (image_size[0] - rectangle_width) / 2
+        rectangle_y = (image_size[1] - rectangle_height) / 2
+
         draw = ImageDraw.Draw(image)
         return image, draw, rectangle_x, rectangle_y, rectangle_width, rectangle_height, image_size
 

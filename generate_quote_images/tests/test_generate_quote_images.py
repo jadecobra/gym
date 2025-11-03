@@ -90,9 +90,28 @@ class TestQuoteImageGenerator(unittest.TestCase):
         rect_height = int(1200 * self.generator.RECTANGLE_HEIGHT_PADDING)
         img_with_overlay, _, _ = self.generator.create_transparent_overlay(img, rect_width, rect_height, (128, 0, 128, 77), (1200, 1200))
         self.assertIsInstance(img_with_overlay, Image.Image)
-        # Check if the overlay has been applied
-        self.assertNotEqual(img_with_overlay.getpixel((600, 600)), (255, 255, 255, 255))
+        # Check if the overlay has been applied by checking a pixel in the center
+        # The expected color is a blend of the background (white) and the overlay (purple with alpha)
+        expected_color = (int(255 * (1 - 77/255) + 128 * (77/255)), int(255 * (1 - 77/255) + 0 * (77/255)), int(255 * (1 - 77/255) + 128 * (77/255)))
+        self.assertEqual(img_with_overlay.getpixel((600, 600)), expected_color)
 
+    def test_prepare_base_image(self):
+        """Test the _prepare_base_image method."""
+        img = Image.new('RGB', (1200, 1200), (255, 255, 255))
+        image, draw, rectangle_x, rectangle_y, rectangle_width, rectangle_height, image_size = self.generator._prepare_base_image(img)
+
+        # Check that the image is an Image instance
+        self.assertIsInstance(image, Image.Image)
+
+        # Check that the logo is present
+        self.assertNotEqual(image.getpixel((1100, 1100))[:3], (255, 255, 255))
+
+        # Check that the full screen overlay is present
+        # The expected color is a blend of the background (white) and the overlay color
+        overlay_color = self.generator.OVERLAY_COLOR
+        alpha = overlay_color[3] / 255
+        expected_color = tuple(int(c * (1 - alpha) + oc * alpha) for c, oc in zip((255,255,255), overlay_color[:3]))
+        self.assertEqual(image.getpixel((0, 0)), expected_color)
 
     @given(st.text(), st.text())
     def test_draw_text_on_image_hypothesis(self, quote, author):
@@ -104,15 +123,32 @@ class TestQuoteImageGenerator(unittest.TestCase):
         rect_y = 100
         rect_width = 1000
         rect_height = 1000
-        self.generator.draw_text_on_image(draw, quote, author, optimal_font_size, rectangle_x=rect_x, rectangle_y=rect_y, rectangle_width=rect_width, rectangle_height=rect_height, image_size=(1200, 1200))
+        self.generator.draw_text_on_image(draw, quote, author, optimal_font_size, rectangle_x=rect_x, rectangle_y=rect_y, rectangle_width=rect_width, rectangle_height=rect_height, image_size=(1200, 1200), font_path=self.font_path)
         # A basic check to ensure the image is not entirely black.
         # This might not catch all errors, but it's a start.
         if quote:
             self.assertNotEqual(img.getcolors(), [(1200*1200, (0,0,0))])
 
+            # Check for shadow and text colors
+            text_bbox = self.generator._get_text_bbox(draw, quote, ImageFont.truetype(self.font_path, optimal_font_size))
+            text_x = rect_x + (rect_width - (text_bbox[2] - text_bbox[0])) / 2
+            text_y = rect_y + (rect_height - (text_bbox[3] - text_bbox[1])) / 2
+
+            # Check a pixel where the shadow should be
+            shadow_pixel_x = int(text_x + self.generator.SHADOW_OFFSET + 5)
+            shadow_pixel_y = int(text_y + self.generator.SHADOW_OFFSET + 5)
+            if 0 <= shadow_pixel_x < 1200 and 0 <= shadow_pixel_y < 1200:
+                self.assertNotEqual(img.getpixel((shadow_pixel_x, shadow_pixel_y)), (0, 0, 0))
+
+            # Check a pixel where the text should be
+            text_pixel_x = int(text_x + 5)
+            text_pixel_y = int(text_y + 5)
+            if 0 <= text_pixel_x < 1200 and 0 <= text_pixel_y < 1200:
+                self.assertNotEqual(img.getpixel((text_pixel_x, text_pixel_y)), (0, 0, 0))
+
     def test_draw_text_on_image(self):
         """Test the draw_text_on_image method."""
-        img = Image.new('RGB', (1200, 1200), (0, 0, 0))
+        img = Image.new('RGB', (1200, 1200), (255, 255, 255))
         draw = ImageDraw.Draw(img)
         quote = "This is a test quote."
         author = "Test Author"
@@ -121,9 +157,27 @@ class TestQuoteImageGenerator(unittest.TestCase):
         rect_y = 100
         rect_width = 1000
         rect_height = 1000
-        self.generator.draw_text_on_image(draw, quote, author, optimal_font_size, rectangle_x=rect_x, rectangle_y=rect_y, rectangle_width=rect_width, rectangle_height=rect_height, image_size=(1200, 1200))
-        # Check that the image has been modified by checking if it has more than one color
-        self.assertGreater(len(img.getcolors()), 1)
+        self.generator.draw_text_on_image(draw, quote, author, optimal_font_size, rectangle_x=rect_x, rectangle_y=rect_y, rectangle_width=rect_width, rectangle_height=rect_height, image_size=(1200, 1200), font_path=self.font_path)
+
+        # Check for shadow and text colors
+        text_bbox = self.generator._get_text_bbox(draw, quote, ImageFont.truetype(self.font_path, optimal_font_size))
+        text_x = rect_x + (rect_width - (text_bbox[2] - text_bbox[0])) / 2
+        text_y = rect_y + (rect_height - (text_bbox[3] - text_bbox[1])) / 2
+
+        # Check a pixel where the shadow should be
+        shadow_pixel_x = int(text_x + self.generator.SHADOW_OFFSET + 5)
+        shadow_pixel_y = int(text_y + self.generator.SHADOW_OFFSET + 5)
+        
+        # The expected color is a blend of the background (white) and the shadow color (black with alpha)
+        alpha = self.generator.SHADOW_COLOR[3] / 255
+        expected_shadow_color = tuple(int(c * (1 - alpha)) for c in (255,255,255))
+        # This is an approximation, as the exact color depends on antialiasing
+        self.assertAlmostEqual(img.getpixel((shadow_pixel_x, shadow_pixel_y))[0], expected_shadow_color[0], delta=10)
+
+        # Check a pixel where the text should be
+        text_pixel_x = int(text_x + 5)
+        text_pixel_y = int(text_y + 5)
+        self.assertEqual(img.getpixel((text_pixel_x, text_pixel_y)), (255, 255, 255))
 
     @given(st.text(), st.integers(min_value=100, max_value=2000), st.integers(min_value=100, max_value=2000))
     def test_get_optimal_font_size_hypothesis(self, quote, rect_width, rect_height):
