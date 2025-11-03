@@ -3,6 +3,7 @@ from PIL import Image, ImageDraw, ImageFont
 import csv
 import zipfile
 import glob
+import itertools
 
 class QuoteImageGenerator:
     """A class to generate quote images."""
@@ -14,9 +15,9 @@ class QuoteImageGenerator:
     LOGO_MARGIN = 20
     AUTHOR_FONT_SIZE_MULTIPLIER = 0.6
 
-    def __init__(self, backgrounds_folder, font_path, output_folder, quotes_csv, logo_path):
+    def __init__(self, backgrounds_folder, fonts_folder, output_folder, quotes_csv, logo_path):
         self.backgrounds_folder = backgrounds_folder
-        self.font_path = font_path
+        self.fonts_folder = fonts_folder
         self.output_folder = output_folder
         self.quotes_csv = quotes_csv
         self.logo_path = logo_path
@@ -45,7 +46,7 @@ class QuoteImageGenerator:
         """Get the bounding box of a text."""
         return draw.textbbox((0, 0), text, font=font)
 
-    def get_optimal_font_size(self, quote, rectangle_width, rectangle_height):
+    def get_optimal_font_size(self, quote, rectangle_width, rectangle_height, font_path):
         """
         Calculates the optimal font size to fill a percentage of the rectangle with the quote.
         """
@@ -56,7 +57,7 @@ class QuoteImageGenerator:
 
         while low <= high:
             mid = (low + high) // 2
-            font = ImageFont.truetype(self.font_path, mid)
+            font = ImageFont.truetype(font_path, mid)
             wrapped_quote = self._get_wrapped_text(draw, quote, font, rectangle_width * self.TEXT_PADDING)
 
             quote_bbox = self._get_text_bbox(ImageDraw.Draw(Image.new('RGB', (rectangle_width, rectangle_height))), wrapped_quote, font)
@@ -92,9 +93,9 @@ class QuoteImageGenerator:
         )
         return Image.alpha_composite(image.convert('RGBA'), overlay).convert('RGB'), rectangle_x, rectangle_y
 
-    def draw_text_on_image(self, draw, quote, author, optimal_font_size, rectangle_x, rectangle_y, rectangle_width, rectangle_height, image_size):
+    def draw_text_on_image(self, draw, quote, author, optimal_font_size, rectangle_x, rectangle_y, rectangle_width, rectangle_height, image_size, font_path):
         """Draw the quote and author on the image."""
-        font = ImageFont.truetype(self.font_path, optimal_font_size)
+        font = ImageFont.truetype(font_path, optimal_font_size)
         wrapped_quote = self._get_wrapped_text(draw, quote, font, rectangle_width * self.TEXT_PADDING)
 
         quote_bbox = self._get_text_bbox(draw, wrapped_quote, font)
@@ -103,17 +104,33 @@ class QuoteImageGenerator:
 
         text_x = rectangle_x + (rectangle_width - quote_width) / 2
         text_y = rectangle_y + (rectangle_height - quote_height) / 2
-        draw.text((text_x, text_y), wrapped_quote, fill=(0, 0, 0), font=font, align='center')
+
+        # Draw shadow for quote
+        # shadow_color = (0, 0, 0, 51)  # Black with 20% transparency
+        shadow_color = (0, 0, 0, 255)  # Black with 20% transparency
+        shadow_offset = 2
+        draw.text((text_x + shadow_offset, text_y + shadow_offset), wrapped_quote, fill=shadow_color, font=font, align='center')
+
+        # Draw main quote text
+        draw.text((text_x, text_y), wrapped_quote, fill=(255, 255, 255), font=font, align='center')
 
         if author:
             author_text = f"- {author}"
             author_font_size = int(optimal_font_size * self.AUTHOR_FONT_SIZE_MULTIPLIER)
-            author_font = ImageFont.truetype(self.font_path, author_font_size)
+            author_font = ImageFont.truetype(font_path, author_font_size)
             author_bbox = self._get_text_bbox(draw, author_text, font=author_font)
             author_width = author_bbox[2] - author_bbox[0]
             author_height = author_bbox[3] - author_bbox[1]
+
+            # Draw shadow for author
+            shadow_color = (0, 0, 0, 51)  # Black with 20% transparency
+            shadow_offset = 2
+            draw.text((image_size[0] - author_width - self.LOGO_MARGIN + shadow_offset, image_size[1] - author_height - self.LOGO_MARGIN + shadow_offset),
+                        author_text, fill=shadow_color, font=author_font)
+
+            # Draw main author text
             draw.text((image_size[0] - author_width - self.LOGO_MARGIN, image_size[1] - author_height - self.LOGO_MARGIN),
-                        author_text, fill=(0, 0, 0), font=author_font)
+                        author_text, fill=(255, 255, 255), font=author_font)
 
     def _prepare_base_image(self, image_template):
         """Prepare the base image by adding logo and overlay."""
@@ -121,21 +138,33 @@ class QuoteImageGenerator:
         image = image_template.copy().convert('RGBA')
         image = self.add_logo(image, image_size)
 
+        # Create a white transparent overlay over the entire background
+        image, _, _ = self.create_transparent_overlay(
+            image=image,
+            rectangle_width=image_size[0],
+            rectangle_height=image_size[1],
+            # color=(255, 255, 0, 76), # yellow
+            # color=(255, 255, 255, 76), # white
+            color=(160, 32, 240, 76), # purple
+            image_size=image_size
+        )
+
         rectangle_width = int(image_size[0] * self.RECTANGLE_WIDTH_PADDING)
         rectangle_height = int(image_size[1] * self.RECTANGLE_HEIGHT_PADDING)
 
-        image, rectangle_x, rectangle_y = self.create_transparent_overlay(image=image, rectangle_width=rectangle_width, rectangle_height=rectangle_height, color=(255, 255, 255, 230), image_size=image_size)
+        # The original transparent overlay for the text area (now fully transparent)
+        # This part is kept for consistency with the original structure, but its fill is (255, 255, 255, 0)
+        image, rectangle_x, rectangle_y = self.create_transparent_overlay(image=image, rectangle_width=rectangle_width, rectangle_height=rectangle_height, color=(255, 255, 255, 0), image_size=image_size)
         draw = ImageDraw.Draw(image)
         return image, draw, rectangle_x, rectangle_y, rectangle_width, rectangle_height, image_size
 
-    def _add_text_to_image(self, draw, quote, author, rectangle_x, rectangle_y, rectangle_width, rectangle_height, image_size):
+    def _add_text_to_image(self, draw, quote, author, rectangle_x, rectangle_y, rectangle_width, rectangle_height, image_size, font_path):
         """Add text to the image."""
-        optimal_font_size = self.get_optimal_font_size(quote=quote, rectangle_width=rectangle_width, rectangle_height=rectangle_height)
-        self.draw_text_on_image(draw=draw, quote=quote, author=author, optimal_font_size=optimal_font_size, rectangle_x=rectangle_x, rectangle_y=rectangle_y, rectangle_width=rectangle_width, rectangle_height=rectangle_height, image_size=image_size)
+        optimal_font_size = self.get_optimal_font_size(quote=quote, rectangle_width=rectangle_width, rectangle_height=rectangle_height, font_path=font_path)
+        self.draw_text_on_image(draw=draw, quote=quote, author=author, optimal_font_size=optimal_font_size, rectangle_x=rectangle_x, rectangle_y=rectangle_y, rectangle_width=rectangle_width, rectangle_height=rectangle_height, image_size=image_size, font_path=font_path)
 
-    def _save_image(self, image, index, background_image_path):
+    def _save_image(self, image, index, background_name):
         """Save the image."""
-        background_name = os.path.splitext(os.path.basename(background_image_path))[0]
         output_dir = os.path.join(self.output_folder, background_name)
         os.makedirs(output_dir, exist_ok=True)
         output_filename = f"{background_name}_quote_{index+1}.png"
@@ -143,31 +172,37 @@ class QuoteImageGenerator:
         image.save(output_path)
         print(f"Generated: {output_path}")
 
-    def _generate_single_image(self, image_template, row, index, background_image_path):
+    def _generate_single_image(self, image_template, row, index, background_name, font_path):
         """Generate a single quote image."""
         try:
-            quote = row.get('quote', '').upper()
+            # quote = row.get('quote', '').upper()
+            quote = row.get('quote', '')
             author = row.get('author', '').title()
             if not quote:
                 print(f"Warning: Empty quote in row {index+1}, skipping.")
                 return
 
             image, draw, rectangle_x, rectangle_y, rectangle_width, rectangle_height, image_size = self._prepare_base_image(image_template)
-            self._add_text_to_image(draw, quote, author, rectangle_x, rectangle_y, rectangle_width, rectangle_height, image_size)
-            self._save_image(image, index, background_image_path)
+            self._add_text_to_image(draw, quote, author, rectangle_x, rectangle_y, rectangle_width, rectangle_height, image_size, font_path)
+            self._save_image(image, index, background_name)
 
         except Exception as e:
             print(f"Error processing row {index+1}: {e}")
 
-    def _process_csv(self, image_template, background_image_path):
+    def _process_csv(self, background_images, background_name, fonts):
         """Process the CSV file and generate images."""
         try:
             with open(self.quotes_csv, 'r', encoding='utf-8') as file:
                 lines = file.readlines()
+                background_cycler = itertools.cycle(background_images)
+                font_cycler = itertools.cycle(fonts)
                 # Skip header row
                 for index, line in enumerate(lines[1:]):
                     row = {'quote': line.strip(), 'author': ''}
-                    self._generate_single_image(image_template, row, index, background_image_path)
+                    background_image_path = next(background_cycler)
+                    font_path = next(font_cycler)
+                    with Image.open(background_image_path).convert('RGB') as image_template:
+                        self._generate_single_image(image_template, row, index, background_name, font_path)
         except FileNotFoundError:
             print(f"Error: {self.quotes_csv} not found. Ensure it exists in the specified directory.")
         except Exception as e:
@@ -180,26 +215,29 @@ class QuoteImageGenerator:
         """Generate quote images from a CSV file."""
         self.create_output_folder()
         try:
-            for background_image_file in os.listdir(self.backgrounds_folder):
-                if background_image_file.lower().endswith(('.png', '.jpg', '.jpeg')):
-                    background_image_path = os.path.join(self.backgrounds_folder, background_image_file)
-                    with Image.open(background_image_path).convert('RGB') as image_template:
-                        self._process_csv(image_template, background_image_path)
+            fonts = glob.glob(os.path.join(self.fonts_folder, '*.ttf'))
+            for background_folder in os.listdir(self.backgrounds_folder):
+                background_folder_path = os.path.join(self.backgrounds_folder, background_folder)
+                if os.path.isdir(background_folder_path):
+                    background_images = glob.glob(os.path.join(background_folder_path, '*.png')) + \
+                                        glob.glob(os.path.join(background_folder_path, '*.jpg')) + \
+                                        glob.glob(os.path.join(background_folder_path, '*.jpeg'))
 
-                    background_name = os.path.splitext(background_image_file)[0]
-                    output_dir = os.path.join(self.output_folder, background_name)
+                    if background_images:
+                        self._process_csv(background_images, background_folder, fonts)
 
-                    generated_images = glob.glob(os.path.join(output_dir, '*.png'))
-                    if generated_images: # Only create zip if images were generated
-                        zip_filename = f"{background_name}_quotes.zip"
-                        zip_filepath = os.path.join(self.output_folder, zip_filename)
+                        output_dir = os.path.join(self.output_folder, background_folder)
+                        generated_images = glob.glob(os.path.join(output_dir, '*.png'))
+                        if generated_images:
+                            zip_filename = f"{background_folder}_quotes.zip"
+                            zip_filepath = os.path.join(self.output_folder, zip_filename)
 
-                        with zipfile.ZipFile(zip_filepath, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
-                            for image_file in generated_images:
-                                zipf.write(image_file, os.path.basename(image_file))
-                        print(f"Created zip file: {zip_filepath}")
-                    else:
-                        print(f"No images generated for {background_name}, skipping zip creation.")
+                            with zipfile.ZipFile(zip_filepath, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zipf:
+                                for image_file in generated_images:
+                                    zipf.write(image_file, os.path.basename(image_file))
+                            print(f"Created zip file: {zip_filepath}")
+                        else:
+                            print(f"No images generated for {background_folder}, skipping zip creation.")
 
         except FileNotFoundError:
             print(f"Error: Backgrounds folder {self.backgrounds_folder} not found.")
@@ -207,9 +245,10 @@ class QuoteImageGenerator:
 if __name__ == "__main__":
     QuoteImageGenerator(
         backgrounds_folder="./backgrounds",
-        font_path= "./fonts/Quicksand-Medium.ttf",
+        fonts_folder="./fonts",
         output_folder="quote_images",
-        quotes_csv= "./quotes/test.csv",
-        # quotes_csv= "./quotes/views.csv",
+        # quotes_csv= "./quotes/test.csv",
+        # quotes_csv= "./quotes/tester.csv",
+        quotes_csv= "./quotes/views.csv",
         logo_path="./logo/beyond_the_grind_logo_transparent.png",
     ).generate_images()
